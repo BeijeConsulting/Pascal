@@ -13,7 +13,7 @@ public class CSVmanager {
 
 	public static void main(String[] args) {
 		
-		File file = new File("/javaFiles/rubrica.csv");
+		File file = new File("/temp/rubrica.csv");
 		System.out.println("esiste ? " + file.exists());
 		System.out.println("isDirectory ? " + file.isDirectory());
 
@@ -47,9 +47,9 @@ public class CSVmanager {
 //				System.out.println("TELEFONO : " + r[2]);
 //				System.out.println("EMAIL : " + r[3]);
 			}
-
 			
 			System.out.println("rows size : " + rows.size());
+			
 			
 			File newFile = new File("/temp/rubrica2.csv");
 			System.out.println("esiste ? " + newFile.exists());

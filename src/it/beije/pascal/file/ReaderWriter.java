@@ -9,14 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Reader {
-	
-	//metodo che legge file e ritorna array di stringhe (SENZA BUFFEREDREADER)
+public class ReaderWriter {
+
 	public String[] readFromFile(File f) throws IOException {
 		
 		String[] res = null;
 		StringBuilder sb = new StringBuilder();
-		ArrayList<String> strArr = new ArrayList<String>();
+		List<String> strArr = new ArrayList<String>();
 		FileReader fr = null;
 		
 		try {
@@ -32,7 +31,6 @@ public class Reader {
 			}
 			
 			strArr.add(sb.toString()); 
-			
 			res = new String[strArr.size()];
 			res = strArr.toArray(res);
 			
@@ -42,20 +40,19 @@ public class Reader {
 			
 		} finally {
 			
-			fr.close();
+			fr.close();	
 			
-		}
-		
+		}	
 		return res;
 	}
 	
-	//lettura da file con BufferedReader
-	public String[] readFromFile(File f, boolean buffer) throws IOException { 
+	public static String[] readFromFile(File f, boolean buffer) throws IOException { 
 		
 		String[] res = null;
 		FileReader fr = null;
 		BufferedReader br = null;
 		List<String> strList = new ArrayList<>();
+		@SuppressWarnings("unused")
 		StringBuilder sb;
 		
 		try {
@@ -81,57 +78,40 @@ public class Reader {
 		
 	}
 	
-	//metodo per la scrittura del file
 	public void writeToFile(File f, String toWrite) throws IOException {
+		
 		BufferedWriter bw = null;
 		try {
 			
-			//prima va letto tutto quello che c'era già dentro, salvato in un array e poi 
+			String[] toRewrite = ReaderWriter.readFromFile(f, true); 
 			
 			FileWriter fw = new FileWriter(f);
 			bw = new BufferedWriter(fw);
 			
+			for(String s : toRewrite) {
+				bw.write(s);
+				bw.write("\n");
+			}
+			
 			bw.write(toWrite);
-			
+				
 		} catch(Exception e) {
 			
+			e.printStackTrace();
+			
 		} finally {
+			
 			bw.close();
-		}
-	}
-	
-	//metodo di modifica di un file
-	//partiamo da un file che ha caratteri divisi da tabulazione e li trasformiamo in file csv veri e propri (con apici e punto e virgola)
-	public void makeFileCSV(File f) {
-		
-		FileReader reader = null;
-		BufferedReader buffered = null;
-		
-		
-		
-		try {
-			
-		} catch(Exception e) {
-			
-		} finally {
 			
 		}
-		
 	}
 	
 	public static void main(String[] args) throws IOException {
 		
-		File file = new File("/javaFiles/rubrica.csv");
+		File file = new File("/javaFiles/FileOne.txt");
 		
-		Reader r = new Reader();
-		String[] arr = r.readFromFile(file, true);
-		for(String s : arr) {
-			System.out.println(s);
-		}
-		
-		//System.out.println(Arrays.toString(arr));
-		
-//		r.writeToFile(file, "nuova scrittura");
+		ReaderWriter r = new ReaderWriter();
+		r.writeToFile(file, "ciao come stai");
 			
 	}
 }
