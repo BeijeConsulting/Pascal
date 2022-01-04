@@ -1,88 +1,58 @@
 package it.beije.pascal.file;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class CSVmanager {
 
+	private final static String FILE_PATH = "./rubrica.csv";
+	
 	public static void main(String[] args) {
-		
-		File file = new File("/temp/rubrica.csv");
+
+		File file = new File(FILE_PATH);
 		System.out.println("esiste ? " + file.exists());
 		System.out.println("isDirectory ? " + file.isDirectory());
 
-		FileReader reader = null;
-		FileWriter writer = null;
-		List<String> rows = new ArrayList<String>();
+		List<String> rows = FileUtils.extractRows(file);
+		System.out.println("rows size : " + rows.size());
+		printDataToFile(rows);
 
-		try {
-			reader = new FileReader(file);//"/temp/rubrica.txt"
-			
-//			while (reader.ready()) {
-//				System.out.print((char)reader.read());
-//			}
-			
-			BufferedReader bufferedReader = new BufferedReader(reader);
-			String row;
-			while (bufferedReader.ready()) {
-				row = bufferedReader.readLine();
-				rows.add(row);
-				//System.out.println(row);
-				
-//				StringTokenizer tokenizer = new StringTokenizer(row, "\t");
-//				System.out.println(tokenizer.countTokens());
-//				while (tokenizer.hasMoreElements()) {
-//					System.out.println(tokenizer.nextElement());
-//				}
-				
-//				String[] r = row.split("\t");
-//				System.out.println("COGNOME : " + r[0]);
-//				System.out.println("NOME : " + r[1]);
-//				System.out.println("TELEFONO : " + r[2]);
-//				System.out.println("EMAIL : " + r[3]);
-			}
-
-			
-			System.out.println("rows size : " + rows.size());
-			
-			File newFile = new File("/temp/rubrica2.csv");
-			System.out.println("esiste ? " + newFile.exists());
-			
-			writer = new FileWriter(newFile);
-			
-			for (String r : rows) {
-				String[] c = r.split("\t");
-				
-				StringBuilder newRow = new StringBuilder(c[0]).append(';')
-						.append(c[1]).append(';')
-						.append(c[2]).append(';')
-						.append(c[3]).append('\n');
-				
-				writer.write(newRow.toString());
-			}
-			writer.flush();
-			
-		} catch (IOException ioEx) {
-			ioEx.printStackTrace();
-		} finally {
-			try {
-				if (writer != null) {
-					writer.close();
-				}
-				if (reader != null) {
-					reader.close();
-				}
-			} catch (Exception fEx) {
-				fEx.printStackTrace();
-			}
-		}
-		
 	}
 
+	static void printDataToFile(List<String> rows) {
+		File newFile = new File("./nuova_rubrica.csv");
+		System.out.println("esiste ? " + newFile.exists());
+		FileWriter writer = null;
+
+		try {
+			writer = new FileWriter(newFile);
+			for (String r : rows) {
+				String[] c = r.split("\t");
+
+				StringBuilder newRow = new StringBuilder()
+						.append('\"').append(c[0] == null ? "" : c[0]).append('\"').append(';')
+						.append('\"').append(c[1] == null ? "" : c[1]).append('\"').append(';')
+						.append('\"').append(c[3] == null ? "" : c[2]).append('\"').append(';')
+						.append('\"').append(c[2] == null ? "" : c[3]).append('\"').append('\n');
+
+				writer.write(newRow.toString());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(writer != null ) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
+	
 }
