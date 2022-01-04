@@ -13,34 +13,43 @@ public class CSVmanager {
 
 	public static void main(String[] args) {
 		
-		File file = new File("/temp/rubrica.csv");
+		File file = new File("\\Users\\Padawan01\\OneDrive\\Desktop\\nuovo.txt");	//questa è la classe File e serve per gestire i file
 		System.out.println("esiste ? " + file.exists());
 		System.out.println("isDirectory ? " + file.isDirectory());
+		
+//		ManipolaFile mf = new ManipolaFile();
+//		mf.leggiFile(file);
+		
+//		List<String> rows = new ArrayList<>();
+//		rows = mf.estrapolaFile(file);
+		
+//		mf.scriviFile(file);
+		
 
-		FileReader reader = null;
-		FileWriter writer = null;
+		FileReader reader = null;	//FileReader a differenza di File è una classe fatta per leggere i file e nel costruttore vuole un File f
+		FileWriter writer = null;	//FileWriter è fatta per scrivere i file e anche lei vuole nel costruttore un File f
 		List<String> rows = new ArrayList<String>();
 
-		try {
-			reader = new FileReader(file);//"/temp/rubrica.txt"
+		try {	//metto dentro il try perchè File throws una checked exception e sono obbligato a gestirla o rilanciarla
+			reader = new FileReader(file);	//"/temp/rubrica.txt"
 			
 //			while (reader.ready()) {
 //				System.out.print((char)reader.read());
 //			}
-			
+//			
 			BufferedReader bufferedReader = new BufferedReader(reader);
 			String row;
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
 				rows.add(row);
-				//System.out.println(row);
+//				//System.out.println(row);
 				
 //				StringTokenizer tokenizer = new StringTokenizer(row, "\t");
 //				System.out.println(tokenizer.countTokens());
 //				while (tokenizer.hasMoreElements()) {
 //					System.out.println(tokenizer.nextElement());
 //				}
-				
+//				
 //				String[] r = row.split("\t");
 //				System.out.println("COGNOME : " + r[0]);
 //				System.out.println("NOME : " + r[1]);
@@ -48,13 +57,12 @@ public class CSVmanager {
 //				System.out.println("EMAIL : " + r[3]);
 			}
 
-			
 			System.out.println("rows size : " + rows.size());
 			
-			File newFile = new File("/temp/rubrica2.csv");
-			System.out.println("esiste ? " + newFile.exists());
+//			File newFile = new File("/temp/rubrica2.csv");
+			System.out.println("esiste ? " + file.exists());
 			
-			writer = new FileWriter(newFile);
+			writer = new FileWriter(file);
 			
 			for (String r : rows) {
 				String[] c = r.split("\t");
