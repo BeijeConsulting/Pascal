@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Reader {
@@ -26,13 +25,13 @@ public class Reader {
 			while(fr.ready()) {
 				char c = (char)fr.read();
 				sb.append(c);
-				if(c == 32) { //ogni stringa è separata da uno spazio
+				if(c == 32) { 
 					strArr.add(sb.toString());
 					sb.delete(0, sb.length());
 				}
 			}
 			
-			strArr.add(sb.toString()); //aggiunge anche ultima stringa (che non ha alla fine uno spazio)
+			strArr.add(sb.toString()); 
 			
 			res = new String[strArr.size()];
 			res = strArr.toArray(res);
@@ -68,13 +67,6 @@ public class Reader {
 				sb = new StringBuilder(temp);
 				
 				strList.add(temp);
-				
-				
-//				String[] splitted = temp.split("\t");
-//				for(String str : splitted) {
-//					strList.add(str);
-//				}
-//			}
 			}
 			
 			res = new String[strList.size()];
