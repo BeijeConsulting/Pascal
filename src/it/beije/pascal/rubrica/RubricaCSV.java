@@ -10,7 +10,7 @@ import java.util.List;
 public class RubricaCSV {
 
 	public static void main(String[] args) throws IOException {
-		readContatti("/temp/rubrica.csv", "\t");
+		readContatti("rubrica.csv", "\t"); // /temp/rubrica.csv
 	}
 
 	public static List<Contatto> readContatti(String path, String sep) throws IOException {
@@ -26,16 +26,21 @@ public class RubricaCSV {
 			String row;
 			Contatto contatto;
 			String[] r;
+			
+			row = bufferedReader.readLine();
+			r = row.split(sep);
+			String pos[] = search(r);
+			contatto = addContatto(pos , r);
+			System.out.println(contatto);
+			rows.add(contatto);
+			
+			
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
 			
 				r = row.split(sep);
-				contatto = new Contatto();
-				contatto.setCognome(r[0]);
-				contatto.setNome(r[1]);
-				contatto.setTelefono(r[2]);
-				contatto.setEmail(r[3]);
 				
+				contatto = addContatto(pos , r);
 				System.out.println(contatto);
 				
 				rows.add(contatto);
@@ -59,4 +64,75 @@ public class RubricaCSV {
 		
 		return rows;
 	}
+	
+	public static Boolean isSeparated(String[] r) {
+		boolean check = false;
+		for(int i=0; i<r.length; i++) {
+			if((r[i].charAt(0) == '"') && (r[i].charAt(r[i].length() - 1) == '"')){
+				check = true;
+			}
+			else {
+				check = false;
+				break;
+			}
+		}
+		return check;
+	}
+	
+	public static String[] search(String[] r) {
+		String[] ind = new String[4];
+		for(int i = 0; i<r.length; i++) {
+			switch(r[i]) {
+			   case "COGNOME":
+				   ind[i] = ("COG" + i);
+				   break;
+			   case "NOME":
+				   ind[i] = ("NOM" + i);
+				   break;
+			   case "TELEFONO":
+				   ind[i] = ("TEL" + i);
+				   break;
+			   case "EMAIL":
+				   ind[i] = ("EMA" + i);
+				   break;
+			   case "NOTE":
+				   ind[i] = ("NOT" + i);
+				   break;
+				}
+			
+		}
+		return ind;
+	}
+	
+	public static Contatto addContatto(String[] pos, String[] r) {
+		Contatto c = new Contatto();
+		int ind;
+		for(int i = 0; i<pos.length; i++) {
+			switch(pos[i].toString().substring(0, 3)) {
+			case "COG":
+				ind =  Integer.valueOf(pos[i].toString().substring(3));
+				c.setCognome(r[ind]);
+				break;
+			case "NOM":
+				ind =  Integer.valueOf(pos[i].toString().substring(3));
+				c.setNome(r[ind]);
+				break;
+			case "TEL":
+				ind =  Integer.valueOf(pos[i].toString().substring(3));
+				c.setTelefono(r[ind]);
+				break;
+			case "EMA":
+				ind =  Integer.valueOf(pos[i].toString().substring(3));
+				c.setEmail(r[ind]);
+				break;
+			case "NOT":
+				ind =  Integer.valueOf(pos[i].toString().substring(3));
+				c.setNote(r[ind]);
+				break;
+			}
+		}
+		return c;
+		
+	}
+	
 }
