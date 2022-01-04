@@ -12,7 +12,7 @@ import java.util.List;
 public class CSVmanager {
 
 	public static void main(String[] args) {
-		
+		//ciao
 		File file = new File("/temp/rubrica.csv");
 		System.out.println("esiste ? " + file.exists());
 		System.out.println("isDirectory ? " + file.isDirectory());
