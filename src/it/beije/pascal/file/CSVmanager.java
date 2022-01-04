@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class CSVmanager {
@@ -17,35 +18,26 @@ public class CSVmanager {
 		System.out.println("esiste ? " + file.exists());
 		System.out.println("isDirectory ? " + file.isDirectory());
 
+		// METODI LETTURA
+		
+		// stampaFileChar(file);
+		// stampaFileLine(file);
+		stampaFileTokenizer(file);
+		
 		FileReader reader = null;
 		FileWriter writer = null;
 		List<String> rows = new ArrayList<String>();
 
 		try {
-			reader = new FileReader(file);//"/temp/rubrica.txt"
 			
-//			while (reader.ready()) {
-//				System.out.print((char)reader.read());
-//			}
+			reader = new FileReader(file);
 			
 			BufferedReader bufferedReader = new BufferedReader(reader);
 			String row;
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
 				rows.add(row);
-				//System.out.println(row);
 				
-//				StringTokenizer tokenizer = new StringTokenizer(row, "\t");
-//				System.out.println(tokenizer.countTokens());
-//				while (tokenizer.hasMoreElements()) {
-//					System.out.println(tokenizer.nextElement());
-//				}
-				
-//				String[] r = row.split("\t");
-//				System.out.println("COGNOME : " + r[0]);
-//				System.out.println("NOME : " + r[1]);
-//				System.out.println("TELEFONO : " + r[2]);
-//				System.out.println("EMAIL : " + r[3]);
 			}
 
 			
@@ -83,6 +75,104 @@ public class CSVmanager {
 			}
 		}
 		
+	}
+	
+	public static void stampaFileChar(File file)
+	{
+		FileReader reader = null;
+		
+		try {
+			reader = new FileReader(file);
+			
+			while (reader.ready()) {
+				System.out.print((char)reader.read());
+			}
+		}
+		catch(IOException ioEx)	
+		{
+			ioEx.printStackTrace();
+		}
+		finally
+		{
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+					
+	}
+	
+	public static void stampaFileLine(File file)
+	{
+		FileReader reader = null;
+		try {
+			reader = new FileReader(file);
+			
+			BufferedReader bufferedReader = new BufferedReader(reader);
+			String row;
+			while (bufferedReader.ready()) {
+				row = bufferedReader.readLine();
+				System.out.println(row);
+			}
+		}
+		catch(IOException ioEx)	
+		{
+			ioEx.printStackTrace();
+		}
+		finally 
+		{
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public static void stampaFileTokenizer(File file)
+	{
+		
+		FileReader reader = null;
+		try {
+			reader = new FileReader(file);
+			
+			BufferedReader bufferedReader = new BufferedReader(reader);
+			String row;
+			while (bufferedReader.ready()) {
+				
+				row = bufferedReader.readLine();
+
+				StringTokenizer tokenizer = new StringTokenizer(row, "\t");
+				System.out.println(tokenizer.countTokens());
+				
+				while (tokenizer.hasMoreElements()) {
+					System.out.println(tokenizer.nextElement());
+			}
+				
+				String[] r = row.split("\t");				
+				System.out.println("COGNOME : " + r[0]);
+				System.out.println("NOME : " + r[1]);
+				System.out.println("TELEFONO : " + r[2]);
+				System.out.println("EMAIL : " + r[3]);
+			}
+			
+		} catch (IOException ioEx) {
+			ioEx.printStackTrace();
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
 	}
 
 }
