@@ -120,4 +120,47 @@ public class RubricaCSV {
 			}
 		}
 	}
+	
+	public static void writeContattiLambda(List<Contatto> contatti, String path, String sep) throws IOException {
+		File file;
+		FileWriter fileWriter = null;
+		StringBuilder row;
+		
+		
+		
+		try {
+			file = new File(path);
+			fileWriter = new FileWriter(file);
+			
+			//Header row
+			row = new StringBuilder()
+					.append("COGNOME").append(sep)
+					.append("NOME").append(sep)
+					.append("TELEFONO").append(sep)
+					.append("EMAIL").append(sep)
+					.append("NOTE").append('\n');
+			fileWriter.append(row.toString());
+			
+			//read rows
+			for(Contatto c: contatti) {
+				row = new StringBuilder()
+						.append(c.getCognome() == null ? "" : c.getCognome()).append(sep)
+						.append(c.getNome() == null ? "" : c.getNome()).append(sep)
+						.append(c.getTelefono() == null ? "" : c.getTelefono()).append(sep)
+						.append(c.getEmail() == null ? "" : c.getEmail()).append(sep)
+						.append(c.getNote() == null ? "" : c.getNote()).append('\n');
+				fileWriter.append(row.toString());
+			}
+		}catch (IOException IOEX) {
+			IOEX.printStackTrace();
+			throw IOEX;
+		} finally {
+			try {
+				if(fileWriter != null) fileWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+	}
 }	
