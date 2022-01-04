@@ -2,79 +2,40 @@ package it.beije.pascal.file;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+// estrarre i metodi
+// arraylist
+
+// mettere tra doppi apici i campi
+
+// invertire i campi come nome cognome email e telefono
 
 public class CSVmanager {
 
-	public static void main(String[] args) {
-		
-		File file = new File("/temp/rubrica.csv");
-		System.out.println("esiste ? " + file.exists());
-		System.out.println("isDirectory ? " + file.isDirectory());
-
-		FileReader reader = null;
-		FileWriter writer = null;
+	static List<String> readingFile(File file) {
 		List<String> rows = new ArrayList<String>();
+		FileReader reader = null;
+		String row;
 
 		try {
-			reader = new FileReader(file);//"/temp/rubrica.txt"
-			
-//			while (reader.ready()) {
-//				System.out.print((char)reader.read());
-//			}
-			
+			reader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(reader);
-			String row;
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
 				rows.add(row);
-				//System.out.println(row);
-				
-//				StringTokenizer tokenizer = new StringTokenizer(row, "\t");
-//				System.out.println(tokenizer.countTokens());
-//				while (tokenizer.hasMoreElements()) {
-//					System.out.println(tokenizer.nextElement());
-//				}
-				
-//				String[] r = row.split("\t");
-//				System.out.println("COGNOME : " + r[0]);
-//				System.out.println("NOME : " + r[1]);
-//				System.out.println("TELEFONO : " + r[2]);
-//				System.out.println("EMAIL : " + r[3]);
 			}
 
-			
-			System.out.println("rows size : " + rows.size());
-			
-			File newFile = new File("/temp/rubrica2.csv");
-			System.out.println("esiste ? " + newFile.exists());
-			
-			writer = new FileWriter(newFile);
-			
-			for (String r : rows) {
-				String[] c = r.split("\t");
-				
-				StringBuilder newRow = new StringBuilder(c[0]).append(';')
-						.append(c[1]).append(';')
-						.append(c[2]).append(';')
-						.append(c[3]).append('\n');
-				
-				writer.write(newRow.toString());
-			}
-			writer.flush();
-			
-		} catch (IOException ioEx) {
-			ioEx.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} finally {
 			try {
-				if (writer != null) {
-					writer.close();
-				}
 				if (reader != null) {
 					reader.close();
 				}
@@ -82,7 +43,67 @@ public class CSVmanager {
 				fEx.printStackTrace();
 			}
 		}
+
+		return rows;
+	}
+
+	static void writeFile(File file, List<String> rows, String sorroundingString) {
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(file);
+
+			for (String r : rows) {
+				
+				String[] c = r.split("\t");
+
+				StringBuilder newRow = new StringBuilder(sorroundingString).append(c[1])
+						.append(sorroundingString + '#' + sorroundingString).append(c[0])
+						.append(sorroundingString + '#' + sorroundingString).append(c[3])
+						.append(sorroundingString + '#' + sorroundingString).append(c[2]).append(sorroundingString)
+						.append('\n');
+
+				writer.write(newRow.toString());	
+				
+			}
+			writer.flush();
+
+		} catch (IOException ioEx) {
+			ioEx.printStackTrace();
+		} finally {
+			try {
+				if (writer != null) {
+					writer.close();
+				}
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+
+		File fileReader = new File("C:/Users/andre/git/Pascal/rubrica.csv");
+		File fileWriter = new File("C:/Users/andre/git/Pascal/rubrica2.csv");
+
+		List<String> rows = readingFile(fileReader);
+
+		for (String string : rows) {
+			System.out.println(string);
+		}
+
+		writeFile(fileWriter, rows, "\"");
 		
+		System.out.println("########################################");
+		// Esercizio 2 
+		/*
+		Tree tree = new Tree("C:/Users/andre/OneDrive/Desktop/Prova");
+		File maindir = new File("C:/Users/andre/OneDrive/Desktop/Prova");
+		File arr[] = maindir.listFiles();
+	    tree.RecursivePrint(arr, 0, 0);*/
+		
+		
+		
+
 	}
 
 }
