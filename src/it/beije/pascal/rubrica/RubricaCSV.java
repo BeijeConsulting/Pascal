@@ -11,6 +11,7 @@ public class RubricaCSV {
 
 	public static void main(String[] args) throws IOException {
 		readContatti("rubrica.csv", "\t"); // /temp/rubrica.csv
+		
 	}
 
 	public static List<Contatto> readContatti(String path, String sep) throws IOException {
