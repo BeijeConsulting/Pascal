@@ -1,13 +1,17 @@
 package it.beije.pascal.rubrica;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Gestore_Rubrica {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		String cognome;
 		String nome;
@@ -16,6 +20,7 @@ public class Gestore_Rubrica {
 		String note;
 		
 		Contatto contattoProvvisorio;
+		List<Contatto> rubrica = new ArrayList<Contatto>();
 		
 		System.out.println("Benvenuto nella Rubrica");
 		System.out.println("Premere 1 per visualizzare la lista dei contatti ordinata per nome");
@@ -38,10 +43,18 @@ public class Gestore_Rubrica {
 		case 0: 
 			break;
 		case 1:
-			System.out.println("Sei in caso 1");
+			
+			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
+			rubrica = sortRubricaNome(rubrica);
+			visualRubrica(rubrica);
+			
 			break;
 		case 2:
-			System.out.println("Sei in caso 2");
+			
+			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
+			rubrica = sortRubricaCognome(rubrica);
+			visualRubrica(rubrica);
+			
 			break;
 		case 3:
 			System.out.println("Sei in caso 3");
@@ -64,7 +77,6 @@ public class Gestore_Rubrica {
 			addContact(contattoProvvisorio);
 			
 			System.out.println(contattoProvvisorio.toString());
-			
 			
 			break;
 		case 5:
@@ -111,6 +123,115 @@ public class Gestore_Rubrica {
 		
 	}
 	
+	public static List<Contatto> readRubrica(String path, String sep) throws IOException {
+		
+		
+		List<Contatto> rows = new ArrayList<Contatto>();
+
+		FileReader reader = null;
+		BufferedReader bufferedReader = null;
+
+		try {
+
+			reader = new FileReader(path);
+			bufferedReader = new BufferedReader(reader);
+
+			String row;
+			Contatto contatto;
+			String[] r;
+
+			while (bufferedReader.ready()) {
+				
+				row = bufferedReader.readLine();
+
+				r = row.split(sep);
+				
+				contatto = new Contatto();
+				contatto.setCognome(r[0]);
+				contatto.setNome(r[1]);
+				contatto.setTelefono(r[2]);
+				contatto.setEmail(r[3]);
+
+				rows.add(contatto);
+			}
+
+		} catch (IOException ioEx) {
+			ioEx.printStackTrace();
+			throw ioEx;
+
+		} finally {
+
+			try {
+				if (bufferedReader != null) {
+					bufferedReader.close();
+				}
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		return rows;
+		
+	}
+	
+	public static List<Contatto> sortRubricaNome(List<Contatto> rubrica)
+	{
+		
+		ArrayList<Contatto> ordine = new ArrayList<Contatto>(rubrica);
+		
+		/*
+		System.out.println("Ordine iniziale");
+		System.out.println(ordine);
+		System.out.println("\n");
+		*/
+		
+		ordine.sort(new OrdinaNome());
+		
+		/*
+		System.out.println("Ordine alfabetico per Nome");
+		System.out.println(ordine);
+		System.out.println("\n");
+		*/
+		return ordine;
+		
+	}
+	
+	public static List<Contatto> sortRubricaCognome(List<Contatto> rubrica)
+	{
+		
+		ArrayList<Contatto> ordine = new ArrayList<Contatto>(rubrica);
+		
+		/*
+		System.out.println("Ordine iniziale");
+		System.out.println(ordine);
+		System.out.println("\n");
+		*/
+		
+		ordine.sort(new OrdinaCognome());
+		
+		/*
+		System.out.println("Ordine alfabetico per Nome");
+		System.out.println(ordine);
+		System.out.println("\n");
+		*/
+		return ordine;
+		
+	}
+	
+	public static void visualRubrica(List<Contatto> rubrica)
+	{
+		
+		for(Contatto c : rubrica) {
+			
+			System.out.println(c.getCognome());
+			System.out.println(c.getNome());
+			System.out.println(c.getTelefono());
+			System.out.println(c.getEmail());
+		}
+		
+	}
 	
 	// METODI PER RUBRICA
 	
@@ -128,6 +249,7 @@ public class Gestore_Rubrica {
 			stampa = nuovo.toString();
 			
 			writer.write(stampa);
+			writer.write("\n");
 			
 			writer.flush();
 			
