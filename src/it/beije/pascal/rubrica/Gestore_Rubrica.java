@@ -66,4 +66,6 @@ public class Gestore_Rubrica {
 		return st;
 	}
 	
+	
+	
 }
