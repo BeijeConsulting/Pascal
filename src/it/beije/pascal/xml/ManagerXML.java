@@ -75,11 +75,12 @@ public class ManagerXML {
 			List<Contatto> contatti = new ArrayList<>();
 			
 			for (int i = 0; i < childNodes.getLength(); i++) {
-				Node node = childNodes.item(i);
+				Node node = childNodes.item(i);				
 				if (node instanceof Element) {
 					Element el = (Element) node;
 					List<Element> values = getChildElements(el);				
-					for (Element value : values) {						
+					for (Element value : values) {	
+						System.out.println(value.getTextContent());
 						switch(value.getTagName()) {						
 							case "nome":
 								contatto.setNome(value.getTextContent());
@@ -95,22 +96,23 @@ public class ManagerXML {
 								break;
 							case "note":
 								contatto.setNote(value.getTextContent());								
-						}
-												
+						}									
 					}
-											
+					contatti.add(contatto);	
+					for(Contatto c:contatti) {
+						System.out.println(c);
+					}
+					System.out.println("-------------------------------");											
 				}	
 				//System.out.println(value.getTagName() + " : " + value.getTextContent());
 			}
-			/*
+			
 			ordinamento(contatti);
-			for(Contatto c:contatti) {
-				System.out.println(c);
-			}
-			*/
+			
+			
 			
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 
