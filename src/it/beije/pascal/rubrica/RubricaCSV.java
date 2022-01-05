@@ -81,7 +81,7 @@ public class RubricaCSV {
 	}
 	
 	public static String[] search(String[] r) {
-		String[] ind = new String[4];
+		String[] ind = new String[r.length];
 		for(int i = 0; i<r.length; i++) {
 			switch(r[i]) {
 			   case "COGNOME":

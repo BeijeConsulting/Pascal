@@ -16,7 +16,7 @@ public class CSVmanager {
 	
 		List<String> fileLetto = new ArrayList<String>();
 		
-		fileLetto = readFile("/temp/rubrica.csv");  
+		fileLetto = readFile("rubrica.csv");  // /temp/rubrica.csv
 		writeFile(fileLetto);
 		
 		printFileTokenizer("rubrica.csv");
@@ -59,7 +59,7 @@ public class CSVmanager {
 	public static void writeFile(List<String> fileLetto) {
 		FileWriter writer = null;
 		
-		File newFile = new File("/temp/rubrica2.csv");
+		File newFile = new File("rubrica2.csv"); // /temp/rubrica2.csv
 		
 		try {
 			writer = new FileWriter(newFile);
@@ -72,13 +72,21 @@ public class CSVmanager {
 						.append('"' + c[3] + '"').append(';')
 						.append('"' + c[2] + '"').append('\n');
 				
-				
+				writer.write(newRow.toString());
 			}
 			writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				if (writer != null) {
+					writer.close();
+				}
+				
+			}catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
 		}
-		
 		
 	}
 	

@@ -1,44 +1,65 @@
 package it.beije.pascal.file;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class DirectoryContains {
-	public static void getDirectoryFiles(String percorso) {
-		File dir = new File(percorso);
-		
-		FileWriter writer = null;
-		File newFile = new File(creaFile(percorso));
-		
+	public static void getDirectoryFiles(File dir, StringBuilder contenuto, int level) {
 		try {
-			    writer = new FileWriter(newFile);
 		        File[] files = dir.listFiles();
 		        
 		        for (File file : files) {
 		            
 		        	if (file.isDirectory())
 		        	{
-		                writer.write("cartella:" + file.getCanonicalPath() + "\n   ");
-		                getDirectoryFiles(file.getCanonicalPath());
-		                
+		        		for(int i = 0; i<level; i++) {
+		            		contenuto.append("\t");
+		            	}
+		        		contenuto.append("cartella:" + file.getCanonicalPath() + "\n");
+		                getDirectoryFiles(file.getCanonicalFile(), contenuto, level + 1);
 		            } else {
-		            	writer.write("file:" + file.getCanonicalPath() + "\n");
+		            	for(int i = 0; i<level; i++) {
+		            		contenuto.append("\t");
+		            	}
+		            	contenuto.append("file:" + file.getCanonicalPath() + "\n");
 		            }
 		        }
-		        writer.flush();
+		        
 		        
 		    } catch (IOException e) {
 		        e.printStackTrace();
 		    }
 		}
 	
-	public static String creaFile(String percorso) { 
+	public static void writeFile(String percorso, File file) {
+		FileWriter writer = null;
+		
+		File newFile = new File(percorso);
+		
+		StringBuilder contenuto = new StringBuilder();
+		getDirectoryFiles(file, contenuto, 0);
+		
+		try {
+			 writer = new FileWriter(newFile);
+			 writer.write(contenuto.toString());
+			 writer.flush();
+		}catch (IOException e) {
+	        e.printStackTrace();
+	    }finally {
+	    	try {
+				if (writer != null) {
+					writer.close();
+				}
+				
+			}catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+	    }
+	}
+	
+	public static void creaFile(String percorso, File file) { 
 	//Metodo che estrapola, dal percorso, il nome della cartella e crea un file con quest'ultimo
 		StringBuilder nomeFile = new StringBuilder();
 		int i = percorso.length() - 1;
@@ -56,7 +77,7 @@ public class DirectoryContains {
 			e.printStackTrace();
 		}
 		
-		return nomeFile.toString();
+		writeFile(nomeFile.toString(), file);
 	}
 	
 	public static String percorsoFile() { 
@@ -64,6 +85,7 @@ public class DirectoryContains {
 		Scanner in = new Scanner(System.in);
 		System.out.print("Inserire percorso Directory: ");
 		String percorso = in.nextLine();
+		in.close();
 		return percorso;
 	}
 	
@@ -71,8 +93,10 @@ public class DirectoryContains {
 	public static void main(String[] args) {
 		
 		String percorso = percorsoFile();
+		File file = new File(percorso);
 		
-		getDirectoryFiles(percorso);
+		creaFile(percorso, file);
+		
 
 	}
 

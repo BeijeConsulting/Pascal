@@ -1,22 +1,9 @@
 file:C:\Users\Padawan06\Downloads\desktop.ini
 file:C:\Users\Padawan06\Downloads\eclipse-inst-jre-win64.exe
-file:C:\Users\Padawan06\Downloads\Gerarchie.zip
-file:C:\Users\Padawan06\Downloads\m1.pdf
-file:C:\Users\Padawan06\Downloads\m1_answers.pdf
-file:C:\Users\Padawan06\Downloads\m2.pdf
-file:C:\Users\Padawan06\Downloads\m2_answers.pdf
-file:C:\Users\Padawan06\Downloads\m3.pdf
-file:C:\Users\Padawan06\Downloads\m3_answers.pdf
-file:C:\Users\Padawan06\Downloads\m4.pdf
-file:C:\Users\Padawan06\Downloads\m4_answers.pdf
-file:C:\Users\Padawan06\Downloads\m5.pdf
-file:C:\Users\Padawan06\Downloads\m5_answers.pdf
-file:C:\Users\Padawan06\Downloads\m6.pdf
-file:C:\Users\Padawan06\Downloads\m6_answers.pdf
-file:C:\Users\Padawan06\Downloads\m7.pdf
-file:C:\Users\Padawan06\Downloads\m7_answers.pdf
-file:C:\Users\Padawan06\Downloads\Oracle.certkey.1z0-808.v2020-03-19.by_.summer.111q.pdf
-file:C:\Users\Padawan06\Downloads\Oracle.prep4sure.1z0-808.v2020-02-07.by_.venla_.109q.pdf
 cartella:C:\Users\Padawan06\Downloads\Prova
-   file:C:\Users\Padawan06\Downloads\RegnoVegetale.zip
+	file:C:\Users\Padawan06\Downloads\Prova\prova.txt
+	cartella:C:\Users\Padawan06\Downloads\Prova\Sono 1
+		file:C:\Users\Padawan06\Downloads\Prova\Sono 1\Sono in 1.txt
+	cartella:C:\Users\Padawan06\Downloads\Prova\sono 2
+		file:C:\Users\Padawan06\Downloads\Prova\sono 2\Sono in 2.txt
 file:C:\Users\Padawan06\Downloads\SlackSetup.exe
