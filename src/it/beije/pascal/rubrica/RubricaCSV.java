@@ -9,15 +9,6 @@ import java.util.List;
 
 import it.beije.pascal.util.FileUtil;
 
-/*
-	non devono scrivere array di stringhe ma un bin di contatti
-	
-	-metodo lettura: 
-	booleano che dica se i campi da leggere abbiano gli apici "" true nel caso o false altrimenti
-	
-	
-	ordine campi non dato per scontato (se non se ne trova uno salta)
-*/
 
 public class RubricaCSV {
 	public static void main(String[] args) {
@@ -83,7 +74,7 @@ public class RubricaCSV {
 		
 
 	}
-	
+	// Il risultato si vede dal file(per ora)
 	
 
 }

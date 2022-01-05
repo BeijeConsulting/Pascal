@@ -1,4 +1,4 @@
-package it.beije.pascal.file;
+package it.beije.pascal.ivo.csv;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,7 @@ public class CSVmanager {
 
 	public static void main(String[] args) {
 		//ciao
-		File file = new File("/temp/rubrica.csv");
+		File file = new File("/file/rubrica.csv");
 		System.out.println("esiste ? " + file.exists());
 		System.out.println("isDirectory ? " + file.isDirectory());
 

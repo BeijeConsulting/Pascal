@@ -17,7 +17,7 @@ import org.w3c.dom.NodeList;
 
 import it.beije.pascal.rubrica.Contatto;
 
-public class ManagerXML {
+public class MenuXML {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) throws Exception {
@@ -55,7 +55,7 @@ public class ManagerXML {
 		int scelta = scanner.nextInt();
 		while (scelta < 0 || scelta > 8) {
 			System.out.print("\nScelta errata,reinserire: ");
-			scelta = scanner.nextInt();
+			scelta = scanner.nextInt();		
 		}
 		return scelta;
 	}
@@ -107,7 +107,7 @@ public class ManagerXML {
 				//System.out.println(value.getTagName() + " : " + value.getTextContent());
 			}
 			
-			ordinamento(contatti);
+			ordinaContatti(contatti);
 			
 			
 			
@@ -126,7 +126,7 @@ public class ManagerXML {
 		return childElements;
 	}
 	
-	private static void ordinamento(List<Contatto> contatti) {
+	private static void ordinaContatti(List<Contatto> contatti) {
 		contatti.sort(new Comparator<Contatto>() {
 			public int compare(Contatto c1, Contatto c2) {							
 				return c1.getNome().compareTo(c2.getNome());

@@ -9,37 +9,34 @@ import java.util.List;
 
 import it.beije.pascal.util.FileUtil;
 
-public class ManagerCSV {
+public class WriteReadCSV {
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
 		String path = "/Users/ema29/JavaFile/Esercizio1/lettura.txt";
 		String path2 = "/Users/ema29/JavaFile/Esercizio1/scrittura.txt";
-		
-		
-		
+
 		System.out.println("==== Lettura ====");
-		scriviFile(leggiFile(path), path2);
+		writeFile(readFile(path), path2);
 	}
 
-	
-	private static List<String> leggiFile(String path) {
-		
+	private static List<String> readFile(String path) {
+
 		List<String> rows = new ArrayList<>();
 		FileReader reader = null;
 
 		try {
 			reader = new FileReader(path);
-			// Componente per lettura del file riga per riga
+			// Componente per lettura del file riga per riga (simile a scanner)
 			BufferedReader bufferedReader = new BufferedReader(reader);
-			// Stringa per salvataggio righe
-			String row;
+			
+
 			while (bufferedReader.ready()) {
 				// Lettura riga per riga
-				row = bufferedReader.readLine();
+				String row = bufferedReader.readLine();
 				rows.add(row);
 			}
-			for (String r : rows) {
-				System.out.println(r);
+			for (String row : rows) {
+				System.out.println(row);
 			}
 
 		} catch (IOException e) {
@@ -51,7 +48,7 @@ public class ManagerCSV {
 		return rows;
 	}
 
-	private static void scriviFile(List<String> rows, String path) {
+	private static void writeFile(List<String> rows, String path) {
 		System.out.println("\n==== Scrittura ====");
 		FileWriter writer = null;
 		StringBuilder newRow = null;
@@ -59,7 +56,7 @@ public class ManagerCSV {
 			writer = new FileWriter(path);
 			for (String row : rows) {
 				String[] rowsArray = row.split(";");
-				//System.out.println("rowsArray: " + rowsArray.length);
+				// System.out.println("rowsArray: " + rowsArray.length);
 
 				newRow = new StringBuilder(rowsArray[1]).append('$');
 				newRow.append(rowsArray[0]).append('$');
@@ -69,7 +66,7 @@ public class ManagerCSV {
 			}
 
 			writer.flush();
-			leggiFile(path);
+			readFile(path);
 		} catch (IOException e) {
 			e.printStackTrace();
 
@@ -77,7 +74,5 @@ public class ManagerCSV {
 			FileUtil.closeWriter(writer);
 		}
 	}
-
-	
 
 }
