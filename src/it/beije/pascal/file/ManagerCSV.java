@@ -14,7 +14,7 @@ public class ManagerCSV {
 	public static void main(String[] args) {		
 		String path = "/Users/ema29/JavaFile/Esercizio1/lettura.txt";
 		String path2 = "/Users/ema29/JavaFile/Esercizio1/scrittura.txt";
-		//ciao
+		
 		
 		
 		System.out.println("==== Lettura ====");
