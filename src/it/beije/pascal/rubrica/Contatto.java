@@ -54,5 +54,9 @@ public class Contatto {
 		
 		return builder.toString();
 	}
+	public boolean equals(Object arg0) {
+		return cognome.equals(arg0);
+	}
 	
+
 }

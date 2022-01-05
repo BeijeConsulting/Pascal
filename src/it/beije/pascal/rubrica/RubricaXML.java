@@ -106,8 +106,11 @@ public class RubricaXML {
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource domSource = new DOMSource(doc);
             StreamResult streamResult = new StreamResult(new File(pathFile));
+            StreamResult streamOut = new StreamResult(System.out);
  
             transformer.transform(domSource, streamResult);
+
+            transformer.transform(domSource, streamOut);
  
 		}catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block

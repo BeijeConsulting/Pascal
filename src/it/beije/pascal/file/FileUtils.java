@@ -40,7 +40,7 @@ public class FileUtils {
 		return tree;
 	}
 
-	static List<String> extractRows(File file){
+	public static List<String> extractRows(File file){
 		List<String> rows = new ArrayList<>();
 	
 		FileReader reader = null;
