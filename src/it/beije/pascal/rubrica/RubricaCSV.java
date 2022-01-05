@@ -10,10 +10,10 @@ import java.util.List;
 public class RubricaCSV {
 
 	public static void main(String[] args) throws IOException {
-		readContatti("C:/Users/franc/git/Pascal/rubrica.csv", "\t");
+		loadRubricaFromCSV("C:/Users/franc/git/Pascal/rubrica.csv", "\t");
 	}
 
-	public static List<Contatto> readContatti(String path, String sep) throws IOException {
+	public static List<Contatto> loadRubricaFromCSV(String path, String sep) throws IOException {
 		List<Contatto> rows = new ArrayList<Contatto>();
 		boolean firstLine = true;
 		
