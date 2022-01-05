@@ -12,7 +12,7 @@ public class FileIO {
 	
 	FileReader fileReader;
 	StringBuilder sb;
-	ArrayList<String> res = new ArrayList<>();
+	ArrayList<String> stringList = new ArrayList<>();
 	
 	public String[] readFromFile(File f) {
 		
@@ -24,20 +24,17 @@ public class FileIO {
 				char i = (char)fileReader.read(); 
 				sb.append(i);
 				if(i == 32) {
-					res.add(sb.toString());
+					stringList.add(sb.toString());
 					sb.delete(0, sb.length());
 				}
 			}
-			
-			res.add(sb.toString());
-			
-		} catch(IOException e) 
-		{
+			stringList.add(sb.toString());			
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		
-		String[] trueRes = new String[res.size()];
-		trueRes = res.toArray(trueRes);
+		String[] trueRes = new String[stringList.size()];
+		trueRes = stringList.toArray(trueRes);
 		
 		return trueRes;
 	}

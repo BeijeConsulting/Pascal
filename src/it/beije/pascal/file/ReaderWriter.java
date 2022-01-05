@@ -18,8 +18,7 @@ public class ReaderWriter {
 		List<String> strArr = new ArrayList<String>();
 		FileReader fr = null;
 		
-		try {
-			
+		try {	
 			fr = new FileReader(f);
 			while(fr.ready()) {
 				char c = (char)fr.read();
@@ -29,19 +28,13 @@ public class ReaderWriter {
 					sb.delete(0, sb.length());
 				}
 			}
-			
 			strArr.add(sb.toString()); 
 			res = new String[strArr.size()];
 			res = strArr.toArray(res);
-			
 		} catch(IOException ioEx) {
-			
 			ioEx.printStackTrace();
-			
 		} finally {
-			
-			fr.close();	
-			
+			fr.close();			
 		}	
 		return res;
 	}
@@ -52,39 +45,34 @@ public class ReaderWriter {
 		FileReader fr = null;
 		BufferedReader br = null;
 		List<String> strList = new ArrayList<>();
-		@SuppressWarnings("unused")
 		StringBuilder sb;
 		
 		try {
 			fr = new FileReader(f);
 			br = new BufferedReader(fr);
-			
 			while(br.ready()) {
 				String temp = br.readLine();
 				sb = new StringBuilder(temp);
 				
 				strList.add(temp);
 			}
-			
 			res = new String[strList.size()];
-			res = strList.toArray(res);
-			
+			res = strList.toArray(res);	
+		} catch(IOException ioEx) {
+			ioEx.printStackTrace();
 		} finally {
 			fr.close();
 			br.close();
 		}
-		
-		return res;
-		
+		return res;	
 	}
 	
 	public void writeToFile(File f, String toWrite) throws IOException {
 		
 		BufferedWriter bw = null;
+		
 		try {
-			
 			String[] toRewrite = ReaderWriter.readFromFile(f, true); 
-			
 			FileWriter fw = new FileWriter(f);
 			bw = new BufferedWriter(fw);
 			
@@ -92,26 +80,18 @@ public class ReaderWriter {
 				bw.write(s);
 				bw.write("\n");
 			}
-			
 			bw.write(toWrite);
-				
-		} catch(Exception e) {
-			
-			e.printStackTrace();
-			
+		} catch(IOException ioEx) {
+			ioEx.printStackTrace();
 		} finally {
-			
-			bw.close();
-			
+			bw.close();		
 		}
 	}
 	
 	public static void main(String[] args) throws IOException {
-		
 		File file = new File("/javaFiles/FileOne.txt");
 		
 		ReaderWriter r = new ReaderWriter();
 		r.writeToFile(file, "ciao come stai");
-			
 	}
 }
