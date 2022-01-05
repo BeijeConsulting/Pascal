@@ -32,25 +32,27 @@ public class XMLmanager {
 	
 	public static void readXML() throws Exception {
 		
+		//per leggere un file xml usiamo una libreria java.xml.parser
+		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
-		Document document = documentBuilder.parse("/temp/rubrica.xml");
+		Document document = documentBuilder.parse("rubrica.xml");	//Parse the content of the given URI as an XML document and return a new DOM Document object
 		
-		Element root = document.getDocumentElement();
-		System.out.println("root : " + root.getTagName());
+		Element root = document.getDocumentElement();	//The Element interface represents an element in an HTML or XMLdocument
+		System.out.println("root : " + root.getTagName());	//otteniamo il nome dell'elemento
 		
-		NodeList contatti = root.getElementsByTagName("contatto");
+		NodeList contatti = root.getElementsByTagName("contatto");	//Returns a NodeList of all descendant Elementswith a given tag name, in document order. 
 		
 		for (int i = 0; i < contatti.getLength(); i++) {
-			Element contatto = (Element)contatti.item(i);
+			Element contatto = (Element)contatti.item(i);	//scorriamo gli item presenti nella NodeList
 			System.out.println("contatto " + i + " : " + contatto.getAttribute("eta"));
 		}
 		
 //		NodeList nomi = root.getElementsByTagName("nome");
 //		System.out.println(nomi.getLength());
-		
-		NodeList childNodes = root.getChildNodes();
+	
+		NodeList childNodes = root.getChildNodes();	//A NodeList that contains all children of this node.
 		System.out.println(childNodes.getLength());
 		for (int i = 0; i < childNodes.getLength(); i++) {
 			Node node = childNodes.item(i);
@@ -75,6 +77,8 @@ public class XMLmanager {
 	}
 
 	public static void main(String[] args) throws Exception {
+		
+//		readXML();
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -115,7 +119,7 @@ public class XMLmanager {
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
 		
-		StreamResult result = new StreamResult(new File("/temp/new_rubrica.xml"));
+		StreamResult result = new StreamResult(new File("C:\\Users\\Padawan01\\OneDrive\\Desktop\\nuovo.txt"));
 
 		// Output to console for testing
 		StreamResult syso = new StreamResult(System.out);
