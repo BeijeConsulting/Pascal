@@ -11,6 +11,12 @@ public class Contatto {
 	public Contatto() {
 		super();
 	}
+	
+	public Contatto(String nome, String cognome) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+	}
 
 	public Contatto(String nome, String cognome, String telefono, String email, String note) {
 		super();
