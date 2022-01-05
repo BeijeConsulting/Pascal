@@ -1,11 +1,21 @@
 package it.beije.pascal.rubrica;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Gestore_Rubrica {
 
 	public static void main(String[] args) {
+		
+		String cognome;
+		String nome;
+		String telefono;
+		String email;
+		String note;
+		
+		Contatto contattoProvvisorio;
 		
 		System.out.println("Benvenuto nella Rubrica");
 		System.out.println("Premere 1 per visualizzare la lista dei contatti ordinata per nome");
@@ -37,7 +47,25 @@ public class Gestore_Rubrica {
 			System.out.println("Sei in caso 3");
 			break;
 		case 4:
-			System.out.println("Sei in caso 4");
+			
+			System.out.println("\n");
+			System.out.println("Inserisci il Cognome del nuovo contatto");
+			cognome = readKeyboard();
+			System.out.println("Inserisci il Nome del nuovo contatto");
+			nome = readKeyboard();
+			System.out.println("Inserisci il numero di telefono del nuovo contatto");
+			telefono = readKeyboard();
+			System.out.println("Inserisci l'email del nuovo contatto");
+			email = readKeyboard();
+			System.out.println("Inserisci le note per il nuovo contatto");
+			note = readKeyboard();
+			
+			contattoProvvisorio = buildContact(cognome, nome, telefono, email, note);
+			addContact(contattoProvvisorio);
+			
+			System.out.println(contattoProvvisorio.toString());
+			
+			
 			break;
 		case 5:
 			System.out.println("Sei in caso 5");
@@ -57,15 +85,68 @@ public class Gestore_Rubrica {
 		
 	}
 	
+	// UTILITY
+	
 	public static String readKeyboard() {
 		
 		Scanner scanner = new Scanner(System.in);
 		String st = scanner.next();
-		scanner.close();
+		// scanner.close();
 		
 		return st;
 	}
 	
 	
+	public static Contatto buildContact(String cognome, String nome, String telefono, String email, String note) {
+		
+		Contatto c = new Contatto();
+		
+		c.setNome(nome);
+		c.setCognome(cognome);
+		c.setTelefono(telefono);
+		c.setEmail(email);
+		c.setNote(note);
+		
+		return c;
+		
+	}
+	
+	
+	// METODI PER RUBRICA
+	
+	public static void addContact(Contatto nuovo) {
+		
+		FileWriter writer = null;
+		String stampa;
+		
+		try {
+			
+			File newFile = new File("/temp/Gestore_rubrica.csv");
+			System.out.println("esiste ? " + newFile.exists());
+			writer = new FileWriter(newFile, true);
+			
+			stampa = nuovo.toString();
+			
+			writer.write(stampa);
+			
+			writer.flush();
+			
+		}catch (IOException ioEx) {
+			ioEx.printStackTrace();
+			
+		} finally {
+			
+			try {
+				
+				if (writer != null) {
+					writer.close();
+				}
+				
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		
+	}
 	
 }
