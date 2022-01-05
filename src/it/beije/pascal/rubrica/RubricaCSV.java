@@ -12,11 +12,11 @@ import java.util.List;
 public class RubricaCSV {
 
 	public static void main(String[] args) throws IOException {
-		List<Contatto> contatti = readContatti("./data/rubrica/rubrica.csv", "\t");
+		List<Contatto> contatti = loadRubricaFromCSV("./data/rubrica/rubrica.csv", "\t");
 		writeContatti(contatti, "./data/rubrica/nuova_rubrica.csv", "\t");
 	}
 
-	public static List<Contatto> readContatti(String path, String sep) throws IOException {
+	public static List<Contatto> loadRubricaFromCSV(String path, String sep) throws IOException {
 		List<Contatto> rows = new ArrayList<Contatto>();
 		
 		FileReader reader = null;
