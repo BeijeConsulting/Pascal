@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import it.beije.pascal.rubrica.*;
 
 public class XMLmanager {
 
@@ -30,33 +31,41 @@ public class XMLmanager {
 	}
 
 	
-	public static void readXML() throws Exception {
+	public static List<Contatto> readXML(String pathFile) throws Exception{
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
-		Document document = documentBuilder.parse("/temp/rubrica.xml");
+		List<Contatto> rubrica = new ArrayList<Contatto>();
+		Contatto momentaneo;
+		
+		Document document = documentBuilder.parse(pathFile);
 		
 		Element root = document.getDocumentElement();
-		System.out.println("root : " + root.getTagName());
+//		System.out.println("root : " + root.getTagName());
 		
 		NodeList contatti = root.getElementsByTagName("contatto");
 		
 		for (int i = 0; i < contatti.getLength(); i++) {
+			
 			Element contatto = (Element)contatti.item(i);
-			System.out.println("contatto " + i + " : " + contatto.getAttribute("eta"));
+//			System.out.println("contatto " + i + " : " + contatto.getAttribute("eta"));
 		}
 		
 //		NodeList nomi = root.getElementsByTagName("nome");
 //		System.out.println(nomi.getLength());
 		
 		NodeList childNodes = root.getChildNodes();
-		System.out.println(childNodes.getLength());
+//		System.out.println(childNodes.getLength());
+		
 		for (int i = 0; i < childNodes.getLength(); i++) {
+			
 			Node node = childNodes.item(i);
+			
 			if (node instanceof Element) {
+				
 				Element el = (Element)node;
-				System.out.println("node " + i + " : " + el.getAttribute("eta"));
+//				System.out.println("node " + i + " : " + el.getAttribute("eta"));
 				//System.out.println("node " + i + " : " + el.getTextContent());
 				
 //				NodeList nomi = el.getElementsByTagName("nome");
@@ -64,17 +73,39 @@ public class XMLmanager {
 //				System.out.println(nomi.item(0).getTextContent());
 				
 				List<Element> values = getChildElements(el);
+				
 				for (Element value : values) {
+					
+					momentaneo = new Contatto();
+					
+					if (value.getTagName().equals("nome"))
+						momentaneo.setNome(value.getTextContent());
+					else if (value.getTagName().equals("cognome"))
+						momentaneo.setCognome(value.getTextContent());
+					else if (value.getTagName().equals("telefono"))
+						momentaneo.setTelefono(value.getTextContent());
+					else if (value.getTagName().equals("email"))
+						momentaneo.setEmail(value.getTextContent());
+					
 					System.out.println(value.getTagName() + " : " + value.getTextContent());
+					
+					rubrica.add(momentaneo);
 				}
 				
 			}
 		}
 		
-
+		return rubrica;
 	}
 
 	public static void main(String[] args) throws Exception {
+		
+		List<Contatto> rubrica = new ArrayList<Contatto>();
+		
+		//da sistemare, errori nel passaggio dati su Contatto
+		rubrica = readXML("/temp/rubrica.xml");
+		
+		System.out.println(rubrica);
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -126,6 +157,7 @@ public class XMLmanager {
 		//System.out.println("File saved!");		
 		
 	}
+	
 	
 }
 
