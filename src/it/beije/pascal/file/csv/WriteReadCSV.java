@@ -16,9 +16,9 @@ public class WriteReadCSV {
 		String path2 = "/Users/ema29/JavaFile/csv/scrittura.txt";
 
 		System.out.println("=========== LETTURA ===========");
-		readFile(path1);
+		readFile("rubrica.csv");
 		System.out.println("\n=========== SCRITTURA ===========");
-		writeFile(path1, path2);
+		//writeFile(path1, path2);
 	}
 
 	private static List<String> getFileContents(String path) {

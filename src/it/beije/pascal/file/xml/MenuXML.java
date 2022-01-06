@@ -1,9 +1,5 @@
 package it.beije.pascal.file.xml;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import it.beije.pascal.file.util.MenuXMLUtil;
 import it.beije.pascal.rubrica.model.Contatto;
 
 public class MenuXML {
@@ -29,19 +26,21 @@ public class MenuXML {
 			case 0:
 				continua = false;
 				break;
-			case 2:
+			case 1:
 				stampaContatti();
 				break;
+			case 3:
+				cercaContatto();
 			}
 		}
 
 	}
 
 	private static void stampaMenu() {
-		System.out.println("==== MENU ====");
+		System.out.println("\n==== MENU ====");
 		System.out.println("0: esci");
-		System.out.println("1: scrivi lista contatti (cognome decrescente)");
-		System.out.println("2: stampa lista contatti");
+		System.out.println("1: stampa lista contatti");
+		System.out.println("1: stampa lista contatti (cognome decrescente)");
 		System.out.println("3: cerca contatto");
 		System.out.println("4: inserisci contatto");
 		System.out.println("5: modifica contatto");
@@ -55,84 +54,30 @@ public class MenuXML {
 		int scelta = scanner.nextInt();
 		while (scelta < 0 || scelta > 8) {
 			System.out.print("\nScelta errata,reinserire: ");
-			scelta = scanner.nextInt();		
+			scelta = scanner.nextInt();
 		}
 		return scelta;
 	}
 
 	private static void stampaContatti() {
-		try {
-			// Creazione oggetto per lavorare con file xml
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.parse("C:/Users/ema29/javafile/rubrica.xml");
+		List<Contatto> contatti = MenuXMLUtil.getContactList();
+		for (Contatto contatto : contatti) {
+			System.out.println(contatto);
+		}
+	}
 
-			// Elemento root (tag padre)
-			Element root = document.getDocumentElement();
-			// Estrapolazione tag figli
-			NodeList childNodes = root.getChildNodes();
-			Contatto contatto = new Contatto();
-			List<Contatto> contatti = new ArrayList<>();
-			
-			for (int i = 0; i < childNodes.getLength(); i++) {
-				Node node = childNodes.item(i);				
-				if (node instanceof Element) {
-					Element el = (Element) node;
-					List<Element> values = getChildElements(el);				
-					for (Element value : values) {	
-						System.out.println(value.getTextContent());
-						switch(value.getTagName()) {						
-							case "nome":
-								contatto.setNome(value.getTextContent());
-								break;
-							case "cognome":
-								contatto.setCognome(value.getTextContent());
-								break;
-							case "telefono":
-								contatto.setTelefono(value.getTextContent());
-								break;
-							case "email":
-								contatto.setEmail(value.getTextContent());
-								break;
-							case "note":
-								contatto.setNote(value.getTextContent());								
-						}									
-					}
-					contatti.add(contatto);	
-					for(Contatto c:contatti) {
-						System.out.println(c);
-					}
-					System.out.println("-------------------------------");											
-				}	
-				//System.out.println(value.getTagName() + " : " + value.getTextContent());
+	private static void cercaContatto() {
+		List<Contatto> contatti = MenuXMLUtil.getContactList();
+		Contatto contatto = new Contatto("Mario", "Rossi", "3337658390", "mario.rossi@tim.it", "compagno di squadra");
+		for (int i = 0; i < contatti.size(); i++) {
+			// Overload metodo equals nella classe contatto
+			if (contatto.equals(contatti.get(i))) {
+				System.out.println("\nContatto: " + contatti.get(i));
+				break;
+			} else {
+				System.out.println("\nContatto non trovato");
 			}
-			
-			ordinaContatti(contatti);
-			
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-	}
-
-	private static List<Element> getChildElements(Element element) {
-		List<Element> childElements = new ArrayList<Element>();
-		NodeList nodeList = element.getChildNodes();
-		for (int n = 0; n < nodeList.getLength(); n++) {
-			if (nodeList.item(n) instanceof Element)
-				childElements.add((Element) nodeList.item(n));
-		}
-		return childElements;
-	}
-	
-	private static void ordinaContatti(List<Contatto> contatti) {
-		contatti.sort(new Comparator<Contatto>() {
-			public int compare(Contatto c1, Contatto c2) {							
-				return c1.getNome().compareTo(c2.getNome());
-			}	
-			
-		});		
 	}
 
 	private static void appunto1() throws Exception {
@@ -200,6 +145,5 @@ public class MenuXML {
 		contatto.appendChild(note);
 
 	}
-	
-	
+
 }

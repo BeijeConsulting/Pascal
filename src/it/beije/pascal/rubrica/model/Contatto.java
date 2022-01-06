@@ -3,19 +3,13 @@ package it.beije.pascal.rubrica.model;
 public class Contatto {
 
 	private String nome;
-	private String cognome;	
+	private String cognome;
 	private String telefono;
 	private String email;
 	private String note;
 
 	public Contatto() {
 		super();
-	}
-	
-	public Contatto(String nome, String cognome) {
-		super();
-		this.nome = nome;
-		this.cognome = cognome;
 	}
 
 	public Contatto(String nome, String cognome, String telefono, String email, String note) {
@@ -67,21 +61,22 @@ public class Contatto {
 		this.note = note;
 	}
 
-	@Override
+	public boolean equals(Contatto c) {			
+		if (nome.equals(c.nome) && cognome.equals(c.cognome) && telefono.equals(c.telefono) && email.equals(c.email)
+				&& note.equals(c.note)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public String toString() {
-		StringBuilder builder = new StringBuilder();		
+		StringBuilder builder = new StringBuilder();
 		builder.append("{ Nome: ").append(this.nome);
 		builder.append(" Cognome: ").append(this.cognome);
 		builder.append(" Telefono: ").append(this.telefono);
 		builder.append(" Email: ").append(this.email);
-		builder.append(" Note: ").append(this.note).append(" }");		
+		builder.append(" Note: ").append(this.note).append(" }");
 		return builder.toString();
 	}
-
-	
-	
-	
-	
-	
 
 }
