@@ -17,7 +17,6 @@ public class RubricaCSV {
 		String separatore = ";";
 
 		printContacts();
-
 		scriviContatti(path2, getContactList(path, separatore, false));
 
 	}
