@@ -4,6 +4,7 @@ public class WriteReadXML {
 
 	public static void main(String[] args) {
 		System.out.println("prova commit");
+		System.out.println();
 
 	}
 
