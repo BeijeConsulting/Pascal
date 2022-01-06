@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import it.beije.pascal.rubrica.Contatto;
+import it.beije.pascal.rubrica.model.Contatto;
 
 public class MenuXML {
 	private static Scanner scanner = new Scanner(System.in);

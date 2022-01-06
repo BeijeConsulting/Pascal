@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica;
+package it.beije.pascal.rubrica.model;
 
 public class Contatto {
 

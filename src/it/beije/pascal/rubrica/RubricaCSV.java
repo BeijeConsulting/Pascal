@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.beije.pascal.file.util.FileUtil;
+import it.beije.pascal.rubrica.model.Contatto;
 
 public class RubricaCSV {
 	public static void main(String[] args) {
