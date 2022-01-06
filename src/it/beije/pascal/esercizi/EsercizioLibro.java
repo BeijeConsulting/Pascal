@@ -1,4 +1,4 @@
-package it.beije.pascal.ripasso;
+package it.beije.pascal.esercizi;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,10 +15,15 @@ public class EsercizioLibro {
 
 	public static void main(String[] args) {
 		
+		Scanner tastiera = new Scanner(System.in);
+		System.out.println("Inserisci il path di una cartella");
+		String path = tastiera.nextLine();
+		fileDiTestoOutput(path);
+		
 	}
 
-	public static void fileDiTestoOutput() {
-		String nomeFile = "C:\\Users\\Padawan01\\OneDrive\\Desktop\\ciao\\Animali\\pesci\\trota.txt";
+	public static void fileDiTestoOutput(String path) {
+		String nomeFile = path;
 		PrintWriter outputStream = null;
 		try {
 			outputStream = new PrintWriter(nomeFile);
