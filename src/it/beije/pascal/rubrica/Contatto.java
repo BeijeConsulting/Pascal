@@ -1,6 +1,6 @@
 package it.beije.pascal.rubrica;
 
-
+//un java bean
 public class Contatto {
 	
 	private String cognome;
@@ -44,6 +44,7 @@ public class Contatto {
 		this.note = note;
 	}
 	
+	//override di object perchè altrimenti con il syso stampa una cosa strana
 	public String toString() {
 		StringBuilder builder = new StringBuilder()
 				.append("{ cognome : ").append(this.cognome)

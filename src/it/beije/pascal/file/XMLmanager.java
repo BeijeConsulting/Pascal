@@ -1,8 +1,9 @@
 package it.beije.pascal.file;
 
-import java.io.File;
+import java.io.File; 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,7 +30,6 @@ public class XMLmanager {
 		return childElements;
 	}
 
-	
 	public static void readXML() throws Exception {
 		
 		//per leggere un file xml usiamo una libreria java.xml.parser
@@ -59,7 +59,7 @@ public class XMLmanager {
 			if (node instanceof Element) {
 				Element el = (Element)node;
 				System.out.println("node " + i + " : " + el.getAttribute("eta"));
-				//System.out.println("node " + i + " : " + el.getTextContent());
+				System.out.println("node " + i + " : " + el.getTextContent());
 				
 //				NodeList nomi = el.getElementsByTagName("nome");
 //				System.out.println(nomi.getLength());
@@ -75,59 +75,132 @@ public class XMLmanager {
 		
 
 	}
-
-	public static void main(String[] args) throws Exception {
+	
+	public static void writeXML(String eta, String c, String n, String i, String t, String e) throws Exception{
+		DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dB = dBF.newDocumentBuilder();
 		
-//		readXML();
-		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		
-		Document doc = documentBuilder.newDocument();
+		Document doc = dB.newDocument();
 		
 		Element contatti = doc.createElement("contatti");
 		doc.appendChild(contatti);
 		
 		Element contatto = doc.createElement("contatto");
-		contatto.setAttribute("eta", "35");
+		contatto.setAttribute("età", eta);
 		
 		Element cognome = doc.createElement("cognome");
-		cognome.setTextContent("Marrone");
+		cognome.setTextContent(c);
 		contatto.appendChild(cognome);
-
+		
 		Element nome = doc.createElement("nome");
-		nome.setTextContent("Emma");
+		nome.setTextContent(n);
 		contatto.appendChild(nome);
-
+		
+		Element indirizzo = doc.createElement("indirizzo");
+		indirizzo.setTextContent(i);
+		contatto.appendChild(indirizzo);
+		
 		Element telefono = doc.createElement("telefono");
-		telefono.setTextContent("432423");
+		telefono.setTextContent(t);
 		contatto.appendChild(telefono);
-
+		
 		Element email = doc.createElement("email");
-		email.setTextContent("emma@marrone.it");
+		email.setTextContent(e);
 		contatto.appendChild(email);
-
-		Element note = doc.createElement("note");
-		note.setTextContent("la nota cantante");
-		contatto.appendChild(note);
 		
 		contatti.appendChild(contatto);
-		
 		
 		// write the content into xml file
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
 		
-		StreamResult result = new StreamResult(new File("C:\\Users\\Padawan01\\OneDrive\\Desktop\\nuovo.txt"));
-
+		StreamResult result = new StreamResult(new File("rubrica.xml"));
+		
+		
 		// Output to console for testing
 		StreamResult syso = new StreamResult(System.out);
 
 		transformer.transform(source, result);
 		transformer.transform(source, syso);
+	}
 
-		//System.out.println("File saved!");		
+	public static void main(String[] args) throws Exception {
+		
+		Scanner tastiera = new Scanner(System.in);
+		System.out.println("Ciao, puoi creare un nuovo contatto!");
+		
+		System.out.println("Inserisci la tua età");
+		String eta = tastiera.nextLine();
+		
+		System.out.println("Inserisci il tuo cognome");
+		String cognome = tastiera.nextLine();
+		
+		System.out.println("Inserisci in tuo nome");
+		String nome = tastiera.nextLine();
+		
+		System.out.println("Inserisci il tuo indirizzo");
+		String indirizzo = tastiera.nextLine();
+		
+		System.out.println("Inserisci il tuo numero di telefono");
+		String telefono = tastiera.nextLine();
+		
+		System.out.println("Inserisci la tua email");
+		String email = tastiera.nextLine();
+		
+		
+		
+//		readXML();
+		
+		writeXML(eta, cognome, nome, indirizzo, telefono, email);
+		
+//		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+//		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+//		
+//		Document doc = documentBuilder.newDocument();
+//		
+//		Element contatti = doc.createElement("contatti");
+//		doc.appendChild(contatti);
+//		
+//		Element contatto = doc.createElement("contatto");
+//		contatto.setAttribute("eta", "35");
+//		
+//		Element cognome = doc.createElement("cognome");
+//		cognome.setTextContent("Marrone");
+//		contatto.appendChild(cognome);
+//
+//		Element nome = doc.createElement("nome");
+//		nome.setTextContent("Emma");
+//		contatto.appendChild(nome);
+//
+//		Element telefono = doc.createElement("telefono");
+//		telefono.setTextContent("432423");
+//		contatto.appendChild(telefono);
+//
+//		Element email = doc.createElement("email");
+//		email.setTextContent("emma@marrone.it");
+//		contatto.appendChild(email);
+//
+//		Element note = doc.createElement("note");
+//		note.setTextContent("la nota cantante");
+//		contatto.appendChild(note);
+//		
+//		contatti.appendChild(contatto);
+//		
+//		// write the content into xml file
+//		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//		Transformer transformer = transformerFactory.newTransformer();
+//		DOMSource source = new DOMSource(doc);
+//		
+//		StreamResult result = new StreamResult(new File("rubrica.xml"));
+//
+//		// Output to console for testing
+//		StreamResult syso = new StreamResult(System.out);
+//
+//		transformer.transform(source, result);
+//		transformer.transform(source, syso);
+//
+//		//System.out.println("File saved!");		
 		
 	}
 	
