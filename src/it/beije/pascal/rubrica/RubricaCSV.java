@@ -7,19 +7,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.beije.pascal.util.FileUtil;
-
+import it.beije.pascal.file.util.FileUtil;
 
 public class RubricaCSV {
 	public static void main(String[] args) {
 		String path = "/Users/ema29/JavaFile/lettura.txt";
 		String path2 = "/Users/ema29/JavaFile/scrittura.txt";
 		String separatore = ";";
-		scriviContatti(path2, leggiContatti(path, separatore, false));
+
+		printContacts();
+
+		scriviContatti(path2, getContactList(path, separatore, false));
 
 	}
 
-	public static List<Contatto> leggiContatti(String path, String separatore, boolean controlBoolean) {
+	private static void printContacts() {
+		String path = "/Users/ema29/JavaFile/lettura.txt";
+		String separatore = ";";
+		List<Contatto> contatti = getContactList(path, separatore, true);
+		for (Contatto contatto : contatti) {
+			System.out.println(contatto);
+		}
+	}
+
+	public static List<Contatto> getContactList(String path, String separatore, boolean controlBoolean) {
 
 		List<Contatto> contatti = new ArrayList<Contatto>();
 		FileReader reader = null;
@@ -46,7 +57,6 @@ public class RubricaCSV {
 					contatti.add(contatto);
 				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 
@@ -59,7 +69,7 @@ public class RubricaCSV {
 	private static void scriviContatti(String path, List<Contatto> contatti) {
 		StringBuilder builder = new StringBuilder();
 		FileWriter writer = null;
-		for (Contatto contatto : contatti) {			
+		for (Contatto contatto : contatti) {
 			builder.append(contatto).append("\n");
 		}
 		try {
@@ -68,13 +78,11 @@ public class RubricaCSV {
 			writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			FileUtil.closeWriter(writer);
 		}
-		
 
 	}
 	// Il risultato si vede dal file(per ora)
-	
 
 }

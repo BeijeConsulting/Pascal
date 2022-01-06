@@ -1,4 +1,4 @@
-package it.beije.pascal.ivo.csv;
+package it.beije.pascal.file;
 
 import java.io.BufferedReader;
 import java.io.File;

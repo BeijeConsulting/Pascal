@@ -1,4 +1,4 @@
-package it.beije.pascal.util;
+package it.beije.pascal.file.util;
 
 import java.io.FileReader;
 import java.io.FileWriter;

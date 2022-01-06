@@ -1,4 +1,4 @@
-package it.beije.pascal.xml;
+package it.beije.pascal.file.xml;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +44,7 @@ public class MenuXML {
 		System.out.println("2: stampa lista contatti");
 		System.out.println("3: cerca contatto");
 		System.out.println("4: inserisci contatto");
-		System.out.println("5: modifia contatto");
+		System.out.println("5: modifica contatto");
 		System.out.println("6: cancella contatto");
 		System.out.println("7: trova contatti duplicati");
 		System.out.println("8: unisci contatti duplicati\n");
