@@ -11,7 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import it.beije.pascal.file.util.MenuXMLUtil;
+import it.beije.pascal.file.util.XMLUtil;
 import it.beije.pascal.rubrica.model.Contatto;
 
 public class MenuXML {
@@ -60,14 +60,14 @@ public class MenuXML {
 	}
 
 	private static void stampaContatti() {
-		List<Contatto> contatti = MenuXMLUtil.getContactList();
+		List<Contatto> contatti = XMLUtil.getContactList();
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
 	}
 
 	private static void cercaContatto() {
-		List<Contatto> contatti = MenuXMLUtil.getContactList();
+		List<Contatto> contatti = XMLUtil.getContactList();
 		Contatto contatto = new Contatto("Mario", "Rossi", "3337658390", "mario.rossi@tim.it", "compagno di squadra");
 		for (int i = 0; i < contatti.size(); i++) {
 			// Overload metodo equals nella classe contatto

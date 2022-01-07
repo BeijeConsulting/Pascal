@@ -115,7 +115,7 @@ public class XMLmanager {
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
 		
-		StreamResult result = new StreamResult(new File("/temp/new_rubrica.xml"));
+		StreamResult result = new StreamResult(new File("/Users/ema29/javafile/xml/scrittura.xml"));
 
 		// Output to console for testing
 		StreamResult syso = new StreamResult(System.out);
