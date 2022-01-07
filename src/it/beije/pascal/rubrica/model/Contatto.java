@@ -63,6 +63,7 @@ public class Contatto {
 		this.note = note;
 	}
 
+	// Overload metodo equals
 	public boolean equals(Contatto c) {			
 		if (nome.equals(c.nome) && cognome.equals(c.cognome) && telefono.equals(c.telefono) && email.equals(c.email)
 				&& note.equals(c.note)) {
