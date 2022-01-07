@@ -11,32 +11,36 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import it.beije.pascal.file.util.XMLUtil;
+import it.beije.pascal.file.util.MenuUtil;
 import it.beije.pascal.rubrica.model.Contatto;
 
 public class MenuXML {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) throws Exception {
-		boolean continua = true;
-		while (continua) {
-			stampaMenu();
+		boolean keepGoing = true;
+		while (keepGoing) {
+			writeMenu();
 			int scelta = leggiScelta();
 			switch (scelta) {
 			case 0:
-				continua = false;
+				keepGoing = false;
 				break;
 			case 1:
-				stampaContatti();
+				writeContacts();
 				break;
 			case 3:
-				cercaContatto();
+				findContact();
+				break;
+			case 4: 
+				insertContact();
+				break;
 			}
 		}
 
 	}
 
-	private static void stampaMenu() {
+	private static void writeMenu() {
 		System.out.println("\n==== MENU ====");
 		System.out.println("0: esci");
 		System.out.println("1: stampa lista contatti");
@@ -59,16 +63,16 @@ public class MenuXML {
 		return scelta;
 	}
 
-	private static void stampaContatti() {
-		List<Contatto> contatti = XMLUtil.getContactList();
+	private static void writeContacts() {
+		List<Contatto> contatti = MenuUtil.getContactList();
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
 	}
 
-	private static void cercaContatto() {
-		List<Contatto> contatti = XMLUtil.getContactList();
-		Contatto contatto = new Contatto("Mario", "Rossi", "3337658390", "mario.rossi@tim.it", "compagno di squadra");
+	private static void findContact() {
+		List<Contatto> contatti = MenuUtil.getContactList();
+		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com", "descrizione");
 		for (int i = 0; i < contatti.size(); i++) {
 			// Overload metodo equals nella classe contatto
 			if (contatto.equals(contatti.get(i))) {
@@ -79,6 +83,25 @@ public class MenuXML {
 			}
 		}
 	}
+	
+	private static void insertContact() {
+		Contatto contatto = new Contatto("Nuovo nome","Nuovo cognome","Nuovo telefono","Nuova email","Nuova nota");
+		List<Contatto> contatti = MenuUtil.getContactList();
+		contatti.add(contatto);		
+	
+		try {
+			MenuUtil.insertContacts(contatti);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+	}
+	
+	private static void modificaContatto() {
+		
+	}
+	
+	
+	
 
 	private static void appunto1() throws Exception {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

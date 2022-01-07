@@ -22,10 +22,10 @@ public class WriteReadXML {
 		
 		// Scrittura
 		Contatto contatto1 = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com", "descrizione");
-		Contatto contatto2 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
+		Contatto contatto2 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");		
 		List<Contatto> contatti = new ArrayList<>();
 		contatti.add(contatto1);
-		contatti.add(contatto2);
+		contatti.add(contatto2);		
 		writeXML(contatti);
 	}
 
@@ -38,7 +38,7 @@ public class WriteReadXML {
 		Element rubrica = document.createElement("rubrica");
 		document.appendChild(rubrica);		
 		
-		for (Contatto contatto : contatti) {
+		for (Contatto contatto : contatti) {			
 			Element contact = document.createElement("contatto");
 			rubrica.appendChild(contact);
 
@@ -46,7 +46,7 @@ public class WriteReadXML {
 			nome.setTextContent(contatto.getNome());
 			contact.appendChild(nome);
 
-			Element cognome = document.createElement("Cognome");
+			Element cognome = document.createElement("cognome");
 			cognome.setTextContent(contatto.getCognome());
 			contact.appendChild(cognome);
 
@@ -74,6 +74,7 @@ public class WriteReadXML {
 		// Output to console for testing
 		StreamResult syso = new StreamResult(System.out);
 		transformer.transform(source, result);
+		// Opzionale(Stampa a schermo)
 		transformer.transform(source, syso);
 
 	}
