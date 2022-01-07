@@ -1,4 +1,4 @@
-package it.beije.pascal.file.xml;
+package it.beije.pascal.rubrica;
 
 import java.util.List;
 import java.util.Scanner;
@@ -11,10 +11,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import it.beije.pascal.file.util.MenuUtil;
 import it.beije.pascal.rubrica.model.Contatto;
+import it.beije.pascal.rubrica.util.RubricaXmlUtil;
 
-public class MenuXML {
+public class RubricaXML {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) throws Exception {
@@ -64,14 +64,14 @@ public class MenuXML {
 	}
 
 	private static void writeContacts() {
-		List<Contatto> contatti = MenuUtil.getContactList();
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
 	}
 
 	private static void findContact() {
-		List<Contatto> contatti = MenuUtil.getContactList();
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com", "descrizione");
 		for (int i = 0; i < contatti.size(); i++) {
 			// Overload metodo equals nella classe contatto
@@ -86,11 +86,11 @@ public class MenuXML {
 	
 	private static void insertContact() {
 		Contatto contatto = new Contatto("Nuovo nome","Nuovo cognome","Nuovo telefono","Nuova email","Nuova nota");
-		List<Contatto> contatti = MenuUtil.getContactList();
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
 		contatti.add(contatto);		
 	
 		try {
-			MenuUtil.insertContacts(contatti);
+			RubricaXmlUtil.insertContacts(contatti);
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}
