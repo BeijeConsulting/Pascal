@@ -1,5 +1,6 @@
 package it.beije.pascal.rubrica;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,13 +28,25 @@ public class RubricaXML {
 				keepGoing = false;
 				break;
 			case 1:
+				backup();
+				break;
+			case 2:
 				writeContacts();
 				break;
 			case 3:
 				findContact();
 				break;
-			case 4: 
+			case 4:
 				insertContact();
+				break;
+			case 5:
+				updateContact();
+				break;
+			case 6:
+				deleteContact();
+				break;
+			case 7:
+				//trovaDuplicati();
 				break;
 			}
 		}
@@ -43,8 +56,8 @@ public class RubricaXML {
 	private static void writeMenu() {
 		System.out.println("\n==== MENU ====");
 		System.out.println("0: esci");
-		System.out.println("1: stampa lista contatti");
-		System.out.println("1: stampa lista contatti (cognome decrescente)");
+		System.out.println("1: backup");
+		System.out.println("2: stampa lista contatti (cognome decrescente)");
 		System.out.println("3: cerca contatto");
 		System.out.println("4: inserisci contatto");
 		System.out.println("5: modifica contatto");
@@ -71,102 +84,94 @@ public class RubricaXML {
 	}
 
 	private static void findContact() {
+		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
+				"breve descrizione");
 		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com", "descrizione");
+		Contatto c = RubricaXmlUtil.findContact(contatto, contatti);
+		if (c != null) {
+			System.out.println(c);
+		} else {
+			System.out.println("Contatto non trovato");
+		}
+	}
+
+	private static void insertContact() {
+		Contatto contatto = new Contatto("Nuovo nome", "Nuovo cognome", "Nuovo telefono", "Nuova email", "Nuova nota");
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		contatti.add(contatto);
+		RubricaXmlUtil.insertContacts(contatti);
+
+	}
+
+	private static void updateContact() {
+		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
+				"breve descrizione");
+		Contatto newContatto = new Contatto("modificato", "modificato", "modificato", "modificato", "modificato");
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
 		for (int i = 0; i < contatti.size(); i++) {
-			// Overload metodo equals nella classe contatto
 			if (contatto.equals(contatti.get(i))) {
-				System.out.println("\nContatto: " + contatti.get(i));
-				break;
-			} else {
-				System.out.println("\nContatto non trovato");
+				contatti.set(i, newContatto);
 			}
 		}
+		RubricaXmlUtil.insertContacts(contatti);
 	}
-	
-	private static void insertContact() {
-		Contatto contatto = new Contatto("Nuovo nome","Nuovo cognome","Nuovo telefono","Nuova email","Nuova nota");
+
+	private static void deleteContact() {
+		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
+				"breve descrizione");
 		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		contatti.add(contatto);		
-	
-		try {
-			RubricaXmlUtil.insertContacts(contatti);
-		} catch (Exception e) {			
-			e.printStackTrace();
+		for (int i = 0; i < contatti.size(); i++) {
+			// Overload metodo equals della classe Contatto
+			if (contatto.equals(contatti.get(i))) {
+				contatti.remove(i);
+			}
 		}
-	}
-	
-	private static void modificaContatto() {
-		
-	}
-	
-	
-	
-
-	private static void appunto1() throws Exception {
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		// Il parse interpreta il documento
-		Document document = documentBuilder.parse("percorso stringa");
-		Element root = document.getDocumentElement();
-		System.out.println("root: " + root.getTagName());
-
-		// Controlliamo gli elementi figli (ma non i figli dei figli),
-		// ovvero i sottotag (in questo caso <contatto>)
-		NodeList contatti = root.getElementsByTagName("contatto");
-
-		for (int i = 0; i < contatti.getLength(); i++) {
-			Element contatto = (Element) contatti.item(i);
-			System.out.println("Contatto " + i);
-		}
-
-		NodeList nomi = root.getElementsByTagName("nome");
-		System.out.println(nomi.getLength());
-
-		NodeList childNodes = root.getChildNodes();
-		System.out.println(childNodes.getLength());
-
-		for (int i = 0; i < childNodes.getLength(); i++) {
-			Node node = childNodes.item(i);
-			System.out.println("Contatto " + i);
-		}
-
+		RubricaXmlUtil.insertContacts(contatti);
 	}
 
-	private static void appunto2(List<Contatto> list) throws Exception {
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+	/*
+	private static void trovaDuplicati() {
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		List<Contatto> contattiDuplicati = new ArrayList<Contatto>();
+		int tmp = 0;
+		OUTER: for (int i = 0; i < contatti.size(); i++) {
+			INNER: for (int j = i + 1; j < contatti.size(); j++) {
+				if (contatti.get(i).equals(contatti.get(j))) {
+					System.out.println(contatti.get(i));
+					continue OUTER;
+				}
+			}
+			//i = tmp;
+		}
+	}
+	*/
 
-		Document doc = documentBuilder.newDocument();
+	private static void eliminaDuplicati() {
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		for (int i = 0; i < contatti.size(); i++) {
 
-		// Crea il tag contatti ma non lo scrive
-		Element contatti = doc.createElement("contatti");
-		// Scrive il tag contatti
-		doc.appendChild(contatti);
+		}
+	}
 
-		// Creazione elementi
-		Element contatto = doc.createElement("contatto");
-		Element cognome = doc.createElement("cognome");
-		Element nome = doc.createElement("nome");
-		Element telefono = doc.createElement("telefono");
-		Element email = doc.createElement("email");
-		Element note = doc.createElement("note");
-
-		// Valorizzazione degli elementi creati
-		cognome.setTextContent("Corona");
-		nome.setTextContent("Emanuele");
-		telefono.setTextContent("3335877155");
-		email.setTextContent("emacorona77@gmail.com");
-		note.setTextContent("nota1");
-
-		// Scrittura dei dati all'interno del file xml
-		contatto.appendChild(contatto);
-		contatto.appendChild(cognome);
-		contatto.appendChild(note);
-		contatto.appendChild(telefono);
-		contatto.appendChild(email);
-		contatto.appendChild(note);
-
+	private static void backup() {
+		Contatto contatto1 = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
+				"breve descrizione");
+		Contatto contatto2 = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
+				"breve descrizione");
+		Contatto contatto3 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
+		Contatto contatto4 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
+		Contatto contatto5 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
+		Contatto contatto6 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
+		Contatto contatto7 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
+		List<Contatto> contatti = new ArrayList<Contatto>();
+		contatti.add(contatto1);
+		contatti.add(contatto2);
+		contatti.add(contatto3);
+		contatti.add(contatto4);
+		contatti.add(contatto5);
+		contatti.add(contatto6);
+		contatti.add(contatto7);
+		RubricaXmlUtil.insertContacts(contatti);
 	}
 
 }

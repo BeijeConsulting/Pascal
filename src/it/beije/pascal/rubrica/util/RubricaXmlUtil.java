@@ -7,7 +7,10 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -81,52 +84,75 @@ public class RubricaXmlUtil {
 		}
 		return childElements;
 	}
+	
+	public static Contatto findContact(Contatto contatto, List<Contatto> contatti) {		
+		for (int i = 0; i < contatti.size(); i++) {
+			// Overload metodo equals della classe Contatto
+			if (contatto.equals(contatti.get(i))) {
+				return contatti.get(i);
+			} 
+		}
+		return null;
+	}
 
-	public static void insertContacts(List<Contatto> contatti) throws Exception {
+	public static void insertContacts(List<Contatto> contatti)  {
 
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.newDocument();
+		DocumentBuilder documentBuilder;
+		Document document = null;
+		try {
+			documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			document = documentBuilder.newDocument();
 
-		Element rubrica = document.createElement("rubrica");
-		document.appendChild(rubrica);
+			Element rubrica = document.createElement("rubrica");
+			document.appendChild(rubrica);
 
-		for (Contatto contatto : contatti) {
-			Element contact = document.createElement("contatto");
-			rubrica.appendChild(contact);
+			for (Contatto contatto : contatti) {
+				Element contact = document.createElement("contatto");
+				rubrica.appendChild(contact);
 
-			Element nome = document.createElement("nome");
-			nome.setTextContent(contatto.getNome());
-			contact.appendChild(nome);
+				Element nome = document.createElement("nome");
+				nome.setTextContent(contatto.getNome());
+				contact.appendChild(nome);
 
-			Element cognome = document.createElement("cognome");
-			cognome.setTextContent(contatto.getCognome());
-			contact.appendChild(cognome);
+				Element cognome = document.createElement("cognome");
+				cognome.setTextContent(contatto.getCognome());
+				contact.appendChild(cognome);
 
-			Element telefono = document.createElement("telefono");
-			telefono.setTextContent(contatto.getTelefono());
-			contact.appendChild(telefono);
+				Element telefono = document.createElement("telefono");
+				telefono.setTextContent(contatto.getTelefono());
+				contact.appendChild(telefono);
 
-			Element email = document.createElement("email");
-			email.setTextContent(contatto.getEmail());
-			contact.appendChild(email);
+				Element email = document.createElement("email");
+				email.setTextContent(contatto.getEmail());
+				contact.appendChild(email);
 
-			Element note = document.createElement("note");
-			note.setTextContent(contatto.getNote());
-			contact.appendChild(note);
+				Element note = document.createElement("note");
+				note.setTextContent(contatto.getNote());
+				contact.appendChild(note);
+			}
+			
+		} catch (ParserConfigurationException e1) {			
+			e1.printStackTrace();
 		}
-		
+
 		// write the content into xml file
 		File file = new File("/Users/ema29/javafile/xml/scrittura.xml");
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(document);
-		StreamResult result = new StreamResult(file);
-		transformer.transform(source, result);
+		Transformer transformer;
+		try {
+			transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(document);
+			StreamResult result = new StreamResult(file);
+			transformer.transform(source, result);
+		} catch (TransformerException e) {			
+			e.printStackTrace();
+		}
+	
 		
 	}
 
-	private static void ordinaContatti(List<Contatto> contatti) {
+	public static void ordinaContatti(List<Contatto> contatti) {
 		contatti.sort(new Comparator<Contatto>() {
 			public int compare(Contatto c1, Contatto c2) {
 				return c1.getNome().compareTo(c2.getNome());

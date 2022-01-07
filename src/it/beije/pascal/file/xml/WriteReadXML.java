@@ -23,7 +23,7 @@ public class WriteReadXML {
 		// Scrittura
 		Contatto contatto1 = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com", "descrizione");
 		Contatto contatto2 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");		
-		List<Contatto> contatti = new ArrayList<>();
+		List<Contatto> contatti = new ArrayList<Contatto>();
 		contatti.add(contatto1);
 		contatti.add(contatto2);		
 		writeXML(contatti);

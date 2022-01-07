@@ -1,5 +1,7 @@
 package it.beije.pascal.rubrica.model;
 
+import java.util.List;
+
 public class Contatto {
 
 	private String nome;
@@ -78,5 +80,6 @@ public class Contatto {
 		builder.append(" Note: ").append(this.note).append(" }");
 		return builder.toString();
 	}
+	
 
 }
