@@ -167,13 +167,13 @@ public class LoadReadXML_CSV {
 		for(Contatto contattoLis : contatti) {
 			Element contatto = doc.createElement("contatto");
 			
-			Element cognome = doc.createElement("cognome");
-			cognome.setTextContent(contattoLis.getCognome());
-			contatto.appendChild(cognome);
-
 			Element nome = doc.createElement("nome");
 			nome.setTextContent(contattoLis.getNome());
 			contatto.appendChild(nome);
+
+			Element cognome = doc.createElement("cognome");
+			cognome.setTextContent(contattoLis.getCognome());
+			contatto.appendChild(cognome);
 
 			Element telefono = doc.createElement("telefono");
 			telefono.setTextContent(contattoLis.getTelefono());
