@@ -35,7 +35,7 @@ public class XMLmanager {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
-		Document document = documentBuilder.parse("/temp/rubrica.xml");
+		Document document = documentBuilder.parse("rubrica.xml");
 		
 		Element root = document.getDocumentElement();
 		System.out.println("root : " + root.getTagName());
@@ -115,7 +115,7 @@ public class XMLmanager {
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
 		
-		StreamResult result = new StreamResult(new File("/temp/new_rubrica.xml"));
+		StreamResult result = new StreamResult(new File("new_rubrica.xml"));
 
 		// Output to console for testing
 		StreamResult syso = new StreamResult(System.out);
@@ -124,6 +124,8 @@ public class XMLmanager {
 		transformer.transform(source, syso);
 
 		//System.out.println("File saved!");		
+		
+		
 		
 	}
 	
