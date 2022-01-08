@@ -19,13 +19,13 @@ public class RubricaXML {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) throws Exception {
-		boolean keepGoing = true;
-		while (keepGoing) {
+		boolean continua = true;
+		while (continua) {
 			writeMenu();
-			int scelta = leggiScelta();
+			int scelta = readChoice();
 			switch (scelta) {
 			case 0:
-				keepGoing = false;
+				continua = false;
 				break;
 			case 1:
 				backup();
@@ -46,7 +46,7 @@ public class RubricaXML {
 				deleteContact();
 				break;
 			case 7:
-				//trovaDuplicati();
+				findDuplicates();
 				break;
 			}
 		}
@@ -57,7 +57,7 @@ public class RubricaXML {
 		System.out.println("\n==== MENU ====");
 		System.out.println("0: esci");
 		System.out.println("1: backup");
-		System.out.println("2: stampa lista contatti (cognome decrescente)");
+		System.out.println("2: stampa lista contatti (Nome crescente)");
 		System.out.println("3: cerca contatto");
 		System.out.println("4: inserisci contatto");
 		System.out.println("5: modifica contatto");
@@ -66,7 +66,7 @@ public class RubricaXML {
 		System.out.println("8: unisci contatti duplicati\n");
 	}
 
-	private static int leggiScelta() {
+	private static int readChoice() {
 		System.out.print("Inserisci scelta: ");
 		int scelta = scanner.nextInt();
 		while (scelta < 0 || scelta > 8) {
@@ -78,6 +78,7 @@ public class RubricaXML {
 
 	private static void writeContacts() {
 		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		RubricaXmlUtil.contactOrder(contatti);
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
@@ -106,47 +107,25 @@ public class RubricaXML {
 	private static void updateContact() {
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
-		Contatto newContatto = new Contatto("modificato", "modificato", "modificato", "modificato", "modificato");
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		for (int i = 0; i < contatti.size(); i++) {
-			if (contatto.equals(contatti.get(i))) {
-				contatti.set(i, newContatto);
-			}
-		}
-		RubricaXmlUtil.insertContacts(contatti);
+		RubricaXmlUtil.updateContact(contatto);
 	}
 
 	private static void deleteContact() {
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		for (int i = 0; i < contatti.size(); i++) {
-			// Overload metodo equals della classe Contatto
-			if (contatto.equals(contatti.get(i))) {
-				contatti.remove(i);
-			}
-		}
-		RubricaXmlUtil.insertContacts(contatti);
+		RubricaXmlUtil.deleteContact(contatto);
 	}
 
-	/*
-	private static void trovaDuplicati() {
+	private static void findDuplicates() {
 		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		List<Contatto> contattiDuplicati = new ArrayList<Contatto>();
-		int tmp = 0;
-		OUTER: for (int i = 0; i < contatti.size(); i++) {
-			INNER: for (int j = i + 1; j < contatti.size(); j++) {
-				if (contatti.get(i).equals(contatti.get(j))) {
-					System.out.println(contatti.get(i));
-					continue OUTER;
-				}
-			}
-			//i = tmp;
+		List<Contatto> contattiDuplicati = RubricaXmlUtil.findDuplicates(contatti);
+		for (Contatto contatto : contattiDuplicati) {
+			System.out.println(contatto);
 		}
-	}
-	*/
 
-	private static void eliminaDuplicati() {
+	}
+
+	private static void deleteDuplicates() {
 		List<Contatto> contatti = RubricaXmlUtil.getContactList();
 		for (int i = 0; i < contatti.size(); i++) {
 
@@ -163,6 +142,10 @@ public class RubricaXML {
 		Contatto contatto5 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
 		Contatto contatto6 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
 		Contatto contatto7 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
+		Contatto contatto8 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
+		Contatto contatto9 = new Contatto("Carlo", "Pascolino", "213124324", "carloPascolino@gmail.com",
+				"il falegname");
+
 		List<Contatto> contatti = new ArrayList<Contatto>();
 		contatti.add(contatto1);
 		contatti.add(contatto2);
@@ -171,6 +154,8 @@ public class RubricaXML {
 		contatti.add(contatto5);
 		contatti.add(contatto6);
 		contatti.add(contatto7);
+		contatti.add(contatto8);
+		contatti.add(contatto9);
 		RubricaXmlUtil.insertContacts(contatti);
 	}
 

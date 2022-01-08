@@ -84,18 +84,28 @@ public class RubricaXmlUtil {
 		}
 		return childElements;
 	}
-	
-	public static Contatto findContact(Contatto contatto, List<Contatto> contatti) {		
+
+	public static Contatto findContact(Contatto contatto, List<Contatto> contatti) {
 		for (int i = 0; i < contatti.size(); i++) {
 			// Overload metodo equals della classe Contatto
 			if (contatto.equals(contatti.get(i))) {
 				return contatti.get(i);
-			} 
+			}
 		}
 		return null;
 	}
+	
 
-	public static void insertContacts(List<Contatto> contatti)  {
+	public static void contactOrder(List<Contatto> contatti) {
+		contatti.sort(new Comparator<Contatto>() {
+			public int compare(Contatto c1, Contatto c2) {
+				return c1.getNome().compareTo(c2.getNome());
+			}
+
+		});
+	}
+  
+	public static void insertContacts(List<Contatto> contatti) {
 
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
@@ -131,12 +141,12 @@ public class RubricaXmlUtil {
 				note.setTextContent(contatto.getNote());
 				contact.appendChild(note);
 			}
-			
-		} catch (ParserConfigurationException e1) {			
+
+		} catch (ParserConfigurationException e1) {
 			e1.printStackTrace();
 		}
 
-		// write the content into xml file
+		// Write the content into xml file
 		File file = new File("/Users/ema29/javafile/xml/scrittura.xml");
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer;
@@ -145,20 +155,54 @@ public class RubricaXmlUtil {
 			DOMSource source = new DOMSource(document);
 			StreamResult result = new StreamResult(file);
 			transformer.transform(source, result);
-		} catch (TransformerException e) {			
+		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
+
+	}
 	
-		
-	}
 
-	public static void ordinaContatti(List<Contatto> contatti) {
-		contatti.sort(new Comparator<Contatto>() {
-			public int compare(Contatto c1, Contatto c2) {
-				return c1.getNome().compareTo(c2.getNome());
+	public static void updateContact(Contatto contatto) {	
+		Contatto newContatto = new Contatto("modificato", "modificato", "modificato", "modificato", "modificato");
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		for (int i = 0; i < contatti.size(); i++) {
+			if (contatto.equals(contatti.get(i))) {
+				contatti.set(i, newContatto);
 			}
-
-		});
+		}
+		RubricaXmlUtil.insertContacts(contatti);
+	}
+	
+	public static void deleteContact(Contatto contatto) {		
+		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		int tmp = 0;
+		for (int i = 0; i < contatti.size(); i++) {
+			// Overload metodo equals della classe Contatto
+			if (contatto.equals(contatti.get(i - tmp))) {
+				contatti.remove(i - tmp);
+				tmp++;
+			}
+		}
+		RubricaXmlUtil.insertContacts(contatti);
 	}
 
+	public static List<Contatto> findDuplicates(List<Contatto> contatti) {		
+		List<Contatto> contattiDuplicati = new ArrayList<Contatto>();
+		contactOrder(contatti);
+		int tmp = 0;
+		for (int i = 0; i < contatti.size(); i++) {
+			for (int j = i + 1; j < contatti.size(); j++) {
+				// Overload metodo equals della classe contatto
+				if (contatti.get(i).equals(contatti.get(j))) {
+					tmp = j;
+				}
+			}
+			if (tmp > 0) {
+				contattiDuplicati.add(contatti.get(tmp));
+				i = tmp + 1;
+				tmp = 0;
+			}
+		}
+		return contattiDuplicati;
+	}
 }
