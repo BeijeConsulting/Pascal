@@ -18,7 +18,7 @@ import it.beije.pascal.rubrica.util.RubricaXmlUtil;
 public class RubricaXML {
 	private static Scanner scanner = new Scanner(System.in);
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args){
 		boolean continua = true;
 		while (continua) {
 			writeMenu();
