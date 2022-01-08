@@ -41,8 +41,6 @@ public class RubricaCSV {
 				}
 				firstLine = false;
 			}
-			System.out.println(posEm);
-			System.out.println(posTel);
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
 			
@@ -54,7 +52,7 @@ public class RubricaCSV {
 				contatto.setEmail(r[posEm]);
 				contatto.setNote(r[posNot]);
 				
-				System.out.println(contatto);
+				//System.out.println(contatto);
 				
 				rows.add(contatto);
 				}
