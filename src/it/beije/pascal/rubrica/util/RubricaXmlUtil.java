@@ -205,4 +205,19 @@ public class RubricaXmlUtil {
 		}
 		return contattiDuplicati;
 	}
+	
+	public static void deleteDuplicates(List<Contatto> contatti) {
+		List<Contatto> contattiDuplicati = RubricaXmlUtil.findDuplicates(contatti);
+		int tmp = 0;
+		for (int i = 0; i < contattiDuplicati.size(); i++) {
+			for (int j = 0; j < contatti.size(); j++) {
+				if(contatti.get(j).equals(contattiDuplicati.get(i))) {
+					contatti.remove(j - tmp);
+					tmp++;
+				}
+			}
+			tmp = 0;
+		}
+		RubricaXmlUtil.insertContacts(contattiDuplicati);		
+	}
 }

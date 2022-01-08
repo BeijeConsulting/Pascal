@@ -48,6 +48,9 @@ public class RubricaXML {
 			case 7:
 				findDuplicates();
 				break;
+			case 8:
+				deleteDuplicates();
+				break;
 			}
 		}
 
@@ -127,7 +130,7 @@ public class RubricaXML {
 
 	private static void deleteDuplicates() {
 		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		List<Contatto> contattiDuplicati = RubricaXmlUtil.findDuplicates(contatti);
+		RubricaXmlUtil.deleteDuplicates(contatti);
 	}
 
 	private static void backup() {
