@@ -127,9 +127,7 @@ public class RubricaXML {
 
 	private static void deleteDuplicates() {
 		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		for (int i = 0; i < contatti.size(); i++) {
-
-		}
+		List<Contatto> contattiDuplicati = RubricaXmlUtil.findDuplicates(contatti);
 	}
 
 	private static void backup() {
