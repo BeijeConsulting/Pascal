@@ -34,7 +34,7 @@ public class RubricaXmlUtil {
 			// Creazione oggetto per lavorare con file xml
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.parse("/Users/ema29/javafile/xml/scrittura.xml");
+			Document document = documentBuilder.parse("/Users/ema29/javafile/xml/rubrica.xml");
 			// Elemento root (tag padre)
 			Element root = document.getDocumentElement();
 			// Estrapolazione tag figli
@@ -147,7 +147,7 @@ public class RubricaXmlUtil {
 		}
 
 		// Write the content into xml file
-		File file = new File("/Users/ema29/javafile/xml/scrittura.xml");
+		File file = new File("/Users/ema29/javafile/xml/rubrica.xml");
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer;
 		try {

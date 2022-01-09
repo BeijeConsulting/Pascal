@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica;
+package it.beije.pascal.file.csv;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,7 +10,7 @@ import java.util.List;
 import it.beije.pascal.file.util.FileUtil;
 import it.beije.pascal.rubrica.model.Contatto;
 
-public class RubricaCSV {
+public class EsercizioCSV {
 	public static void main(String[] args) {
 		String path = "/Users/ema29/JavaFile/lettura.txt";
 		String path2 = "/Users/ema29/JavaFile/scrittura.txt";
