@@ -38,11 +38,24 @@ public class RubricaApplication {
 		}
 	}
 	 
-	private static void lookForContact() throws Exception { //cercare un contatto
+	private static void lookForContact(String name) throws Exception { //cercare un contatto
 		Connection con = getCon();
 		
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM contatti");
+		ResultSet rs = st.executeQuery("SELECT * FROM contatti WHERE nome = '" + name + "';");
+		
+		if(rs == null) {
+			System.out.println("nessun risultato trovato");
+		}
+		
+		while(rs.next()) {
+			System.out.println("id: " + rs.getInt("id"));
+			System.out.print("cognome: " + rs.getString("cognome"));
+			System.out.println(", nome: " + rs.getString("nome"));
+			System.out.print("telefono: " + rs.getString("telefono"));
+			System.out.println(", email: " + rs.getString("email"));
+			System.out.println("note: " + rs.getString("note") + "\n");
+		}
 	}
 	
 	private static void newContact() throws Exception { //cercare un contatto
@@ -97,7 +110,7 @@ public class RubricaApplication {
 		switch(choice) {
 			case 1: listContacts();
 				break;
-			case 2: lookForContact();
+			case 2: lookForContact("Mario");
 				break;
 			case 3: newContact();
 				break;
