@@ -44,9 +44,11 @@ public class Gestore_Rubrica {
 		case 0: 
 			break;
 		case 1:
-			
+			/*
 			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
 			rubrica = sortRubricaNome(rubrica);
+			*/
+			rubrica = con.trovaRubricaDB();
 			visualRubrica(rubrica);
 			
 			break;
@@ -62,7 +64,7 @@ public class Gestore_Rubrica {
 			System.out.println("Inserire il cognome del contatto da cercare");
 			cognome = readKeyboard();
 			
-			contattoProvvisorio = con.cercaCognome(cognome);
+			contattoProvvisorio = con.cercaCognomeDB(cognome);
 			visualContatto(contattoProvvisorio);
 			
 			break;

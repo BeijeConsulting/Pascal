@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConnectionDB {
 
@@ -12,7 +14,7 @@ public class ConnectionDB {
 		
 	}
 	
-	public Contatto cercaCognome(String where) throws Exception {
+	public Contatto cercaCognomeDB(String where) throws Exception {
 		
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -74,5 +76,67 @@ public class ConnectionDB {
 		
 	}
 	
+	
+	public List<Contatto> trovaRubricaDB() throws Exception {
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		List<Contatto> rubrica = new ArrayList<Contatto>();
+		
+		Contatto trovato;
+		
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "ardente");
+			
+			trovato = new Contatto();
+			
+			System.out.println("Stato connessione "+ !connection.isClosed());
+			
+			statement = connection.createStatement();
+			
+			
+			rs = statement.executeQuery("SELECT * FROM contatti");
+			
+			while (rs.next()) {
+				
+				trovato.setId(rs.getInt("id"));
+				trovato.setCognome(rs.getString("cognome"));
+				trovato.setNome(rs.getString("nome"));
+				trovato.setTelefono(rs.getString("telefono"));
+				trovato.setEmail(rs.getString("email"));
+				trovato.setNote(rs.getString("note"));
+				
+				rubrica.add(trovato);
+			}
+			
+			
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			throw e;
+			
+		} finally {
+			
+			try {
+				
+				rs.close();
+				statement.close();
+				connection.close();
+				
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+	
+		
+		return rubrica;
+
+	}
 	
 }
