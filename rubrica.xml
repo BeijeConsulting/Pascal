@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rubrica>
-	<contatto eta="30">
-		<nome>Mario</nome>
-		<cognome>Rossi</cognome>
-		<telefono>3337658390</telefono>
-		<email>mario.rossi@tim.it</email>
-		<note>compagno di squadra</note>
-	</contatto>
-	<contatto eta="35">
-		<nome>Claudio</nome>
-		<cognome>Bianchi</cognome>
-		<telefono>3352672537</telefono>
-		<email>claudio.white@virgilio.it</email>
-	</contatto>
-</rubrica>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><contatti><contatto><cognome>Mario</cognome><nome>Rossi</nome><telefono>3337658390</telefono><email>mario.rossi@tim.it</email><note>compagno di squadra</note></contatto><contatto><cognome>Claudio</cognome><nome>Bianchi</nome><telefono>3352672537</telefono><email>claudio.white@virgilio.it</email><note/></contatto><contatto><cognome>Chinetti</cognome><nome>Andrea</nome><telefono>1234567890</telefono><email>nomecognome@mail</email><note>prova</note></contatto><contatto><cognome>Menu</cognome><nome>prova</nome><telefono>839213872193</telefono><email>ciao@ciao.it</email><note>prova menu</note></contatto></contatti>

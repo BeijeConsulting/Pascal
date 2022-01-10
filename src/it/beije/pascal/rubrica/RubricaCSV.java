@@ -5,19 +5,21 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import it.beije.pascal.file.XMLmanager;
+
 public class RubricaCSV {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 
 		String path = "./rubrica.csv";
 		List<Contatto> contatti = readContatti(path, "\t");
 
 		writeContatti("./rubrica2.csv", contatti, ";", true);
-
 	}
 
 	public static void writeContatti(String writePath, List<Contatto> contatti, String sep, boolean virgolette)
@@ -35,10 +37,12 @@ public class RubricaCSV {
 				if (virgolette) {
 					newRow = new StringBuilder("\"").append(c.getCognome()).append("\"" + sep + "\"")
 							.append(c.getNome()).append("\"" + sep + "\"").append(c.getEmail())
-							.append("\"" + sep + "\"").append(c.getTelefono()).append("\"" + sep + "\"").append(c.getNote()).append("\"").append('\n');
+							.append("\"" + sep + "\"").append(c.getTelefono()).append("\"" + sep + "\"")
+							.append(c.getNote()).append("\"").append('\n');
 				} else {
 					newRow = new StringBuilder().append(c.getCognome()).append(sep).append(c.getNome()).append(sep)
-							.append(c.getEmail()).append(sep).append(c.getTelefono()).append(sep).append(c.getNote()).append('\n');
+							.append(c.getEmail()).append(sep).append(c.getTelefono()).append(sep).append(c.getNote())
+							.append('\n');
 				}
 
 				writer.write(newRow.toString());
@@ -86,7 +90,7 @@ public class RubricaCSV {
 			mapping.put("NOTE", -1);
 
 			contatto = new Contatto();
-			
+
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
 				if (firstLine) {
@@ -139,4 +143,5 @@ public class RubricaCSV {
 
 		return rows;
 	}
+
 }

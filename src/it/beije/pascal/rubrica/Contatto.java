@@ -1,5 +1,6 @@
 package it.beije.pascal.rubrica;
 
+import java.util.Objects;
 
 public class Contatto {
 	
@@ -43,7 +44,19 @@ public class Contatto {
 	public void setNote(String note) {
 		this.note = note;
 	}
+		
+	public Contatto() {
+		super();
+	}
 	
+	public Contatto(String cognome, String nome, String telefono, String email, String note) {
+		super();
+		this.cognome = cognome;
+		this.nome = nome;
+		this.telefono = telefono;
+		this.email = email;
+		this.note = note;
+	}
 	public String toString() {
 		StringBuilder builder = new StringBuilder()
 				.append("{ cognome : ").append(this.cognome)
@@ -54,5 +67,27 @@ public class Contatto {
 		
 		return builder.toString();
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(cognome, email, nome, note, telefono);
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Contatto other = (Contatto) obj;
+		return Objects.equals(cognome, other.cognome) && Objects.equals(email, other.email)
+				&& Objects.equals(nome, other.nome) && Objects.equals(note, other.note)
+				&& Objects.equals(telefono, other.telefono);
+	}
+	
+	
 	
 }
