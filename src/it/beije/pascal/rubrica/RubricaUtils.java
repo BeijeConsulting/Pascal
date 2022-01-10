@@ -10,6 +10,12 @@ import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,13 +26,11 @@ public class RubricaUtils {
 	
 	public List<Contatto> loadRubricaFromCSV(String pathFile, String separator) throws IOException {
 		
-		//a partire da un file CSV, leggere e immettere in una lista tutti i contatti trovati all'interno del file rubrica.csv
-		//per ogni contatto trovato, è necessario costruire un oggetto Contatto, passandogli tutti i valori all'interno del file
-		//dobbiamo anche indicare il separatore tra i dati (ovviamente glielo passeremo a split)
-		
-		//MODIFICHE DA FARE: non dare per scontato l'ordine, non dare per scontato il separatore
-		
 		List<Contatto> contatti = new ArrayList<Contatto>();
+		
+		if(separator == null) {
+			throw new NullPointerException("Non hai inserito un separatore");
+		}
 		
 		File file = new File(pathFile);
 		FileReader fr = new FileReader(file);
@@ -45,7 +49,7 @@ public class RubricaUtils {
 			contatto.setNome(r[1]);
 			contatto.setEmail(r[2]);
 			contatto.setTelefono(r[3]);
-			contatto.setNote("");
+			
 			contatti.add(contatto);
 		}
 		
@@ -76,31 +80,35 @@ public class RubricaUtils {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
-		Document document = documentBuilder.parse("/javaFiles/rubrica.xml");
+		Document document = documentBuilder.parse(new File(pathFile));
 		
-		Element root = document.getDocumentElement();
+		Element root = document.getDocumentElement(); //rubrica
 		
-		NodeList childNodes = root.getChildNodes();
-		List<Element> values = null;
-		for(int i = 0; i < childNodes.getLength(); i++) {
+		NodeList childNodes = root.getChildNodes(); //contatto x 2
+
+		for (int i = 0; i < childNodes.getLength(); i++) {
+			Contatto contatto = new Contatto();
 			Node node = childNodes.item(i);
-			
-			if(node instanceof Element) {
-				Element el = (Element)node; //rappresenta il tag "contatto"
-				
-				values = getChildElements(el);
-				
-				Contatto contatto = new Contatto();
-				
-				contatto.setNome(values.get(0).getTextContent());
-				contatto.setCognome(values.get(1).getTextContent());
-				contatto.setTelefono(values.get(2).getTextContent());
-				contatto.setEmail(values.get(3).getTextContent());
-				
-				if(values.size() == 4) {
-					contatto.setNote("null");
-				} else {
-					contatto.setNote(values.get(4).getTextContent());
+			if (node instanceof Element) {
+				Element el = (Element)node;
+				List<Element> values = getChildElements(el); //nome, cognome, email, note, telefono 
+				for (Element value : values) { //quando non sappiamo quanti tag ci saranno, è meglio fare un ciclo per scorrerli 
+					switch (value.getTagName()) {
+					case "nome":
+						contatto.setNome(value.getTextContent());
+						break;
+					case "cognome":
+						contatto.setCognome(value.getTextContent());
+						break;
+					case "telefono":
+						contatto.setTelefono(value.getTextContent());
+						break;
+					case "email":
+						contatto.setEmail(value.getTextContent());
+						break;
+					case "note":
+						contatto.setNote(value.getTextContent());
+					}
 				}
 				contatti.add(contatto);
 			}
@@ -112,16 +120,27 @@ public class RubricaUtils {
 		
 		//metodo che prende in input una lista di contatti, il percorso di un file, e un separatore
 		//scrive nel file tutti i contatti che abbiamo nella lista
+
+		StringBuilder sbReader = new StringBuilder();
+		FileReader fr = new FileReader(new File(pathFile));
+		BufferedReader br = new BufferedReader(fr);
+		
+		while(br.ready()) {
+			String s = br.readLine() + "\n";
+			sbReader.append(s);
+		}
 		
 		File file = new File(pathFile);
 		FileWriter fw = new FileWriter(file);
 		BufferedWriter bw = new BufferedWriter(fw);
 		
+		bw.write(sbReader.toString());
+		
 		for(int i = 0; i < contatti.size(); i++) {
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sbWriter = new StringBuilder();
 			Contatto cont = contatti.get(i);
 			
-			sb.append(cont.getNome())
+			sbWriter.append(cont.getNome())
 				.append(separator)
 				.append(cont.getCognome())
 				.append(separator)
@@ -132,63 +151,89 @@ public class RubricaUtils {
 				.append(cont.getNote())
 				.append("\n");
 			
-			System.out.println(sb.toString());
-		
-			bw.write(sb.toString());	
+			bw.write(sbWriter.toString());	
 		}
 		bw.close();
 	}
 	
-	public void writeRubricaXML(List<Contatto> contatti, String pathFile) throws Exception {
+	public static void writeRubricaXML(List<Contatto> contatti, String pathFile) throws Exception {
 		
 		//medesimo obiettivo, ma invece di scrivere un file csv scriviamo un file xml
+		
 		File file = new File(pathFile);
-		FileWriter fw = new FileWriter(file);
-		BufferedWriter bw = new BufferedWriter(fw);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
 		
-		String first = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-		String openRootTag = "<rubrica>";
-		String closeRootTag = "<rubrica/>";
-		bw.write(first);
-		bw.write(openRootTag);
-		
-		for(int i = 0; i < contatti.size(); i++) {
-			StringBuilder sb = new StringBuilder();
-			Contatto cont = contatti.get(i);
-			
-			sb.append("<contatto>\n")
-				.append("<nome>")
-				.append(cont.getNome())
-				.append("<nome/>\n")
-				.append("<cognome>")
-				.append(cont.getCognome())
-				.append("<cognome/>\n")
-				.append("<email>")
-				.append(cont.getEmail())
-				.append("<email/>\n")
-				.append(cont.getEmail())
-				.append("<email/>\n")
-				.append("<telefono>")
-				.append(cont.getTelefono())
-				.append("<telefono/>\n")
-				.append("<note>")
-				.append(cont.getNote())
-				.append("<note/>\n");
-			
-			System.out.println(sb.toString());
-		
-			bw.write(sb.toString());	
+		if(file.length() == 0) {
+			file = RubricaUtils.createBasicXML(file);
 		}
-		bw.write(closeRootTag);
-		bw.close();
+			
+		Document document = db.parse(file);
+			
+		Element root = document.getDocumentElement();
+			
+		for(Contatto cont : contatti) {
+			Element newElement = document.createElement("contatto");
+			root.appendChild(newElement);
+				
+			Element nome = document.createElement("nome");
+			nome.setTextContent(cont.getNome());
+			Element cognome = document.createElement("cognome");
+			cognome.setTextContent(cont.getCognome());
+			Element telefono = document.createElement("telefono");
+			telefono.setTextContent(cont.getTelefono());
+			Element email = document.createElement("email");
+			email.setTextContent(cont.getEmail());
+			Element note = document.createElement("note");
+			note.setTextContent(cont.getNote());
+			
+			newElement.appendChild(nome);
+			newElement.appendChild(cognome);
+			newElement.appendChild(telefono);
+			newElement.appendChild(email);
+			newElement.appendChild(note);
+		}
+		
+		TransformerFactory factory = TransformerFactory.newInstance();
+		Transformer transformer = factory.newTransformer();
+		DOMSource dom = new DOMSource(document);
+		
+		StreamResult str = new StreamResult(file);
+		
+		transformer.transform(dom, str);
+	}
+	
+	private static File createBasicXML(File file) throws Exception {
+		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		
+		Document doc = db.newDocument();
+		doc.setXmlVersion("1.0");
+		
+		Element root = doc.createElement("rubrica");
+		doc.appendChild(root);
+		
+		TransformerFactory factory = TransformerFactory.newInstance();
+		Transformer transformer = factory.newTransformer();
+		DOMSource dom = new DOMSource(doc);
+			
+		StreamResult str = new StreamResult(file);
+			
+		transformer.transform(dom, str);
+		
+		return file;
 	}
 	
 	public static void main(String[] args) throws Exception {
 		RubricaUtils ru = new RubricaUtils();
-//		prova = ru.loadRubricaFromCSV("/javaFiles/rubrica.csv", "\t");
-		
-		List<Contatto> cont = ru.loadRubricaFromXML("/javaFiles/rubrica.xml");
-		
-//		ru.writeRubricaCSV(cont, "/javaFiles/FileOne.txt", ";");
+
+		List<Contatto> contatti = ru.loadRubricaFromCSV("/javaFiles/rubrica.csv", "\t");
+//		System.out.println(contatti);
+//		
+//		List<Contatto> contattiXML = ru.loadRubricaFromXML("/javaFiles/rubrica.xml");
+//		System.out.println(contattiXML);
+
+		RubricaUtils.writeRubricaXML(contatti, "/javaFiles/emptyXML.xml");
 	}
 }

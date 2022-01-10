@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ReaderWriter {
@@ -45,14 +47,12 @@ public class ReaderWriter {
 		FileReader fr = null;
 		BufferedReader br = null;
 		List<String> strList = new ArrayList<>();
-		StringBuilder sb;
 		
 		try {
 			fr = new FileReader(f);
 			br = new BufferedReader(fr);
 			while(br.ready()) {
 				String temp = br.readLine();
-				sb = new StringBuilder(temp);
 				
 				strList.add(temp);
 			}
@@ -90,8 +90,7 @@ public class ReaderWriter {
 	
 	public static void main(String[] args) throws IOException {
 		File file = new File("/javaFiles/FileOne.txt");
-		
-		ReaderWriter r = new ReaderWriter();
-		r.writeToFile(file, "ciao come stai");
+	
+		System.out.println(Arrays.toString(ReaderWriter.readFromFile(file, true)));
 	}
 }
