@@ -4,12 +4,13 @@ package it.beije.pascal.rubrica;
 import java.util.List;
 
 public class Contatto {
-	
+
 	private String cognome;
 	private String nome;
 	private String telefono;
 	private String email;
 	private String note;
+	private int id;
 
 	public Contatto() {
 		super();
@@ -64,15 +65,23 @@ public class Contatto {
 		this.note = note;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	// Overload metodo equals
-	public boolean equals(Contatto c) {			
+	public boolean equals(Contatto c) {
 		if (nome.equals(c.nome) && cognome.equals(c.cognome) && telefono.equals(c.telefono) && email.equals(c.email)
 				&& note.equals(c.note)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("{ Nome: ").append(this.nome);
@@ -82,20 +91,12 @@ public class Contatto {
 		builder.append(" Note: ").append(this.note).append(" }");
 		return builder.toString();
 	}
-	
 
 }
 
-
 /*
-CREATE TABLE `rubrica`.`contatti` (
-`id` INT NOT NULL AUTO_INCREMENT,
-`cognome` VARCHAR(45) NULL,
-`nome` VARCHAR(45) NULL,
-`telefono` VARCHAR(20) NULL,
-`email` VARCHAR(100) NULL,
-`note` VARCHAR(200) NULL,
-PRIMARY KEY (`id`));
-*/
-
-
+ * CREATE TABLE `rubrica`.`contatti` ( `id` INT NOT NULL AUTO_INCREMENT,
+ * `cognome` VARCHAR(45) NULL, `nome` VARCHAR(45) NULL, `telefono` VARCHAR(20)
+ * NULL, `email` VARCHAR(100) NULL, `note` VARCHAR(200) NULL, PRIMARY KEY
+ * (`id`));
+ */
