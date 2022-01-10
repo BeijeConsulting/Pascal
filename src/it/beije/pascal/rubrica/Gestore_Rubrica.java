@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Gestore_Rubrica {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		
 		String cognome;
 		String nome;
@@ -21,6 +21,7 @@ public class Gestore_Rubrica {
 		
 		Contatto contattoProvvisorio;
 		List<Contatto> rubrica = new ArrayList<Contatto>();
+		ConnectionDB con = new ConnectionDB();
 		
 		System.out.println("Benvenuto nella Rubrica");
 		System.out.println("Premere 1 per visualizzare la lista dei contatti ordinata per nome");
@@ -57,7 +58,13 @@ public class Gestore_Rubrica {
 			
 			break;
 		case 3:
-			System.out.println("Sei in caso 3");
+			
+			System.out.println("Inserire il cognome del contatto da cercare");
+			cognome = readKeyboard();
+			
+			contattoProvvisorio = con.cercaCognome(cognome);
+			visualContatto(contattoProvvisorio);
+			
 			break;
 		case 4:
 			
@@ -99,6 +106,7 @@ public class Gestore_Rubrica {
 	
 	// UTILITY
 	
+
 	public static String readKeyboard() {
 		
 		Scanner scanner = new Scanner(System.in);
@@ -230,6 +238,16 @@ public class Gestore_Rubrica {
 			System.out.println(c.getTelefono());
 			System.out.println(c.getEmail());
 		}
+		
+	}
+	
+	public static void visualContatto(Contatto c) {
+		
+		System.out.println(c.getId());
+		System.out.println(c.getCognome());
+		System.out.println(c.getNome());
+		System.out.println(c.getTelefono());
+		System.out.println(c.getEmail());
 		
 	}
 	
