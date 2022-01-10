@@ -16,12 +16,12 @@ public class RubricaJDBC {
 		ResultSet rs = null;
 		
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "beije");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Chinetti");
 
 			System.out.println(!connection.isClosed());
 			
 			statement = connection.createStatement();
-			rs = statement.executeQuery("SELECT id, nome, cognome FROM contatti");
+			rs = statement.executeQuery("SELECT * FROM rubrica.contatti");
 			
 			while (rs.next()) {
 				System.out.println("id : " + rs.getInt("id"));
