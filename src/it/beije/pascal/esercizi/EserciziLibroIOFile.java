@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class EsercizioLibro {
+public class EserciziLibroIOFile {
 
 	public static void main(String[] args) {
 		

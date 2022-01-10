@@ -31,24 +31,21 @@ public class XMLmanager {
 	}
 
 	public static void readXML() throws Exception {
-		
 		//per leggere un file xml usiamo una libreria java.xml.parser
-		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		
-		Document document = documentBuilder.parse("rubrica.xml");	//Parse the content of the given URI as an XML document and return a new DOM Document object
-		
-		Element root = document.getDocumentElement();	//The Element interface represents an element in an HTML or XMLdocument
-		System.out.println("root : " + root.getTagName());	//otteniamo il nome dell'elemento
-		
-		NodeList contatti = root.getElementsByTagName("contatto");	//Returns a NodeList of all descendant Elementswith a given tag name, in document order. 
-		
+		//Parse the content of the given URI as an XML document and return a new DOM Document object
+		Document document = documentBuilder.parse("rubrica.xml");	
+		//The Element interface rappresenta un elemento in un HTML o XML
+		//e stampiamo il nome
+		Element root = document.getDocumentElement();	
+		System.out.println("root : " + root.getTagName());	
+		//Returns a NodeList of all descendant Elementswith a given tag name, in document order.
+		NodeList contatti = root.getElementsByTagName("contatto");	
 		for (int i = 0; i < contatti.getLength(); i++) {
 			Element contatto = (Element)contatti.item(i);	//scorriamo gli item presenti nella NodeList
 			System.out.println("contatto " + i + " : " + contatto.getAttribute("eta"));
 		}
-		
 //		NodeList nomi = root.getElementsByTagName("nome");
 //		System.out.println(nomi.getLength());
 	
