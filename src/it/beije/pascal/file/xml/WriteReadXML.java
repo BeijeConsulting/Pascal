@@ -14,7 +14,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import it.beije.pascal.rubrica.model.Contatto;
+import it.beije.pascal.rubrica.Contatto;
 
 public class WriteReadXML {
 

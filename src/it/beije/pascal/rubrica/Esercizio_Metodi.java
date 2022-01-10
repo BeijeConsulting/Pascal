@@ -24,7 +24,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import it.beije.pascal.file.util.FileUtil;
-import it.beije.pascal.rubrica.model.Contatto;
 
 public class Esercizio_Metodi {
 

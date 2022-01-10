@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.beije.pascal.file.util.FileUtil;
-import it.beije.pascal.rubrica.model.Contatto;
+import it.beije.pascal.rubrica.Contatto;
 
 public class EsercizioCSV {
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.model;
+package it.beije.pascal.rubrica;
 
 import java.util.List;
 
