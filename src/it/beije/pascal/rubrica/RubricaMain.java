@@ -62,7 +62,7 @@ public class RubricaMain {
 		System.out.print("note: ");
 		c.setNote(s.nextLine());
 
-		esportaRubrica(c);
+		//esportaRubrica(c);
 
 		//test
 		System.out.println("Inserito " + c.toString());

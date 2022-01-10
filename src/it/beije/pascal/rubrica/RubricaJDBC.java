@@ -3,11 +3,25 @@ package it.beije.pascal.rubrica;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 
 public class RubricaJDBC {
 
+	Connection connection;
+	
+	public RubricaJDBC() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		connection = null;
+		
+	}
+	
 	public static void main(String[] args) throws Exception {
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -17,7 +31,7 @@ public class RubricaJDBC {
 		ResultSet rs = null;
 		
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "beije");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
 
 			System.out.println(!connection.isClosed());
 			
@@ -63,5 +77,53 @@ public class RubricaJDBC {
 		}
 		
 	}
-
+	
+	
+	
+	public void inserisciContatto(Contatto contatto) {
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
+			Statement statement = connection.createStatement();
+			
+			StringBuilder queryBuilder = new StringBuilder();
+			queryBuilder.append("INSERT INTO contatti (nome, cognome, telefonoemail, note) VALUES");
+			
+			
+			
+			ResultSet rs = statement.executeQuery("INSERT INTO contatti (nome, cognome, telefonoemail, note) VALUES (" 
+					+ contatto.getNome() + ", " 
+					+ contatto.getCognome() + ", " 
+					+ contatto.getTelefono() + ", " 
+					+ contatto.getEmail() + ", " 
+					+ contatto.getNote() + ")");
+			
+			
+			System.out.println("risultato della query di inserimento: " + rs.next());
+			rs.close();
+			
+		//TODO
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}finally {
+		try {
+			if (!connection.isClosed()) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			System.out.println("errore nella chiusura della connessione");
+			e.printStackTrace();
+		}
+	}
+		
+	}
+	
+	public Contatto cercaContatto(String[] campi, String[] parametri) {
+		//TODO
+		return null;
+	}
+	
+	public void modificaContatto(int id, String[]campi, String[] parametri) {
+		//TODO
+	}
 }
