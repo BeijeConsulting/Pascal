@@ -1,6 +1,19 @@
 package it.beije.pascal.rubrica;
 
+
 import java.util.Objects;
+
+/*
+CREATE TABLE `rubrica`.`contatti` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`cognome` VARCHAR(45) NULL,
+`nome` VARCHAR(45) NULL,
+`telefono` VARCHAR(20) NULL,
+`email` VARCHAR(100) NULL,
+`note` VARCHAR(200) NULL,
+PRIMARY KEY (`id`));
+*/
+
 
 public class Contatto {
 	
