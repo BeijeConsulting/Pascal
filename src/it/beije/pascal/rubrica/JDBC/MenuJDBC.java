@@ -1,6 +1,7 @@
 package it.beije.pascal.rubrica.JDBC;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,6 +17,7 @@ public class MenuJDBC {
 			writeMenu();
 			int scelta = readChoice();
 			switch (scelta) {
+
 			case 0:
 				continua = false;
 				break;
@@ -34,7 +36,12 @@ public class MenuJDBC {
 			case 5:
 				updateContact();
 				break;
-
+			case 6:
+				deleteContact();
+				break;
+			case 7:
+				findDuplicates();
+				break;
 			}
 		}
 	}
@@ -42,7 +49,7 @@ public class MenuJDBC {
 	private static void writeMenu() {
 		System.out.println("\n==== MENU ====");
 		System.out.println("0: esci");
-		System.out.println("1: backup");
+		System.out.println("1: ripristina database");
 		System.out.println("2: stampa lista contatti (Nome crescente)");
 		System.out.println("3: cerca contatto");
 		System.out.println("4: inserisci contatto");
@@ -65,16 +72,11 @@ public class MenuJDBC {
 	private static void backup() {
 		Contatto contatto1 = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
-		Contatto contatto2 = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
-				"breve descrizione");
-		Contatto contatto3 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
-		Contatto contatto4 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
-		Contatto contatto5 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
-		Contatto contatto6 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
-		Contatto contatto7 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
-		Contatto contatto8 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
-		Contatto contatto9 = new Contatto("Carlo", "Pascolino", "213124324", "carloPascolino@gmail.com",
+		Contatto contatto2 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
+		Contatto contatto3 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
+		Contatto contatto4 = new Contatto("Carlo", "Pascolino", "213124324", "carloPascolino@gmail.com",
 				"il falegname");
+		Contatto contatto5 = new Contatto("Pino", "Gasto", "3243514354", "pinogasto@gmail.com", "il poliziotto");
 
 		List<Contatto> contatti = new ArrayList<Contatto>();
 		contatti.add(contatto1);
@@ -82,41 +84,62 @@ public class MenuJDBC {
 		contatti.add(contatto3);
 		contatti.add(contatto4);
 		contatti.add(contatto5);
-		contatti.add(contatto6);
-		contatti.add(contatto7);
-		contatti.add(contatto8);
-		contatti.add(contatto9);
+
+		ContattoDAO.deleteAll();
 		ContattoDAO.addContact(contatti);
 	}
 
-	
-
 	private static void printContacts() {
 		List<Contatto> contatti = ContattoDAO.getContactsList();
+		contactOrder(contatti);
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
 	}
 
 	private static void findContact() {
-		Contatto contatto = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
+		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
+				"breve descrizione");
 		Contatto foundContact = ContattoDAO.findContact(contatto);
 		if (foundContact != null) {
 			System.out.println(foundContact);
 		} else {
-			System.out.println("Contatto non trovato");
+			System.err.println("Contatto non trovato");
 		}
 	}
-	
+
 	private static void addContact() {
 		Contatto contatto = new Contatto("nuovo", "nuovo", "nuovo", "nuovo", "nuovo");
 		ContattoDAO.addContact(contatto);
 	}
-	
+
+	private static void deleteContact() {
+		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
+				"breve descrizione");
+		;
+		ContattoDAO.deleteContact(contatto);
+	}
+
 	private static void updateContact() {
-		ContattoDAO.updateContact(null);
+		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
+				"breve descrizione");
+		ContattoDAO.updateContact(contatto);
 	}
 	
+	private static void findDuplicates() {
+		List<Contatto> contatti = ContattoDAO.getContactsList();		
+		contatti = ContattoDAO.findDuplicates(contatti);
+		for(Contatto contatto:contatti) {
+			System.out.println(contatto);
+		}
+	}
 	
+	public static void contactOrder(List<Contatto> contatti) {
+		contatti.sort(new Comparator<Contatto>() {
+			public int compare(Contatto c1, Contatto c2) {
+				return c1.getNome().compareTo(c2.getNome());
+			}
 
+		});
+	}
 }

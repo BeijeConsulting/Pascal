@@ -5,12 +5,13 @@ import java.util.List;
 
 public class Contatto {
 
+	private int id;
 	private String cognome;
 	private String nome;
 	private String telefono;
 	private String email;
 	private String note;
-	private int id;
+	
 
 	public Contatto() {
 		super();
@@ -20,6 +21,16 @@ public class Contatto {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
+		this.telefono = telefono;
+		this.email = email;
+		this.note = note;
+	}
+	
+	public Contatto(int id, String cognome, String nome, String telefono, String email, String note) {
+		super();
+		this.id = id;
+		this.cognome = cognome;
+		this.nome = nome;
 		this.telefono = telefono;
 		this.email = email;
 		this.note = note;
@@ -81,16 +92,24 @@ public class Contatto {
 		}
 		return false;
 	}
+	
 
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("{ Nome: ").append(this.nome);
-		builder.append(" Cognome: ").append(this.cognome);
-		builder.append(" Telefono: ").append(this.telefono);
-		builder.append(" Email: ").append(this.email);
-		builder.append(" Note: ").append(this.note).append(" }");
-		return builder.toString();
+		return "Contatto [id = " + id + ", cognome = " + cognome + ", nome = " + nome + ", telefono = " + telefono + ", email = "
+				+ email + ", note = " + note + "]";
 	}
+
+
+
+	/*
+	 * public String toString() { StringBuilder builder = new StringBuilder();
+	 * builder.append("{ Nome: ").append(this.nome);
+	 * builder.append(" Cognome: ").append(this.cognome);
+	 * builder.append(" Telefono: ").append(this.telefono);
+	 * builder.append(" Email: ").append(this.email);
+	 * builder.append(" Note: ").append(this.note).append(" }"); return
+	 * builder.toString(); }
+	 */
 
 }
 
