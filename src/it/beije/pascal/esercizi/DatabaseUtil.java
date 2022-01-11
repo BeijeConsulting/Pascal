@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,6 +15,21 @@ import java.util.List;
 import it.beije.pascal.rubrica.Contatto;
 
 public class DatabaseUtil {
+	
+	public static void leggiDatabasePrepStatement() throws Exception {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		final String SELECT_COGNOME = "SELECT * FROM contatti WHERE cognome = ?";
+		
+		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "andrea23596");
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COGNOME);
+		preparedStatement.setString(1, "gliori");
+		rs = preparedStatement.executeQuery();
+	}
 	
 	public static void leggiDatabase() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -183,7 +199,9 @@ public class DatabaseUtil {
 		
 //		modificaNomeContatto("Alessia");
 		
-		esportaCSV();
+//		esportaCSV();
+		
+//		leggiDatabasePrepStatement();
 
 	}
 
