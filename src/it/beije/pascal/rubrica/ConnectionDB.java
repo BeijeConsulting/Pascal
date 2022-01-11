@@ -13,6 +13,8 @@ public class ConnectionDB {
 	public static final String SELECT_COGNOME = "SELECT * FROM contatti WHERE cognome = ?";
 	public static final String SELECT_NOME = "SELECT * FROM contatti WHERE nome = ?";
 	public static final String INSERT_INTO_RUBRICA = "INSERT INTO contatti (cognome, nome, telefono, email, note) VALUES (?,?,?,?,?)";
+	public static final String UPDATE = "UPDATE contatti SET cognome = ? WHERE cognome = ?";
+	public static final String DELETE = "DELETE FROM contatti WHERE cognome = ?";
 	
 	public ConnectionDB() {
 		
@@ -215,7 +217,6 @@ public static Contatto cercaNomeDB(String where) throws Exception {
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		
-		Contatto trovato;
 		
 		Connection connection = null;
 		Statement statement = null;
@@ -224,7 +225,6 @@ public static Contatto cercaNomeDB(String where) throws Exception {
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "ardente");
 			
-			trovato = new Contatto();
 			
 			System.out.println("Stato connessione "+ !connection.isClosed());
 			
@@ -261,6 +261,92 @@ public static Contatto cercaNomeDB(String where) throws Exception {
 			}
 		}
 	
+		
+	}
+	
+	public static void updateDB(String vecchioCognome, String nuovoCognome) throws Exception {
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "ardente");
+			
+			System.out.println("Stato connessione "+ !connection.isClosed());
+			
+			statement = connection.createStatement();
+			
+			PreparedStatement update = connection.prepareStatement(ConnectionDB.UPDATE);
+			update.setString(1, nuovoCognome);
+			update.setString(2, vecchioCognome);
+			
+			int r = update.executeUpdate();
+			System.out.println("Modifica Eseguita? r = " + r);
+			
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			throw e;
+			
+		} finally {
+			
+			try {
+				
+				statement.close();
+				connection.close();
+				
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		
+		
+	}
+	
+	public static void deleteFromDB(String cognome) throws Exception {
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "ardente");
+			
+			System.out.println("Stato connessione "+ !connection.isClosed());
+			
+			statement = connection.createStatement();
+			
+			PreparedStatement update = connection.prepareStatement(ConnectionDB.DELETE);
+			update.setString(1, cognome);
+			
+			int r = update.executeUpdate();
+			System.out.println("Eliminazione Eseguita? r = " + r);
+			
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			throw e;
+			
+		} finally {
+			
+			try {
+				
+				statement.close();
+				connection.close();
+				
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
 		
 	}
 	

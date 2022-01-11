@@ -14,6 +14,7 @@ public class Gestore_Rubrica {
 	public static void main(String[] args) throws Exception {
 		
 		String cognome;
+		String cognome2;
 		String nome;
 		String telefono;
 		String email;
@@ -95,19 +96,34 @@ public class Gestore_Rubrica {
 			break;
 			
 		case 5:
-			System.out.println("Sei in caso 5");
+			
+			System.out.println("Inserire il Cognome del Contatto da Modificare");
+			cognome = readKeyboard();
+			System.out.println("Inserire il nuovo Cognome");
+			cognome2 = readKeyboard();
+			
+			ConnectionDB.updateDB(cognome, cognome2);		
+			
 			break;
 			
 		case 6:
-			System.out.println("Sei in caso 6");
+			
+			System.out.println("Inserire il cognome del contatto da eliminare");
+			cognome = readKeyboard();
+			
+			ConnectionDB.deleteFromDB(cognome);
+			
 			break;
 			
 		case 7:
-			System.out.println("Sei in caso 7");
-			break;
 			
+			System.out.println("Sei in caso 7");
+			
+			break;
 		case 8:
+			
 			System.out.println("Sei in caso 8");
+			
 			break;
 			
 		
