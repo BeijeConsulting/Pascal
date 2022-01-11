@@ -38,17 +38,15 @@ public class RubricaApplication {
 		}
 	}
 	 
-	private static void lookForContact(String name) throws Exception { //cercare un contatto
+	private static void lookForContact(String nome) throws Exception { //cercare un contatto
+	
 		Connection con = getCon();
 		
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM contatti WHERE nome = '" + name + "';");
-		
-		if(rs == null) {
-			System.out.println("nessun risultato trovato");
-		}
+		ResultSet rs = st.executeQuery("SELECT * FROM contatti WHERE nome = '"+nome+"';");
 		
 		while(rs.next()) {
+			System.out.println("sono qui");
 			System.out.println("id: " + rs.getInt("id"));
 			System.out.print("cognome: " + rs.getString("cognome"));
 			System.out.println(", nome: " + rs.getString("nome"));
@@ -93,6 +91,15 @@ public class RubricaApplication {
 		ResultSet rs = st.executeQuery("SELECT * FROM contatti");
 	}
 	
+	private static void askName() throws Exception {
+		System.out.println("Inserisci il nome della persona che vuoi cercare: ");
+		scan.next();
+		String nome = scan.nextLine();
+		nome = nome.trim();
+		lookForContact(nome);
+		
+	}
+	
 	private static void showMenu() throws Exception {
 		LocalDateTime ldt = LocalDateTime.now();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd - MM - yyyy   HH:mm ");
@@ -110,7 +117,7 @@ public class RubricaApplication {
 		switch(choice) {
 			case 1: listContacts();
 				break;
-			case 2: lookForContact("Mario");
+			case 2: askName();
 				break;
 			case 3: newContact();
 				break;
