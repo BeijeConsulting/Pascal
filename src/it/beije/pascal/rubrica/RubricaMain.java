@@ -69,13 +69,14 @@ public class RubricaMain {
 		System.out.println("Inserito " + c.toString());
 	}
 
-
+	//TODO la ricerca per lista funziona
 	private static void cercaContatto() {
 		System.out.println("Cerca per: Nome, Cognome, Telefono, Email");
 		String input = s.nextLine();
 
 	}
 
+	//TODO adatta a db
 	private static void modificaContatto() {
 		System.out.println("Seleziona contatto da modificare\nnome: ");
 		String nome = s.nextLine();
@@ -106,25 +107,10 @@ public class RubricaMain {
 			}
 		}while(scelta !=0);
 		
+		//execute changes to DB
+		rubricaDB.modificaContatto(contattoScelto.getId(), contattoScelto);
 		
-	}
-
-	private static List<Contatto> cercaPerNomeCognome(String nome, String cognome) {
-		List<Contatto> contatti = new ArrayList();
-		List<Contatto> risultati = new ArrayList<>();
-		try {
-			contatti = caricaRubrica();
-		} catch (IOException e) {
-			System.out.println("errore nel caricamento della rubrica");
-			e.printStackTrace();
-			return risultati;
-		}
-		for(Contatto c : contatti) {
-			if (nome==null || nome.equals("")|| c.getNome().equals(nome))
-				if (cognome == null || cognome.equals("") || c.getCognome().equals(cognome))
-					risultati.add(c);
-		}
-		return risultati;
+		
 	}
 
 	private static void eliminaContatto() {
@@ -168,6 +154,31 @@ public class RubricaMain {
 	private static void addContatto(Contatto c) {
 		rubricaDB.inserisciContatto(c);
 		System.out.println("Aggiunto");
+	}
+	
+	private static List<Contatto> cercaPerNomeCognome(String nome, String cognome) {
+		List<Contatto> contatti = new ArrayList();
+		List<Contatto> risultati = new ArrayList<>();
+		
+		//csv
+		/*
+		try {
+			contatti = caricaRubrica();
+		} catch (IOException e) {
+			System.out.println("errore nel caricamento della rubrica");
+			e.printStackTrace();
+			return risultati;
+		}
+		for(Contatto c : contatti) {
+			if (nome==null || nome.equals("")|| c.getNome().equals(nome))
+				if (cognome == null || cognome.equals("") || c.getCognome().equals(cognome))
+					risultati.add(c);
+		}
+		*/
+		
+		//DB
+		risultati = rubricaDB.cercaContatto(nome, cognome);
+		return risultati;
 	}
 
 	private static List<Contatto> caricaRubrica() throws IOException{
