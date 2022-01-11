@@ -24,8 +24,7 @@ public class XMLmanager {
 		NodeList nodeList = element.getChildNodes();
 		for (int n = 0; n < nodeList.getLength(); n++) {
 			if (nodeList.item(n) instanceof Element) childElements.add((Element)nodeList.item(n));
-		}
-		
+		}		
 		return childElements;
 	}
 

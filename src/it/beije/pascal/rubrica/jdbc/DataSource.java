@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.JDBC;
+package it.beije.pascal.rubrica.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,11 +1,13 @@
 package it.beije.pascal.file.xml;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -13,6 +15,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import it.beije.pascal.rubrica.Contatto;
 
@@ -77,6 +82,53 @@ public class WriteReadXML {
 		// Opzionale(Stampa a schermo)
 		transformer.transform(source, syso);
 
+	}
+	private static void getListFromXML() {
+
+		try {
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			Document document = documentBuilder.parse("/Users/ema29/javafile/jdbc/xml/rubrica.xml");
+
+			Element rubrica = document.getDocumentElement();
+			System.out.println("root : " + rubrica.getTagName());
+
+			// NodeList contatti = root.getElementsByTagName("contatto");
+
+			NodeList contatti = rubrica.getChildNodes();
+
+			for (int i = 0; i < contatti.getLength(); i++) {
+				Node contatto = contatti.item(i);
+				if (contatto instanceof Element) { // provare a rimuovere
+					Element element = (Element) contatto;
+
+					List<Element> contactList = getChildElements(element);
+					for (Element contact : contactList) {
+						System.out.println(contact.getTagName() + " : " + contact.getTextContent());
+					}
+				}
+
+			}
+
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+
+		} catch (SAXException e) {
+			e.printStackTrace();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static List<Element> getChildElements(Element element) {
+		List<Element> childElements = new ArrayList<Element>();
+		NodeList childNode = element.getChildNodes();
+		for (int n = 0; n < childNode.getLength(); n++) {
+			if (childNode.item(n) instanceof Element)
+				childElements.add((Element) childNode.item(n));
+		}
+		return childElements;
 	}
 
 }

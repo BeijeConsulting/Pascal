@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.JDBC;
+package it.beije.pascal.rubrica.jdbc.statement;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import it.beije.pascal.rubrica.Contatto;
+import it.beije.pascal.rubrica.jdbc.DataSource;
 import it.beije.pascal.rubrica.util.DBUtil;
 
 public class ContattoDAO {
@@ -41,12 +42,15 @@ public class ContattoDAO {
 		Statement statement = null;
 		try {
 			connection = DataSource.getInstance().getConnection();
+			int i = 0;
+
 			statement = connection.createStatement();
+
 			for (Contatto contatto : contatti) {
-				String sql = "INSERT INTO contatti \nVALUES(null,'" + contatto.getCognome() + "','" + contatto.getNome()
-						+ "', '" + contatto.getTelefono() + "', '" + contatto.getEmail() + "', '" + contatto.getNote()
-						+ "')";
-				statement.executeUpdate(sql);
+				String sql2 = "INSERT INTO contatti \nVALUES(null,'" + contatto.getCognome() + "','"
+						+ contatto.getNome() + "', '" + contatto.getTelefono() + "', '" + contatto.getEmail() + "', '"
+						+ contatto.getNote() + "')";
+				statement.executeUpdate(sql2);
 			}
 
 		} catch (SQLException e) {
@@ -93,7 +97,6 @@ public class ContattoDAO {
 
 		return contatti;
 	}
-	
 
 	public static Contatto findContact(Contatto contatto) {
 		String sql = "SELECT * FROM contatti \nWHERE  cognome = '" + contatto.getCognome() + "' AND nome = '"
@@ -189,14 +192,14 @@ public class ContattoDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		} finally {
 			DBUtil.close(statement);
 			DBUtil.close(connection);
 		}
 	}
-	
-	public static List<Contatto> findDuplicates(List<Contatto> contatti) {		
+
+	public static List<Contatto> findDuplicates(List<Contatto> contatti) {
 		List<Contatto> contattiDuplicati = new ArrayList<Contatto>();
 		contactOrder(contatti);
 		int tmp = 0;
@@ -225,6 +228,5 @@ public class ContattoDAO {
 
 		});
 	}
-  
 
 }

@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.JDBC;
+package it.beije.pascal.rubrica.jdbc.preparedstatement;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -90,8 +90,7 @@ public class MenuJDBC {
 	}
 
 	private static void printContacts() {
-		List<Contatto> contatti = ContattoDAO.getContactsList();
-		contactOrder(contatti);
+		List<Contatto> contatti = ContattoDAO.getContactsList();		
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
@@ -128,18 +127,11 @@ public class MenuJDBC {
 	
 	private static void findDuplicates() {
 		List<Contatto> contatti = ContattoDAO.getContactsList();		
-		contatti = ContattoDAO.findDuplicates(contatti);
+		//contatti = ContattoDAO.findDuplicates(contatti);
 		for(Contatto contatto:contatti) {
 			System.out.println(contatto);
 		}
 	}
 	
-	public static void contactOrder(List<Contatto> contatti) {
-		contatti.sort(new Comparator<Contatto>() {
-			public int compare(Contatto c1, Contatto c2) {
-				return c1.getNome().compareTo(c2.getNome());
-			}
-
-		});
-	}
+	
 }
