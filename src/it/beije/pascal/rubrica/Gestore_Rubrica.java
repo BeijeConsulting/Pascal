@@ -60,6 +60,7 @@ public class Gestore_Rubrica {
 		case 2:
 			
 //			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
+			
 			rubrica = ConnectionDB.trovaRubricaDB();
 			rubrica = sortRubricaCognome(rubrica);
 			visualRubrica(rubrica);

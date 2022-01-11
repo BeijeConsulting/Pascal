@@ -17,6 +17,7 @@ public class ConnectionDB {
 	public static final String UPDATE = "UPDATE contatti SET cognome = ? WHERE cognome = ?";
 	public static final String DELETE = "DELETE FROM contatti WHERE cognome = ?";
 	public static final String DUPLICATE_BY_NUMBER = "SELECT id, cognome, nome, telefono, email, note, count(telefono) FROM contatti GROUP BY telefono HAVING COUNT(telefono)>1";
+	public static final String MERGE_DUPLICATE = "";
 	
 	public ConnectionDB() {
 		
