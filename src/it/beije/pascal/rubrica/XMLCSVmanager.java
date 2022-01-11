@@ -1,6 +1,4 @@
-package it.beije.pascal.file;
-import it.beije.pascal.rubrica.*;
-
+package it.beije.pascal.rubrica;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,7 +22,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class XMLandCSVmanager {
+public class XMLCSVmanager {
 	
 	public static List<Element> getChildElements(Element element) {
 		List<Element> childElements = new ArrayList<Element>();
@@ -35,7 +33,7 @@ public class XMLandCSVmanager {
 		return childElements;
 	}
 	
-	private static void printContatti(List<Contatto> listContatto) {
+	public static void printContatti(List<Contatto> listContatto) {
 		for(Contatto c: listContatto) {
 			System.out.println(c.toString());
 		}
@@ -73,7 +71,7 @@ public class XMLandCSVmanager {
 	
 	
 	
-	public static List<Contatto> loadRubricaFromXML(String pathFile)  throws Exception {
+	public List<Contatto> loadRubricaFromXML(String pathFile)  throws Exception {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		List<Contatto> contactList = new ArrayList<Contatto>();
@@ -291,31 +289,17 @@ public class XMLandCSVmanager {
 		List<Contatto> XMLcontact = new ArrayList<Contatto>();
 		List<Contatto> CSVcontact = new ArrayList<Contatto>();
 		RubricaCSV rb = new RubricaCSV();
-		
-		try {
-			CSVcontact = RubricaCSV.loadRubricaFromCSV(fileCSV, "\t");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			XMLcontact = loadRubricaFromXML(fileXML);
-		} catch (Exception e) {
-			System.out.println("Sees");
-			e.printStackTrace();
-		}
-		try {
-			writeRubricaXML(XMLcontact, newFileXML);
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		List<Contatto> soscont= new ArrayList<Contatto>();
-		//addContatto(soscont);
-		printContatti(CSVcontact);
+		/*
+		 * try { CSVcontact = RubricaCSV.loadRubricaFromCSV(fileCSV, "\t"); } catch
+		 * (IOException e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
+		 * try { XMLcontact = loadRubricaFromXML(fileXML); } catch (Exception e) {
+		 * System.out.println("Sees"); e.printStackTrace(); } try {
+		 * writeRubricaXML(XMLcontact, newFileXML); } catch
+		 * (ParserConfigurationException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } catch (TransformerException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } List<Contatto> soscont= new
+		 * ArrayList<Contatto>(); //addContatto(soscont); printContatti(CSVcontact);
+		 */
 	}
 
 }
