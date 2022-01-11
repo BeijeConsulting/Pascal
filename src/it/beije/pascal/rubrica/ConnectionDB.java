@@ -87,7 +87,7 @@ public class ConnectionDB {
 		
 	}
 	
-public static Contatto cercaNomeDB(String where) throws Exception {
+	public static Contatto cercaNomeDB(String where) throws Exception {
 		
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -345,6 +345,60 @@ public static Contatto cercaNomeDB(String where) throws Exception {
 				fEx.printStackTrace();
 			}
 		}
+		
+	}
+	
+	public static void addListDB(List<Contatto> rubrica) throws Exception {
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "ardente");
+			
+			
+			System.out.println("Stato connessione "+ !connection.isClosed());
+			
+			
+			statement = connection.createStatement();
+			
+			PreparedStatement psInsert = connection.prepareStatement(ConnectionDB.INSERT_INTO_RUBRICA);
+			
+			for(int i=0; i<rubrica.size();i++)
+			{
+				
+				psInsert.setString(1, rubrica.get(i).getCognome());
+				psInsert.setString(2, rubrica.get(i).getNome());
+				psInsert.setString(3, rubrica.get(i).getTelefono());
+				psInsert.setString(4, rubrica.get(i).getEmail());
+				psInsert.setString(5, rubrica.get(i).getNote());
+				
+				int r = psInsert.executeUpdate();
+				System.out.println("Inserimento eseguito? r = " + r);
+			}
+				
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			throw e;
+			
+		} finally {
+			
+			try {
+				
+				statement.close();
+				connection.close();
+				
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+	
 		
 	}
 	

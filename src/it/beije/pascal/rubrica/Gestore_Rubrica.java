@@ -19,6 +19,7 @@ public class Gestore_Rubrica {
 		String telefono;
 		String email;
 		String note;
+		String pathCSV = "C:/temp/rubrica - cognome.csv";
 		
 		Contatto contattoProvvisorio;
 		List<Contatto> rubrica = new ArrayList<Contatto>();
@@ -137,7 +138,8 @@ public class Gestore_Rubrica {
 			
 		case 10:
 			
-			
+			rubrica=readRubrica(pathCSV,";");
+			ConnectionDB.addListDB(rubrica);
 			
 			break;
 			
@@ -304,8 +306,8 @@ public class Gestore_Rubrica {
 			while (bufferedReader.ready()) {
 				
 				row = bufferedReader.readLine();
-
-				r = row.split(sep);
+				
+				r = row.split(sep,-1);
 				
 				contatto = new Contatto();
 				contatto.setCognome(r[0]);
