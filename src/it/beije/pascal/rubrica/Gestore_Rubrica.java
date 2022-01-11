@@ -32,6 +32,8 @@ public class Gestore_Rubrica {
 		System.out.println("Premere 6 per cancellare un contatto esistente");
 		System.out.println("Premere 7 per trovare eventuali contatti duplicati");
 		System.out.println("Premere 8 per unire eventuali contatti duplicati");
+		System.out.println("Premere 9 per scrivere la rubrica dal DB a CSV e XML");
+		System.out.println("Premere 10 per scrivere la rubrica da un file CSV al Database");
 		System.out.println("Premere 0 per chiudere");
 		
 		String s = readKeyboard();
@@ -48,7 +50,7 @@ public class Gestore_Rubrica {
 			
 //			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
 			
-			rubrica = ConnectionDB.trovaRubricaDB();
+			rubrica = ConnectionDB.trovaRubricaDB();			
 			rubrica = sortRubricaNome(rubrica);
 			visualRubrica(rubrica);
 			
@@ -123,6 +125,19 @@ public class Gestore_Rubrica {
 		case 8:
 			
 			System.out.println("Sei in caso 8");
+			
+			break;
+		case 9:
+			
+			rubrica = ConnectionDB.trovaRubricaDB();
+			
+			
+			
+			break;
+			
+		case 10:
+			
+			
 			
 			break;
 			
@@ -206,13 +221,16 @@ public class Gestore_Rubrica {
 	public static void visualRubrica(List<Contatto> rubrica)
 	{
 		
+		
 		for(Contatto c : rubrica) {
+			
 			
 			System.out.println(c.getCognome());
 			System.out.println(c.getNome());
 			System.out.println(c.getTelefono());
 			System.out.println(c.getEmail());
 			System.out.println(c.getNote());
+			
 		}
 		
 	}
@@ -266,7 +284,7 @@ public class Gestore_Rubrica {
 		
 	}
 	
-public static List<Contatto> readRubrica(String path, String sep) throws IOException {
+	public static List<Contatto> readRubrica(String path, String sep) throws IOException {
 		
 		
 		List<Contatto> rows = new ArrayList<Contatto>();

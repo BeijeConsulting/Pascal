@@ -12,6 +12,7 @@ public class ConnectionDB {
 
 	public static final String SELECT_COGNOME = "SELECT * FROM contatti WHERE cognome = ?";
 	public static final String SELECT_NOME = "SELECT * FROM contatti WHERE nome = ?";
+	public static final String SELECT_ALL = "SELECT * FROM contatti";
 	public static final String INSERT_INTO_RUBRICA = "INSERT INTO contatti (cognome, nome, telefono, email, note) VALUES (?,?,?,?,?)";
 	public static final String UPDATE = "UPDATE contatti SET cognome = ? WHERE cognome = ?";
 	public static final String DELETE = "DELETE FROM contatti WHERE cognome = ?";
@@ -160,7 +161,6 @@ public static Contatto cercaNomeDB(String where) throws Exception {
 		Contatto trovato;
 		
 		Connection connection = null;
-		Statement statement = null;
 		ResultSet rs = null;
 		
 		try {
@@ -171,13 +171,13 @@ public static Contatto cercaNomeDB(String where) throws Exception {
 			
 			System.out.println("Stato connessione "+ !connection.isClosed());
 			
-			statement = connection.createStatement();
+			PreparedStatement preparedStatement = connection.prepareStatement(ConnectionDB.SELECT_ALL);
 			
-			
-			rs = statement.executeQuery("SELECT * FROM contatti");
+			rs = preparedStatement.executeQuery();
 			
 			while (rs.next()) {
 				
+				trovato = new Contatto();
 				trovato.setId(rs.getInt("id"));
 				trovato.setCognome(rs.getString("cognome"));
 				trovato.setNome(rs.getString("nome"));
@@ -186,8 +186,8 @@ public static Contatto cercaNomeDB(String where) throws Exception {
 				trovato.setNote(rs.getString("note"));
 				
 				rubrica.add(trovato);
+
 			}
-			
 			
 			
 		} catch (Exception e) {
@@ -200,14 +200,12 @@ public static Contatto cercaNomeDB(String where) throws Exception {
 			try {
 				
 				rs.close();
-				statement.close();
 				connection.close();
 				
 			} catch (Exception fEx) {
 				fEx.printStackTrace();
 			}
 		}
-	
 		
 		return rubrica;
 
