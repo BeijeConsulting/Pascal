@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
 
 public class RubricaXML {
 	public static void main(String[] args) {
-		List<Contatto> contatti= loadRubricaFromXML("./rubrica.xml");
+		List<Contatto> contatti = loadRubricaFromXML("./rubrica.xml");
 		writeRubricaXML(contatti, "./nuova_rubrica.xml");
 
 	}
@@ -41,9 +41,9 @@ public class RubricaXML {
 
 			NodeList contattiNodes = root.getElementsByTagName("contatto");
 
-			for(int i =0; i<contattiNodes.getLength(); i++) {
+			for (int i = 0; i < contattiNodes.getLength(); i++) {
 				Node contatto = contattiNodes.item(i);
-				if(contatto instanceof Element) {
+				if (contatto instanceof Element) {
 					Contatto c = new Contatto();
 					c.setNome(extractCampoFromNode(contatto, "nome"));
 					c.setCognome(extractCampoFromNode(contatto, "cognome"));
@@ -60,8 +60,7 @@ public class RubricaXML {
 		return contattiList;
 	}
 
-
-	private static void writeRubricaXML(List<Contatto> contatti, String pathFile) {
+	public static void writeRubricaXML(List<Contatto> contatti, String pathFile) {
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -71,7 +70,7 @@ public class RubricaXML {
 			Element rubricaElement = doc.createElement("rubrica");
 			doc.appendChild(rubricaElement);
 
-			for(Contatto c: contatti) {
+			for (Contatto c : contatti) {
 
 				Element contattoElement = doc.createElement("contatto");
 
@@ -98,20 +97,19 @@ public class RubricaXML {
 				rubricaElement.appendChild(contattoElement);
 			}
 
+			// create the xml file
+			// transform the DOM Object to an XML File
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource domSource = new DOMSource(doc);
+			StreamResult streamResult = new StreamResult(new File(pathFile));
+			StreamResult streamOut = new StreamResult(System.out);
 
-			 // create the xml file
-            //transform the DOM Object to an XML File
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource domSource = new DOMSource(doc);
-            StreamResult streamResult = new StreamResult(new File(pathFile));
-            StreamResult streamOut = new StreamResult(System.out);
- 
-            transformer.transform(domSource, streamResult);
+			transformer.transform(domSource, streamResult);
 
-            transformer.transform(domSource, streamOut);
- 
-		}catch (ParserConfigurationException e) {
+			transformer.transform(domSource, streamOut);
+
+		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TransformerConfigurationException e) {
@@ -120,9 +118,8 @@ public class RubricaXML {
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 	}
-
 
 	private static String extractCampoFromNode(Node contatto, String name) throws DOMException {
 		Node campoNode;
@@ -134,18 +131,15 @@ public class RubricaXML {
 		return null;
 	}
 
-
 	public static List<Element> getChildElements(Element element) {
 		List<Element> childElements = new ArrayList<>();
 		NodeList nodeList = element.getChildNodes();
 		for (int n = 0; n < nodeList.getLength(); n++) {
-			if (nodeList.item(n) instanceof Element) childElements.add((Element)nodeList.item(n));
+			if (nodeList.item(n) instanceof Element)
+				childElements.add((Element) nodeList.item(n));
 		}
 
 		return childElements;
 	}
-
-
-
 
 }

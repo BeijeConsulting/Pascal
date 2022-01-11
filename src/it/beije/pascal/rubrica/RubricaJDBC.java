@@ -18,7 +18,7 @@ public class RubricaJDBC {
 	public static final String UPDATE_WHERE_ID = "UPDATE contatti SET cognome = ?, nome = ?, telefono = ?, email = ?, note = ? WHERE id = ?";
 	public static final String DELETE_WHERE_ID = "DELETE FROM contatti WHERE id = ?";
 	public static final String SELECT_ORDERBY = "SELECT * FROM contatti ORDER BY %s %s";
-	public static final String SELECT_DUPLICATES = "SELECT * FROM  contatti GROUP BY nome, cognome HAVING COUNT(id) > 1";
+	public static final String SELECT_DUPLICATES = "SELECT * FROM  contatti GROUP BY nome, cognome, telefono, email, note HAVING COUNT(id) > 1";
 	
 
 	Connection connection;
@@ -112,9 +112,6 @@ public class RubricaJDBC {
 			contatto.setEmail( rs.getString("email"));
 			contatto.setNote( rs.getString("note"));
 			risultati.add(contatto);
-
-			//control
-			System.out.println("from database : "+ contatto.toString());
 		}
 		return risultati;
 	}
@@ -152,7 +149,7 @@ public class RubricaJDBC {
 	public void modificaContatto(int id, Contatto contatto) {
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
-			PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_RUBRICA);
+			PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WHERE_ID);
 			preparedStatement.setString(1, contatto.getCognome());
 			preparedStatement.setString(2, contatto.getNome());
 			preparedStatement.setString(3, contatto.getTelefono());
