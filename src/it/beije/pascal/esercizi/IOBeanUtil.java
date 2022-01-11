@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,7 +41,6 @@ public class IOBeanUtil {
 				System.out.println(contatto);
 			}
 		}
-		
 		return contatti;
 	}
 	
@@ -90,5 +91,23 @@ public class IOBeanUtil {
 		}
 		return contatti;
 	}
+	
+//	FINIREEEEEEEE
+	
+//	public void writeRubricaCSV(List<Contatto> contatti, String pathFile, String separator) {
+//		PrintWriter outputStream = null;
+//		try {
+//			outputStream = new PrintWriter(pathFile);
+//		}
+//		catch(FileNotFoundException e) {
+//			System.out.println("Errore nell'apertura del file " + pathFile);
+//			System.exit(0);
+//		}
+//
+//		
+//		
+//		outputStream.close();
+//		System.out.println("Le righe sono state scritte su : " + pathFile);
+//	}
 
 }
