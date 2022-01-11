@@ -1,5 +1,7 @@
 package it.beije.pascal.rubrica;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,24 +53,84 @@ public class XMLCSVmanager {
 		}
 	
 	
-	private static String searchContatto(List<Contatto> listcont, String surname) {
+	public static Contatto searchContatto(List<Contatto> listcont, String surname) {
 		for (Contatto c: listcont) {
 			if(c.getCognome() == surname) {
-				return c.toString();
+				return c;
 			}
 		}
-		return "Contatto non trovato";
+		return null;
 	}
 	
-	private static boolean isContatto(List<Contatto> listcont, Contatto contatto) {
+	public static boolean isContatto(List<Contatto> listcont, String cognome) {
 		for (Contatto c: listcont) {
-			if(c == contatto) {
+			if(c.getCognome() == cognome) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	
+	public List<Contatto> loadRubricaFromCSV(String path, String sep) throws IOException {
+		List<Contatto> rows = new ArrayList<Contatto>();
+		boolean firstLine = true;
+		
+		FileReader reader = null;
+		BufferedReader bufferedReader = null;
+		
+		try {
+			reader = new FileReader(path);
+			bufferedReader = new BufferedReader(reader);
+			String row;
+			Contatto contatto;
+			String[] r;
+			int posCog=0, posNom=0, posTel=0, posEm=0, posNot=0;
+			
+			if(firstLine) {
+				row = bufferedReader.readLine();
+				r = row.split(sep);
+				contatto = new Contatto();
+				for( int i =0; i < r.length; i++) {
+					if(r[i].equalsIgnoreCase("COGNOME")) {contatto.setCognome(r[i]); posCog = i;}
+					if(r[i].equalsIgnoreCase("NOME")) {contatto.setNome(r[i]); posNom = i;}
+					if(r[i].equalsIgnoreCase("TELEFONO")) {contatto.setTelefono(r[i]); posTel = i;}
+					if(r[i].equalsIgnoreCase("EMAIL")) {contatto.setEmail(r[i]); posEm = i;}
+				}
+				firstLine = false;
+			}
+			while (bufferedReader.ready()) {
+				row = bufferedReader.readLine();
+			
+				r = row.split(sep,-1);
+				contatto = new Contatto();
+				contatto.setCognome(r[posCog]);
+				contatto.setNome(r[posNom]);
+				contatto.setTelefono(r[posTel]);
+				contatto.setEmail(r[posEm]);
+				
+				System.out.println(contatto);
+				
+				rows.add(contatto);
+				}
+		} catch (IOException ioEx) {
+			ioEx.printStackTrace();
+			throw ioEx;
+		} finally {
+			try {
+				if (bufferedReader != null) {
+					bufferedReader.close();
+				}
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		
+		return rows;
+	}
 	
 	
 	public List<Contatto> loadRubricaFromXML(String pathFile)  throws Exception {
@@ -221,11 +283,13 @@ public class XMLCSVmanager {
 		}
 		
 		
-		private static void modifyContatto(List<Contatto> listcont, Contatto cont) {
+		private static void modifyContatto(List<Contatto> listcont, String cognome) {
 			Scanner s = new Scanner(System.in);
 			String st = null;
-			boolean exist = isContatto(listcont, cont);
-
+			boolean exist = isContatto(listcont, cognome);
+			Contatto cont = searchContatto(listcont, cognome);
+			
+			
 			if(exist) {
 				System.out.println("Contatto trovato! Inserire modifiche:");
 
@@ -252,33 +316,21 @@ public class XMLCSVmanager {
 		}
 		
 		
-	private static void removeContatto(List<Contatto> listcont, Contatto cont) {	
-		boolean exists = isContatto(listcont, cont);
+	private static void removeContatto(List<Contatto> listcont, String cognome) {	
+		boolean exists = isContatto(listcont, cognome);
+		Contatto cont = searchContatto(listcont, cognome);
 		listcont.remove(cont);
 	}
 	
 	
-	private static String findDuplicateContatti(List<Contatto> listcont) {
-		List<Contatto> duplicatecont = new ArrayList<Contatto>();
-		//int cont = 0;
-		Contatto dupc;
-		for (Contatto c: listcont) {
-			dupc = c;
-			for(Contatto cc : listcont) {
-				if(dupc == cc) {
-					duplicatecont.add(dupc);
-					break;
-				}
-			}
-		}
-		if(duplicatecont.isEmpty()) return "Non esistono contatti duplicati";
-		else return duplicatecont.toString();
-	}
-
-	private static void mergeContatti(List<Contatto> listcont) {
-		
-		return;
-	}
+	/*
+	 * private static String findDuplicateContatti(List<Contatto> listcont) {
+	 * List<Contatto> duplicatecont = new ArrayList<Contatto>(); //int cont = 0;
+	 * Contatto dupc; for (Contatto c: listcont) { dupc = c; for(Contatto cc :
+	 * listcont) { if(dupc == cc) { duplicatecont.add(dupc); break; } } }
+	 * if(duplicatecont.isEmpty()) return "Non esistono contatti duplicati"; else
+	 * return duplicatecont.toString(); }
+	 */
 
 	public static void main(String[] args) {
 		String fileXML = "C:/Users/franc/git/Pascal/rubrica.xml";

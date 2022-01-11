@@ -14,8 +14,16 @@ public class RubricaJDBC {
 	public static final String SELECT_COGNOME_NOME = "SELECT * FROM contatti WHERE cognome = ? AND nome = ?";
 	public static final String INSERT_INTO_RUBRICA = "INSERT INTO contatti (cognome, nome, telefono, email, note) VALUES (?,?,?,?,?)";
 
+	public static void main(String[] args) throws Exception {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection connection=null;
+		Statement statement=null;
+		ResultSet rs = null;
+		
+		try {
+			connection = DriverManager
+					.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Soos1234");
 
-			System.out.println(!connection.isClosed());
 			
 			statement = connection.createStatement();
 			
@@ -83,5 +91,5 @@ public class RubricaJDBC {
 		}
 		
 	}
-
 }
+

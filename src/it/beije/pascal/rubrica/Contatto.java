@@ -14,11 +14,21 @@ PRIMARY KEY (`id`));
 
 public class Contatto {
 	
+	private String id;
+
 	private String cognome;
 	private String nome;
 	private String telefono;
 	private String email;
 	private String note;
+	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = String.valueOf(id);
+	}
 	
 	public String getCognome() {
 		return cognome;
