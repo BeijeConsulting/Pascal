@@ -24,6 +24,7 @@ public class RubricaMain {
 					+ "Modifica contatto\r\n"
 					+ "Elimina contatto\r\n"
 					+ "Trova contatti duplicati\r\n"
+					+ "File import/export \r\n"
 					+ "Unisci contatti duplicati");
 			userInput = s.nextLine();
 			handleUserInput(userInput);
@@ -44,6 +45,7 @@ public class RubricaMain {
 		case 'e': eliminaContatto();break;
 		case 't': trovaDuplicati();break;
 		case 'u': unisciContatti();break;
+		case 'f': gestisciFile();break;
 		}
 	}
 
@@ -151,7 +153,51 @@ public class RubricaMain {
 		}
 	}
 
+	private static void gestisciFile() {
+		//just handles user input
+		System.out.println("1. CSV\t2. XML");
+		int sceltaTipo = s.nextInt();s.nextLine();
+		System.out.println("1. Importa\t2. Esporta");
+		int sceltaIO = s.nextInt();s.nextLine();
+		System.out.println("Nome file: ");
+		String fileName = s.nextLine();
+		try {
+		switch(Integer.parseInt(""+sceltaTipo+sceltaIO)) {
+		case 11: importCSV(fileName); break;
+		case 12: exportCSV(fileName); break;
+		case 21: importXML(fileName); break;
+		case 22: exportXML(fileName); break;
+		}
+		} catch(IOException ioEx) {
+			System.out.println("Errore nella gestione del file");
+			ioEx.printStackTrace();
+		}
+	}
+	
+	
 	//Utility methods
+
+	private static void exportXML(String fileName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void importXML(String fileName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void exportCSV(String fileName) throws IOException {
+		List<Contatto> contatti = rubricaDB.listAllOrderedBy("cognome", true);
+		RubricaCSV.writeContatti(contatti, fileName, RubricaCSV.STANDARD_SEPARATOR);
+		
+	}
+
+	private static void importCSV(String fileName) throws IOException {
+		List<Contatto> contatti = RubricaCSV.loadRubricaFromCSV(fileName, RubricaCSV.STANDARD_SEPARATOR);
+		for(Contatto c : contatti)
+			rubricaDB.inserisciContatto(c);
+	}
 
 	//methods to separate the implementation of the db from the rest
 	private static void removeContatto(Contatto contatto) {

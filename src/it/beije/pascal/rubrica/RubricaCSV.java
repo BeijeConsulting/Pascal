@@ -13,14 +13,14 @@ import it.beije.pascal.file.FileUtils;
 
 public class RubricaCSV {
 
-	final static String PATH = "./data/rubrica/rubrica.csv";
+	final static String PATH = "./rubrica.csv";
 	final static String PATH_NEW = "./data/rubrica/nuova_rubrica.csv";
-	public static final String STANDARD_SEPARATOR = "\t";
+	public static final String STANDARD_SEPARATOR = ";";
 	
 	public static void main(String[] args) throws IOException {
 		
-		List<Contatto> contatti = loadRubricaFromCSV(PATH, "\t");
-		writeContatti(contatti, PATH_NEW, "\t");
+		List<Contatto> contatti = loadRubricaFromCSV(PATH, STANDARD_SEPARATOR);
+//		writeContatti(contatti, PATH_NEW, "\t");
 	}
 
 	public static List<Contatto> loadRubricaFromCSV(String path, String sep) throws IOException {
@@ -41,7 +41,7 @@ public class RubricaCSV {
 			int posCognome =-1, posNome =-1, posTel =-1, posEmail =-1, posNote =-1;
 			if(bufferedReader.ready()) {
 				row = bufferedReader.readLine();
-				r = row.split(sep);
+				r = row.split(sep); //TODO fix array out of bounds
 				for (int i = 0; i < r.length; i++) {
 					if (r[i].equals("COGNOME")) posCognome = i; 
 					else if (r[i].equals("NOME")) posNome = i; 
@@ -54,6 +54,10 @@ public class RubricaCSV {
 			//read all occurrences
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
+				
+				//for edge case : add value to split 
+				if((row.charAt(row.length()-1)) == STANDARD_SEPARATOR.charAt(0))
+					row = row.concat(""+STANDARD_SEPARATOR+"temp");
 				
 				r = row.split(sep);
 				contatto = new Contatto();

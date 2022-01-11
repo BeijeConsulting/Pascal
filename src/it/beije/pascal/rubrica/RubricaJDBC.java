@@ -38,6 +38,7 @@ public class RubricaJDBC {
 		Contatto contatto = new Contatto();
 		contatto = RubricaCSV.loadRubricaFromCSV().get(0);
 		RubricaJDBC rubrica = new RubricaJDBC();
+		rubrica.listDuplicates();
 		//		rubrica.inserisciContatto(contatto );
 		//		rubrica.modificaContatto(1, new String[]{"nome", "cognome"}, new String[]{"Andrea" ,"Rossi"});
 		//rubrica.cercaContatto("mario", "rossi");
