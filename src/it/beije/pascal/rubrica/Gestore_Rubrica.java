@@ -21,7 +21,6 @@ public class Gestore_Rubrica {
 		
 		Contatto contattoProvvisorio;
 		List<Contatto> rubrica = new ArrayList<Contatto>();
-		ConnectionDB con = new ConnectionDB();
 		
 		System.out.println("Benvenuto nella Rubrica");
 		System.out.println("Premere 1 per visualizzare la lista dei contatti ordinata per nome");
@@ -43,18 +42,21 @@ public class Gestore_Rubrica {
 		
 		case 0: 
 			break;
+			
 		case 1:
-			/*
-			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
+			
+//			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
+			
+			rubrica = ConnectionDB.trovaRubricaDB();
 			rubrica = sortRubricaNome(rubrica);
-			*/
-			rubrica = con.trovaRubricaDB();
 			visualRubrica(rubrica);
 			
 			break;
+			
 		case 2:
 			
-			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
+//			rubrica = readRubrica("C:/temp/Gestore_Rubrica.csv",",");
+			rubrica = ConnectionDB.trovaRubricaDB();
 			rubrica = sortRubricaCognome(rubrica);
 			visualRubrica(rubrica);
 			
@@ -64,10 +66,11 @@ public class Gestore_Rubrica {
 			System.out.println("Inserire il cognome del contatto da cercare");
 			cognome = readKeyboard();
 			
-			contattoProvvisorio = con.cercaCognomeDB(cognome);
+			contattoProvvisorio = ConnectionDB.cercaCognomeDB(cognome);
 			visualContatto(contattoProvvisorio);
 			
 			break;
+			
 		case 4:
 			
 			System.out.println("\n");
@@ -83,20 +86,26 @@ public class Gestore_Rubrica {
 			note = readKeyboard();
 			
 			contattoProvvisorio = buildContact(cognome, nome, telefono, email, note);
-			addContact(contattoProvvisorio);
+//			addContact(contattoProvvisorio);
+			
+			ConnectionDB.addDB(contattoProvvisorio);
 			
 			System.out.println(contattoProvvisorio.toString());
 			
 			break;
+			
 		case 5:
 			System.out.println("Sei in caso 5");
 			break;
+			
 		case 6:
 			System.out.println("Sei in caso 6");
 			break;
+			
 		case 7:
 			System.out.println("Sei in caso 7");
 			break;
+			
 		case 8:
 			System.out.println("Sei in caso 8");
 			break;
@@ -133,58 +142,6 @@ public class Gestore_Rubrica {
 		
 	}
 	
-	public static List<Contatto> readRubrica(String path, String sep) throws IOException {
-		
-		
-		List<Contatto> rows = new ArrayList<Contatto>();
-
-		FileReader reader = null;
-		BufferedReader bufferedReader = null;
-
-		try {
-
-			reader = new FileReader(path);
-			bufferedReader = new BufferedReader(reader);
-
-			String row;
-			Contatto contatto;
-			String[] r;
-
-			while (bufferedReader.ready()) {
-				
-				row = bufferedReader.readLine();
-
-				r = row.split(sep);
-				
-				contatto = new Contatto();
-				contatto.setCognome(r[0]);
-				contatto.setNome(r[1]);
-				contatto.setTelefono(r[2]);
-				contatto.setEmail(r[3]);
-
-				rows.add(contatto);
-			}
-
-		} catch (IOException ioEx) {
-			ioEx.printStackTrace();
-			throw ioEx;
-
-		} finally {
-
-			try {
-				if (bufferedReader != null) {
-					bufferedReader.close();
-				}
-				if (reader != null) {
-					reader.close();
-				}
-			} catch (Exception fEx) {
-				fEx.printStackTrace();
-			}
-		}
-		return rows;
-		
-	}
 	
 	public static List<Contatto> sortRubricaNome(List<Contatto> rubrica)
 	{
@@ -239,6 +196,7 @@ public class Gestore_Rubrica {
 			System.out.println(c.getNome());
 			System.out.println(c.getTelefono());
 			System.out.println(c.getEmail());
+			System.out.println(c.getNote());
 		}
 		
 	}
@@ -250,10 +208,11 @@ public class Gestore_Rubrica {
 		System.out.println(c.getNome());
 		System.out.println(c.getTelefono());
 		System.out.println(c.getEmail());
+		System.out.println(c.getNote());
 		
 	}
 	
-	// METODI PER RUBRICA
+	// METODI PER CSV
 	
 	public static void addContact(Contatto nuovo) {
 		
@@ -291,4 +250,56 @@ public class Gestore_Rubrica {
 		
 	}
 	
+public static List<Contatto> readRubrica(String path, String sep) throws IOException {
+		
+		
+		List<Contatto> rows = new ArrayList<Contatto>();
+
+		FileReader reader = null;
+		BufferedReader bufferedReader = null;
+
+		try {
+
+			reader = new FileReader(path);
+			bufferedReader = new BufferedReader(reader);
+
+			String row;
+			Contatto contatto;
+			String[] r;
+
+			while (bufferedReader.ready()) {
+				
+				row = bufferedReader.readLine();
+
+				r = row.split(sep);
+				
+				contatto = new Contatto();
+				contatto.setCognome(r[0]);
+				contatto.setNome(r[1]);
+				contatto.setTelefono(r[2]);
+				contatto.setEmail(r[3]);
+
+				rows.add(contatto);
+			}
+
+		} catch (IOException ioEx) {
+			ioEx.printStackTrace();
+			throw ioEx;
+
+		} finally {
+
+			try {
+				if (bufferedReader != null) {
+					bufferedReader.close();
+				}
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		return rows;
+		
+	}
 }
