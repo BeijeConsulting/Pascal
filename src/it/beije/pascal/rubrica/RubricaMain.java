@@ -101,12 +101,12 @@ public class RubricaMain {
 
 	private static Contatto selezionaContattoDaInput() {
 		List<Contatto> risultati = null;
-		System.out.println("1. Rocerca per nome e cognome\t2. Ricerca completa");
+		System.out.println("1. Ricerca per nome e cognome\t2. Ricerca completa");
 		int scelta = s.nextInt();s.nextLine();
 		switch(scelta) {
 		case 1 : risultati = selezionaContattoNomeCognome();
 		case 2 : risultati = selezionaContattoCompleto();
-		defailt: break;
+		default: break;
 		}
 		if (risultati == null) return null;
 		
