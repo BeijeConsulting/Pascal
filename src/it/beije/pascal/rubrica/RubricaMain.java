@@ -11,6 +11,7 @@ public class RubricaMain {
 
 	static Scanner s = null;
 	static List<Contatto> workingRubrica = null;
+	static RubricaJDBC rubricaDB = new RubricaJDBC();
 
 	public static void main(String[] args) {
 		System.out.println("Benvenuti in Rubrica");
@@ -62,7 +63,7 @@ public class RubricaMain {
 		System.out.print("note: ");
 		c.setNote(s.nextLine());
 
-		//esportaRubrica(c);
+		addContatto(c);
 
 		//test
 		System.out.println("Inserito " + c.toString());
@@ -165,7 +166,7 @@ public class RubricaMain {
 	}
 	
 	private static void addContatto(Contatto c) {
-		RubricaCSV.addContatto(c);
+		rubricaDB.inserisciContatto(c);
 		System.out.println("Aggiunto");
 	}
 
