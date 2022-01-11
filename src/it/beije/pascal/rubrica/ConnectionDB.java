@@ -16,6 +16,7 @@ public class ConnectionDB {
 	public static final String INSERT_INTO_RUBRICA = "INSERT INTO contatti (cognome, nome, telefono, email, note) VALUES (?,?,?,?,?)";
 	public static final String UPDATE = "UPDATE contatti SET cognome = ? WHERE cognome = ?";
 	public static final String DELETE = "DELETE FROM contatti WHERE cognome = ?";
+	public static final String DUPLICATE_BY_NUMBER = "SELECT id, cognome, nome, telefono, email, note, count(telefono) FROM contatti GROUP BY telefono HAVING COUNT(telefono)>1";
 	
 	public ConnectionDB() {
 		
@@ -400,6 +401,64 @@ public class ConnectionDB {
 		}
 	
 		
+	}
+	
+	public static List<Contatto> searchDuplicateDB() throws Exception {
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		List<Contatto> rubrica = new ArrayList<Contatto>();
+		
+		Contatto trovato;
+		
+		Connection connection = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "ardente");
+			
+			trovato = new Contatto();
+			
+			System.out.println("Stato connessione "+ !connection.isClosed());
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(ConnectionDB.DUPLICATE_BY_NUMBER);
+			
+			rs = preparedStatement.executeQuery();
+			
+			while (rs.next()) {
+				
+				trovato = new Contatto();
+				trovato.setId(rs.getInt("id"));
+				trovato.setCognome(rs.getString("cognome"));
+				trovato.setNome(rs.getString("nome"));
+				trovato.setTelefono(rs.getString("telefono"));
+				trovato.setEmail(rs.getString("email"));
+				trovato.setNote(rs.getString("note"));
+				
+				rubrica.add(trovato);
+
+			}
+			
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			throw e;
+			
+		} finally {
+			
+			try {
+				
+				rs.close();
+				connection.close();
+				
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		
+		return rubrica;
 	}
 	
 }

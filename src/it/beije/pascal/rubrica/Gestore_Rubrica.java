@@ -120,7 +120,8 @@ public class Gestore_Rubrica {
 			
 		case 7:
 			
-			System.out.println("Sei in caso 7");
+			rubrica=ConnectionDB.searchDuplicateDB();
+			visualRubrica(rubrica);
 			
 			break;
 		case 8:
@@ -131,7 +132,7 @@ public class Gestore_Rubrica {
 		case 9:
 			
 			rubrica = ConnectionDB.trovaRubricaDB();
-			
+			scriviRubricaCSV(rubrica);
 			
 			
 			break;
@@ -336,6 +337,44 @@ public class Gestore_Rubrica {
 			}
 		}
 		return rows;
+		
+	}
+	
+	public static void scriviRubricaCSV(List<Contatto> contatti)
+	{
+		
+		FileWriter writer = null;
+		String stampa;
+		
+		try {
+			
+			File newFile = new File("/temp/rubricaGrande.csv");
+			System.out.println("esiste ? " + newFile.exists());
+			writer = new FileWriter(newFile);
+			
+			stampa = contatti.toString() + "\n";
+			
+			writer.write(stampa);
+			
+			writer.flush();
+			
+		}catch (IOException ioEx) {
+			ioEx.printStackTrace();
+			
+		} finally {
+			
+			try {
+				
+				if (writer != null) {
+					writer.close();
+				}
+				
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		
+		
 		
 	}
 }
