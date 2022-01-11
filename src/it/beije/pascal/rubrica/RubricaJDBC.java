@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RubricaJDBC {
 
 	Connection connection;
-	
+
 	public RubricaJDBC() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -19,14 +21,132 @@ public class RubricaJDBC {
 			e.printStackTrace();
 		}
 		connection = null;
+
+	}
+
+	public static void main(String[] args) throws Exception {
+		Contatto contatto = new Contatto();
+		contatto = RubricaCSV.loadRubricaFromCSV().get(0);
+		RubricaJDBC rubrica = new RubricaJDBC();
+//		rubrica.inserisciContatto(contatto );
+//		rubrica.modificaContatto(1, new String[]{"nome", "cognome"}, new String[]{"Andrea" ,"Rossi"});
+		rubrica.cercaContatto(new String[] {"nome",  "cognome"}, new String[] {"mario", "rossi"});
+	}
+
+
+
+	public void inserisciContatto(Contatto contatto) {
+		String query = "INSERT INTO contatti (nome, cognome, telefono, email, note) VALUES (" 
+				+"'"+ contatto.getNome() 	+"'"+ ", "  
+				+"'"+ contatto.getCognome() +"'"+ ", " 
+				+"'"+ contatto.getTelefono()+"'" + ", " 
+				+"'"+ contatto.getEmail() 	+"'"+ ", " 
+				+"'"+ contatto.getNote() 	+"'"+ ")";
+
+		executeStatement(query);
+
+	}
+
+	public List<Contatto> cercaContatto(String[] campi, String[] parametri) {
+		//TODO controlli su . lunghezza di contatti e campi uguale
+		List<Contatto> risultati = new ArrayList<Contatto>();
+		
+		//build query
+		StringBuilder queryBuilder = new StringBuilder().append("SELECT * ").append("FROM contatti WHERE ");
+		for (int i = 0; i < campi.length; i++) {
+			queryBuilder.append(campi[i] + " = '" + parametri[i] +"' AND ");
+		}
+		queryBuilder.delete(queryBuilder.lastIndexOf("AND"), queryBuilder.lastIndexOf("AND")+3);
+		
+//		test
+		System.out.println("query : "+queryBuilder.toString());
+		//execute
+		risultati = extractContattiFromQuery(queryBuilder.toString());
+		return risultati;
+	}
+
+	private List<Contatto> extractContattiFromQuery(String query) {
+		Statement statement = null;
+		ResultSet rs = null;
+		List<Contatto> risultati = new ArrayList<Contatto>();
+		
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
+
+			System.out.println(!connection.isClosed());
+			
+			statement = connection.createStatement();
+			rs = statement.executeQuery(query);
+			
+			Contatto contatto = new Contatto();
+			while (rs.next()) {
+				contatto.setId(rs.getInt("id"));
+				contatto.setCognome(rs.getString("cognome"));
+				contatto.setNome( rs.getString("nome"));
+				contatto.setTelefono( rs.getString("telefono"));
+				contatto.setEmail( rs.getString("email"));
+				contatto.setNote( rs.getString("note"));
+				
+				//control
+				System.out.println(contatto.toString());
+				
+				risultati.add(contatto);
+			}
+			
+			return risultati;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				statement.close();
+				connection.close();
+			} catch (Exception fEx) {
+				fEx.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	public void modificaContatto(int id, String[]campi, String[] parametri) {
+		
+		//build the query statement
+		StringBuilder queryBuilder = new StringBuilder().append("UPDATE contatti SET  ");
+		for (int i = 0; i < campi.length; i++) {
+			queryBuilder.append(campi[i] + " = '" + parametri[i] +"',");
+		}
+		queryBuilder.deleteCharAt(queryBuilder.lastIndexOf(","));
+		queryBuilder.append(" WHERE id = " + id);
+		
+		//execute
+		executeStatement(queryBuilder.toString());
 		
 	}
 	
-	public static void main(String[] args) throws Exception {
-		
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		
-		Connection connection = null;
+	private void executeStatement(String query) {
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
+			Statement statement = connection.createStatement();
+
+			boolean rs = statement.execute(query);
+			System.out.println("risultato della query di inserimento: " + rs);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				if (!connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("errore nella chiusura della connessione");
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private ResultSet executeQuery(String query) throws Exception {
 		Statement statement = null;
 		ResultSet rs = null;
 		
@@ -36,94 +156,21 @@ public class RubricaJDBC {
 			System.out.println(!connection.isClosed());
 			
 			statement = connection.createStatement();
+			rs = statement.executeQuery(query);
 			
-			//SELECT
-			rs = statement.executeQuery("SELECT * FROM contatti WHERE cognome = '" + args[0] + "'");
-			
-			while (rs.next()) {
-				System.out.println("id : " + rs.getInt("id"));
-				System.out.println("cognome : " + rs.getString("cognome"));
-				System.out.println("nome : " + rs.getString("nome"));
-				System.out.println("telefono : " + rs.getString("telefono"));
-				System.out.println("email : " + rs.getString("email"));
-				System.out.println("note : " + rs.getString("note"));
-				System.out.println("\n");
-			}
-			
-			
-			//INSERT
-//			int r = statement.executeUpdate("INSERT INTO contatti VALUES (null, 'Verdi', 'Mauro', '3474646467', 'verdi.mauro@beije.it', 'sono un nuovo contatto')");
-//			System.out.println("r = " + r);
-			
-			//UPDATE
-//			int r = statement.executeUpdate("UPDATE contatti SET cognome = 'rossi' WHERE cognome = 'rosa'");
-//			System.out.println("r = " + r);
-
-			//DELETE
-//			int r = statement.executeUpdate("DELETE FROM contatti WHERE cognome = 'verdi'");
-//			System.out.println("r = " + r);
-			
+			return rs;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
 			try {
-				//rs.close();
+				rs.close();
 				statement.close();
 				connection.close();
 			} catch (Exception fEx) {
 				fEx.printStackTrace();
 			}
 		}
-		
 	}
 	
-	
-	
-	public void inserisciContatto(Contatto contatto) {
-		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
-			Statement statement = connection.createStatement();
-			
-			StringBuilder queryBuilder = new StringBuilder();
-			queryBuilder.append("INSERT INTO contatti (nome, cognome, telefonoemail, note) VALUES");
-			
-			
-			
-			ResultSet rs = statement.executeQuery("INSERT INTO contatti (nome, cognome, telefonoemail, note) VALUES (" 
-					+ contatto.getNome() + ", " 
-					+ contatto.getCognome() + ", " 
-					+ contatto.getTelefono() + ", " 
-					+ contatto.getEmail() + ", " 
-					+ contatto.getNote() + ")");
-			
-			
-			System.out.println("risultato della query di inserimento: " + rs.next());
-			rs.close();
-			
-		//TODO
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}finally {
-		try {
-			if (!connection.isClosed()) {
-				connection.close();
-			}
-		} catch (SQLException e) {
-			System.out.println("errore nella chiusura della connessione");
-			e.printStackTrace();
-		}
-	}
-		
-	}
-	
-	public Contatto cercaContatto(String[] campi, String[] parametri) {
-		//TODO
-		return null;
-	}
-	
-	public void modificaContatto(int id, String[]campi, String[] parametri) {
-		//TODO
-	}
 }
