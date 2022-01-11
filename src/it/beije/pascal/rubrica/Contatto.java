@@ -21,6 +21,17 @@ public class Contatto {
 	private String email;
 	private String note;
 	
+	public Contatto() {}
+	
+	public Contatto(String cognome, String nome, String telefono, String email, String note) {
+		super();
+		this.cognome = cognome;
+		this.nome = nome;
+		this.telefono = telefono;
+		this.email = email;
+		this.note = note;
+	}
+	
 	public int getId() {
 		return id;
 	}

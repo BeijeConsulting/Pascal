@@ -2,8 +2,6 @@ package it.beije.pascal.rubrica;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -73,7 +71,7 @@ public class RubricaMain {
 		System.out.println("Contatto: "+ c.getNome() + " " + c.getCognome() + "\n"
 				+ "Telefono : " + c.getTelefono() + "\n"
 				+ "Email : " + c.getEmail() + "\n"
-				+ "Note : " + c.getNote());
+				+ "Note : " + c.getNote()+ "\n");
 	}
 
 	private static void modificaContatto() {
@@ -102,20 +100,51 @@ public class RubricaMain {
 	}
 
 	private static Contatto selezionaContattoDaInput() {
+		List<Contatto> risultati = null;
+		System.out.println("1. Rocerca per nome e cognome\t2. Ricerca completa");
+		int scelta = s.nextInt();s.nextLine();
+		switch(scelta) {
+		case 1 : risultati = selezionaContattoNomeCognome();
+		case 2 : risultati = selezionaContattoCompleto();
+		defailt: break;
+		}
+		if (risultati == null) return null;
+		
+		System.out.println("Quale contatto stai cercando?");
+		for(int i =0; i<risultati.size(); i++) {
+			System.out.println(i + " : " + risultati.get(i));
+		}
+		scelta = s.nextInt(); s.nextLine();
+		Contatto contattoScelto = risultati.get(scelta);
+		return contattoScelto;
+	}
+
+	private static List<Contatto> selezionaContattoCompleto() {
+		List<Contatto> risultati;
+		System.out.println("Seleziona contatto \nnome: ");
+		String nome = s.nextLine();
+		System.out.println("cognome: ");
+		String cognome = s.nextLine();
+		System.out.println("telefono: ");
+		String tel = s.nextLine();
+		System.out.println("email: ");
+		String email = s.nextLine();
+		System.out.println("note: ");
+		String note = s.nextLine();
+
+		risultati = rubricaDB.cercaContatto(new Contatto(cognome, nome, tel, email, note));
+		return risultati;
+	}
+
+	private static List<Contatto> selezionaContattoNomeCognome() {
+		List<Contatto> risultati;
 		System.out.println("Seleziona contatto \nnome: ");
 		String nome = s.nextLine();
 		System.out.println("cognome: ");
 		String cognome = s.nextLine();
 
-		List<Contatto> risultati = new ArrayList<>();
 		risultati = cercaPerNomeCognome(nome, cognome);
-		System.out.println("Quale contatto stai cercando?");
-		for(int i =0; i<risultati.size(); i++) {
-			System.out.println(i + " : " + risultati.get(i));
-		}
-		int scelta = s.nextInt();
-		Contatto contattoScelto = risultati.get(scelta);
-		return contattoScelto;
+		return risultati;
 	}
 
 	private static void eliminaContatto() {
@@ -134,8 +163,52 @@ public class RubricaMain {
 	}
 
 	private static void unisciContatti() {
-		// TODO Auto-generated method stub
-
+		//  Auto-generated method stub
+		System.out.println("Seleziona contatto da unificare:");
+		//  show duplicate names ask to select a name
+		List<Contatto> duplicati = rubricaDB.listDuplicates();
+		int i =1;
+		for(Contatto c : duplicati ) {
+			System.out.println(i +": " + c.getNome() + " " + c.getCognome());
+			i++;
+		}
+		//  show group of duplicates with index
+		int scelta =s.nextInt()-1; s.nextLine();
+		Contatto cScelto = duplicati.get(scelta);
+		duplicati = rubricaDB.cercaContattoNomeCognome(cScelto.getNome(), cScelto.getCognome());
+		
+		
+		System.out.println("Duplicati");
+		i=1;
+		for(Contatto c : duplicati) {
+			System.out.println(i + ": " + c.toString());
+			i++;
+		}
+		
+		// TODO select which of every field to load 
+		Contatto nuovoC = cScelto;
+		System.out.print("Da quale contatto prendo il Telefono? 	: ");
+		String telefono = duplicati.get(s.nextInt()-1).getTelefono();
+		cScelto.setTelefono(telefono);
+		s.nextLine();
+		System.out.print("Da quale contatto prendo l Email? 		: ");
+		String email = duplicati.get(s.nextInt()-1).getEmail();
+		cScelto.setTelefono(email);
+		s.nextLine();
+		System.out.print("Da quale contatto prendo le Note? 		: ");
+		String note = duplicati.get(s.nextInt()-1).getNote();
+		cScelto.setTelefono(note);
+		s.nextLine();
+		
+		// Delete every duplicate
+		for(Contatto c : duplicati) {
+			rubricaDB.eliminaContatto(c.getId());
+		}
+		
+		//add the new merged contact
+		rubricaDB.inserisciContatto(nuovoC);
+		
+		System.out.println("Contatti uniti!");
 	}
 
 	private static void stampaListaContatti() {
@@ -182,9 +255,11 @@ public class RubricaMain {
 		
 	}
 
-	private static void importXML(String fileName) {
-		// TODO Auto-generated method stub
-		
+	//TODO untested
+	private static void importXML(String fileName) { 
+		List<Contatto> contatti = RubricaXML.loadRubricaFromXML(fileName);
+		for(Contatto c : contatti)	//TODO change to single query
+			rubricaDB.inserisciContatto(c);
 	}
 
 	private static void exportCSV(String fileName) throws IOException {
@@ -195,13 +270,8 @@ public class RubricaMain {
 
 	private static void importCSV(String fileName) throws IOException {
 		List<Contatto> contatti = RubricaCSV.loadRubricaFromCSV(fileName, RubricaCSV.STANDARD_SEPARATOR);
-		for(Contatto c : contatti)
+		for(Contatto c : contatti)	//TODO change to single query
 			rubricaDB.inserisciContatto(c);
-	}
-
-	//methods to separate the implementation of the db from the rest
-	private static void removeContatto(Contatto contatto) {
-		RubricaCSV.removeContatto(contatto);
 	}
 
 	private static void addContatto(Contatto c) {
@@ -210,36 +280,8 @@ public class RubricaMain {
 	}
 
 	private static List<Contatto> cercaPerNomeCognome(String nome, String cognome) {
-		List<Contatto> contatti = new ArrayList();
 		List<Contatto> risultati = new ArrayList<>();
-
-		//csv
-		/*
-		try {
-			contatti = caricaRubrica();
-		} catch (IOException e) {
-			System.out.println("errore nel caricamento della rubrica");
-			e.printStackTrace();
-			return risultati;
-		}
-		for(Contatto c : contatti) {
-			if (nome==null || nome.equals("")|| c.getNome().equals(nome))
-				if (cognome == null || cognome.equals("") || c.getCognome().equals(cognome))
-					risultati.add(c);
-		}
-		 */
-
-		//DB
-		risultati = rubricaDB.cercaContatto(nome, cognome);
+		risultati = rubricaDB.cercaContattoNomeCognome(nome, cognome);
 		return risultati;
-	}
-
-	private static List<Contatto> caricaRubrica() throws IOException{
-		List<Contatto> rubrica = RubricaCSV.loadRubricaFromCSV();
-		return rubrica;
-	}
-
-	private static void caricaRubrica(List<Contatto> rubrica) throws IOException {
-		RubricaCSV.writeContatti(rubrica);
 	}
 }

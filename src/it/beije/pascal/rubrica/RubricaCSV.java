@@ -19,7 +19,7 @@ public class RubricaCSV {
 	
 	public static void main(String[] args) throws IOException {
 		
-		List<Contatto> contatti = loadRubricaFromCSV(PATH, STANDARD_SEPARATOR);
+//		List<Contatto> contatti = loadRubricaFromCSV(PATH, STANDARD_SEPARATOR);
 //		writeContatti(contatti, PATH_NEW, "\t");
 	}
 
