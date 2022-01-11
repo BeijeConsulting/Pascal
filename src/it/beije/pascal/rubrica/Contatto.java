@@ -13,12 +13,13 @@ PRIMARY KEY (`id`));
 
 
 public class Contatto {
-	
+	private int id;
 	private String cognome;
 	private String nome;
 	private String telefono;
 	private String email;
 	private String note;
+	
 	
 	public String getCognome() {
 		return cognome;
@@ -55,6 +56,13 @@ public class Contatto {
 		this.note = note;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder()
 				.append("{ cognome : ").append(this.cognome)
@@ -65,5 +73,6 @@ public class Contatto {
 		
 		return builder.toString();
 	}
+	
 	
 }
