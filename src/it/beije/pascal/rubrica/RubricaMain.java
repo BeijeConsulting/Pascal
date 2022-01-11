@@ -64,33 +64,19 @@ public class RubricaMain {
 		c.setNote(s.nextLine());
 
 		addContatto(c);
-
-		//test
-		System.out.println("Inserito " + c.toString());
 	}
 
-	//TODO la ricerca per lista funziona
 	private static void cercaContatto() {
-		System.out.println("Cerca per: Nome, Cognome, Telefono, Email");
-		String input = s.nextLine();
-
+		Contatto c = selezionaContattoDaInput();
+		System.out.println("Contatto: "+ c.getNome() + " " + c.getCognome() + "\n"
+				+ "Telefono : " + c.getTelefono() + "\n"
+				+ "Email : " + c.getEmail() + "\n"
+				+ "Note : " + c.getNote());
 	}
 
-	//TODO adatta a db
 	private static void modificaContatto() {
-		System.out.println("Seleziona contatto da modificare\nnome: ");
-		String nome = s.nextLine();
-		System.out.println("cognome: ");
-		String cognome = s.nextLine();
-
-		List<Contatto> risultati = new ArrayList<>();
-		risultati = cercaPerNomeCognome(nome, cognome);
-		System.out.println("Quale contatto vuoi modificare?");
-		for(int i =0; i<risultati.size(); i++) {
-			System.out.println(i + " : " + risultati.get(i));
-		}
-		int scelta = s.nextInt();
-		Contatto contattoScelto = risultati.get(scelta);
+		int scelta;
+		Contatto contattoScelto = selezionaContattoDaInput();
 		do {
 			System.out.println("Quale campo vuoi modificare: 1.Nome, 2.Cognome, 3.Telefono, 4.Email | 0.fine modifiche");
 			scelta = s.nextInt();
@@ -106,31 +92,42 @@ public class RubricaMain {
 			case 4: contattoScelto.setEmail(nuovoCampo);break;
 			}
 		}while(scelta !=0);
-		
+
 		//execute changes to DB
 		rubricaDB.modificaContatto(contattoScelto.getId(), contattoScelto);
-		
-		
+
+
+	}
+
+	private static Contatto selezionaContattoDaInput() {
+		System.out.println("Seleziona contatto \nnome: ");
+		String nome = s.nextLine();
+		System.out.println("cognome: ");
+		String cognome = s.nextLine();
+
+		List<Contatto> risultati = new ArrayList<>();
+		risultati = cercaPerNomeCognome(nome, cognome);
+		System.out.println("Quale contatto stai cercando?");
+		for(int i =0; i<risultati.size(); i++) {
+			System.out.println(i + " : " + risultati.get(i));
+		}
+		int scelta = s.nextInt();
+		Contatto contattoScelto = risultati.get(scelta);
+		return contattoScelto;
 	}
 
 	private static void eliminaContatto() {
-		// TODO Auto-generated method stub
-
+		Contatto daEliminare = selezionaContattoDaInput();
+		rubricaDB.eliminaContatto(daEliminare.getId());
+		s.nextLine();
 	}
 
 	private static void trovaDuplicati() {
-		// TODO Auto-generated method stub
-		try {
-			List<Contatto> contatti = caricaRubrica();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		//TODO
+		List<Contatto> contatti = rubricaDB.listDuplicates();
+		for(Contatto c : contatti) {
+			System.out.println(c.toString());
 		}
-		List<Contatto> duplicati = new ArrayList<Contatto>();
-		for (int i = 0; i < duplicati.size(); i++) {
-			Contatto c = duplicati.get(i);
-		}
-
 
 	}
 
@@ -141,7 +138,17 @@ public class RubricaMain {
 
 	private static void stampaListaContatti() {
 		// TODO Auto-generated method stub
-
+		System.out.println("Elenca in ordine di: \n\t1.Nome\n\t2.Cognome");
+		int scelta = s.nextInt();
+		s.nextLine();
+		List<Contatto> contatti = new ArrayList<>();
+		switch(scelta) {
+		case 1: contatti = rubricaDB.listAllOrderedBy("nome", true); break;
+		case 2: contatti = rubricaDB.listAllOrderedBy("cognome", true); break;
+		}
+		for(Contatto c : contatti) {
+			System.out.println(c.toString());
+		}
 	}
 
 	//Utility methods
@@ -150,16 +157,16 @@ public class RubricaMain {
 	private static void removeContatto(Contatto contatto) {
 		RubricaCSV.removeContatto(contatto);
 	}
-	
+
 	private static void addContatto(Contatto c) {
 		rubricaDB.inserisciContatto(c);
 		System.out.println("Aggiunto");
 	}
-	
+
 	private static List<Contatto> cercaPerNomeCognome(String nome, String cognome) {
 		List<Contatto> contatti = new ArrayList();
 		List<Contatto> risultati = new ArrayList<>();
-		
+
 		//csv
 		/*
 		try {
@@ -174,8 +181,8 @@ public class RubricaMain {
 				if (cognome == null || cognome.equals("") || c.getCognome().equals(cognome))
 					risultati.add(c);
 		}
-		*/
-		
+		 */
+
 		//DB
 		risultati = rubricaDB.cercaContatto(nome, cognome);
 		return risultati;

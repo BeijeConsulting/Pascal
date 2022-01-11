@@ -16,6 +16,10 @@ public class RubricaJDBC {
 	public static final String SELECT_COGNOME_NOME = "SELECT * FROM contatti WHERE cognome = ? AND nome = ?";
 	public static final String INSERT_INTO_RUBRICA = "INSERT INTO contatti (cognome, nome, telefono, email, note) VALUES (?,?,?,?,?)";
 	public static final String UPDATE_WHERE_ID = "UPDATE contatti SET cognome = ?, nome = ?, telefono = ?, email = ?, note = ? WHERE id = ?";
+	public static final String DELETE_WHERE_ID = "DELETE FROM contatti WHERE id = ?";
+	public static final String SELECT_ORDERBY = "SELECT * FROM contatti ORDER BY %s %s";
+	public static final String SELECT_DUPLICATES = "SELECT * FROM  contatti GROUP BY nome, cognome HAVING COUNT(id) > 1";
+	
 
 	Connection connection;
 
@@ -183,6 +187,106 @@ public class RubricaJDBC {
 		executeStatement(queryBuilder.toString());
 
 	}
+	
+	public void eliminaContatto(int id) {
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
+			PreparedStatement preparedStatement = connection.prepareStatement(DELETE_WHERE_ID);
+			preparedStatement.setInt(1, id);
+			int result = preparedStatement.executeUpdate();
+			System.out.println("risultato della modifica " + result);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				if (!connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("errore nella chiusura della connessione");
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public List<Contatto> listAllOrderedBy(String byWhat, boolean asc){
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
+			Statement statement = connection.createStatement();
+			String sql = String.format(SELECT_ORDERBY, byWhat, asc?"ASC":"DESC");
+	
+			ResultSet rs = statement.executeQuery(sql);
+			
+			List<Contatto> risultati = new ArrayList<>();
+			Contatto contatto ;
+			while (rs.next()) {
+				contatto = new Contatto();
+				contatto.setId(rs.getInt("id"));
+				contatto.setCognome(rs.getString("cognome"));
+				contatto.setNome( rs.getString("nome"));
+				contatto.setTelefono( rs.getString("telefono"));
+				contatto.setEmail( rs.getString("email"));
+				contatto.setNote( rs.getString("note"));
+				risultati.add(contatto);
+			}
+			return risultati;
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				if (!connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("errore nella chiusura della connessione");
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
+	public List<Contatto> listDuplicates(){
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(SELECT_DUPLICATES);
+			
+			List<Contatto> risultati = new ArrayList<>();
+			Contatto contatto ;
+			while (rs.next()) {
+				contatto = new Contatto();
+				contatto.setId(rs.getInt("id"));
+				contatto.setCognome(rs.getString("cognome"));
+				contatto.setNome( rs.getString("nome"));
+				contatto.setTelefono( rs.getString("telefono"));
+				contatto.setEmail( rs.getString("email"));
+				contatto.setNote( rs.getString("note"));
+				risultati.add(contatto);
+			}
+			return risultati;
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				if (!connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("errore nella chiusura della connessione");
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
+	
+	//Old methods
 
 	private void executeStatement(String query) {
 		try {
