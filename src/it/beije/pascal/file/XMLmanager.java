@@ -125,6 +125,10 @@ public class XMLmanager {
 		return value;
 	}
 
+	
+	
+	
+	
 	public static void main(String[] args) throws Exception {
 
 		System.out.println("print contatti :");

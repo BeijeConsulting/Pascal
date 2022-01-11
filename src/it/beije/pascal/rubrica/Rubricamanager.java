@@ -2,6 +2,11 @@ package it.beije.pascal.rubrica;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,7 +33,7 @@ public class Rubricamanager {
 		} while (scelta < 0 || scelta > 5);
 
 		switch (scelta) {
-		case 0: 
+		case 0:
 			System.exit(0);
 		case 1: {
 			System.out.print("inserisci categoria per la quale ordinare : (cognome,nome,telefono,email,note) --> ");
@@ -54,7 +59,7 @@ public class Rubricamanager {
 				for (Contatto contatto : contatti) {
 					System.out.println(contatto);
 				}
-			}else
+			} else
 				System.out.println("Nessun contatto con queste informazioni");
 			break;
 		}
@@ -97,10 +102,10 @@ public class Rubricamanager {
 		}
 
 		case 5: {
-			
+
 			break;
 		}
-		
+
 		case 6: {
 			System.out.println("Unisci contatti : ");
 			unisciContatti();
@@ -149,6 +154,11 @@ public class Rubricamanager {
 			}
 		});
 
+		
+		//JDBC
+		
+		
+		
 		return contatti;
 
 	}
@@ -169,6 +179,28 @@ public class Rubricamanager {
 				trovati.add(cont);
 		}
 
+		
+		// JDBC
+		List<Contatto> trovatijdbc = new ArrayList<Contatto>();
+		Class<?> c2 = Class.forName("it.beije.pascal.rubrica.Contatto");
+
+		StringBuilder stringBuilder2 = new StringBuilder()
+				.append(categoria.toLowerCase().substring(0, 1).toUpperCase() + categoria.substring(1));
+
+		ResultSet rs = createConn()
+				.executeQuery("SELECT * FROM contatti where " + stringBuilder2.toString() + " = '" + s + "';");
+
+		while (rs.next()) {
+			trovatijdbc.add(new Contatto(rs.getString("cognome"), rs.getString("nome"), rs.getString("telefono"),
+					rs.getString("email"), rs.getString("note")));
+		}
+
+		System.out.println("######################");
+		for (Contatto contatto : trovatijdbc) {
+			System.out.println(contatto);
+		}
+		System.out.println("######################");
+
 		return trovati;
 	}
 
@@ -176,8 +208,14 @@ public class Rubricamanager {
 		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
 
 		contatti.add(c);
-
+		
 		XMLmanager.writeRubricaXML(contatti, PATH);
+		
+		// JDBC
+		int r = createConn().executeUpdate("INSERT INTO contatti VALUES (null, '" + c.getCognome() + "', '"
+				+ c.getNome() + "', '" + c.getTelefono() + "', '" + c.getEmail() + "', '" + c.getNote() + "')");
+
+
 	}
 
 	public static void deleteContatto(Contatto c) throws Exception {
@@ -192,8 +230,15 @@ public class Rubricamanager {
 			contatti.remove(c);
 			XMLmanager.writeRubricaXML(contatti, PATH);
 		} else {
-			System.out.println("nessun contatto trovato");
+			System.out.println("nessun contatto trovato XML");
 		}
+		// JDBC
+		int r = createConn().executeUpdate("DELETE FROM contatti WHERE cognome = '" + c.getCognome() + "' "
+				+ "AND nome = '" + c.getNome() + "' AND telefono = '" + c.getTelefono() + "'" + "AND email = '"
+				+ c.getEmail() + "'AND note = '" + c.getNote() + "'; ");
+
+		if (r == 0)
+			System.out.println("nessun contatto trovato JDBC");
 	}
 
 	public static void trovaContattiDuplicati() throws Exception {
@@ -226,6 +271,23 @@ public class Rubricamanager {
 		}
 
 		XMLmanager.writeRubricaXML(contatti, PATH);
+	}
+
+	public static Statement createConn() {
+		Statement statement = null;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection connection = DriverManager
+					.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Chinetti");
+			statement = connection.createStatement();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		if (statement != null)
+			return statement;
+		else
+			return null;
+
 	}
 
 }
