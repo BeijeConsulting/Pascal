@@ -1,8 +1,16 @@
 package it.beije.pascal.file;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +28,8 @@ import it.beije.pascal.rubrica.Contatto;
 
 public class XMLmanager {
 
+	public static final String PATH = "./rubrica.xml";
+	
 	public static List<Element> getChildElements(Element element) {
 		List<Element> childElements = new ArrayList<Element>();
 		NodeList nodeList = element.getChildNodes();
@@ -114,7 +124,6 @@ public class XMLmanager {
 		//transformer.transform(source, syso);
 	}
 
-
 	private static String getTextValue(Element doc, String tag) {
 		String value = "";
 		NodeList nl;
@@ -126,7 +135,105 @@ public class XMLmanager {
 	}
 
 	
-	
+	public static List<Contatto> allContacts(String categoria) throws Exception {
+		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
+
+		StringBuilder stringBuilder = new StringBuilder("get")
+				.append(categoria.toLowerCase().substring(0, 1).toUpperCase() + categoria.substring(1));
+
+		Collections.sort(contatti, new Comparator<Contatto>() {
+			Class<?> c = Class.forName("it.beije.pascal.rubrica.Contatto");
+
+			public int compare(Contatto a1, Contatto a2) {
+				Method method = null;
+				String a = "", b = "";
+				try {
+					method = c.getDeclaredMethod(stringBuilder.toString());
+					a = (String) method.invoke(a1);
+					b = (String) method.invoke(a2);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+						| SecurityException | NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+
+				return a.compareTo(b);
+			}
+		});
+
+		return contatti;
+
+	}
+
+	public static List<Contatto> find(String s, String categoria) throws Exception {
+		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
+		List<Contatto> trovati = new ArrayList<Contatto>();
+
+		Class<?> c = Class.forName("it.beije.pascal.rubrica.Contatto");
+
+		StringBuilder stringBuilder = new StringBuilder("get")
+				.append(categoria.toLowerCase().substring(0, 1).toUpperCase() + categoria.substring(1));
+
+		for (Contatto cont : contatti) {
+			Method method = c.getDeclaredMethod(stringBuilder.toString());
+			String a = (String) method.invoke(cont);
+			if (a.equals(s))
+				trovati.add(cont);
+		}
+		
+		return trovati;
+	}
+
+	public static void insert(Contatto c) throws Exception {
+		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
+
+		contatti.add(c);
+		
+		XMLmanager.writeRubricaXML(contatti, PATH);
+	}
+
+	public static void deleteContatto(Contatto c) throws Exception {
+		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
+		boolean contains = false;
+		for (Contatto contatto : contatti) {
+			if (contatto.equals(c)) {
+				contains = true;
+			}
+		}
+		if (contains) {
+			contatti.remove(c);
+			XMLmanager.writeRubricaXML(contatti, PATH);
+		} else {
+			System.out.println("nessun contatto trovato XML");
+		}
+	}
+
+	public static Set<Contatto>  trovaContattiDuplicati() throws Exception {
+		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
+
+        Set<Contatto> items = new HashSet<>();
+        
+        return contatti.stream()
+            .filter(n -> !items.add(n))
+            .collect(Collectors.toSet());		
+	}
+
+	public static void unisciContatti() throws Exception {
+		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
+
+		List<Contatto> uniqueContatti = new ArrayList<Contatto>();
+
+		if (contatti.size() == 0)
+			return;
+
+		for (Contatto contatto : contatti) {
+			if (!uniqueContatti.contains(contatto))
+				uniqueContatti.add(contatto);
+		}
+
+		XMLmanager.writeRubricaXML(contatti, PATH);
+	}
+
+
 	
 	
 	public static void main(String[] args) throws Exception {

@@ -1,23 +1,16 @@
 package it.beije.pascal.rubrica;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
-import it.beije.pascal.file.XMLmanager;
+import it.beije.pascal.file.JDBCmanager;
 
 public class Rubricamanager {
 
-	public static final String PATH = "./rubrica.xml";
+	
 
 	public static void main(String[] args) throws Exception {
 
@@ -30,7 +23,7 @@ public class Rubricamanager {
 			System.out.print("inserisci scelta : ");
 			scelta = scanner.nextInt();
 			scanner.nextLine();
-		} while (scelta < 0 || scelta > 5);
+		} while (scelta < 0 || scelta > 7);
 
 		switch (scelta) {
 		case 0:
@@ -81,8 +74,22 @@ public class Rubricamanager {
 
 			break;
 		}
-
 		case 4: {
+			System.out.println("Modifica contatto: ");
+			System.out.print("inserisci id --> ");
+			int id = scanner.nextInt();
+			scanner.nextLine();
+			System.out.print("inserisci categoria --> ");
+			String categoria = scanner.nextLine();
+			System.out.print("inserisci nuovo valore --> ");
+			String nuovoValore = scanner.nextLine();
+			
+			updateContatto(id, categoria, nuovoValore);
+			
+			break;
+		}
+
+		case 5: {
 			System.out.println("Elimina contatto: ");
 			System.out.print("inserisci cognome --> ");
 			String cognome = scanner.nextLine();
@@ -101,12 +108,16 @@ public class Rubricamanager {
 			break;
 		}
 
-		case 5: {
-
+		case 6: {
+			System.out.println("Contatti duplicati: ");
+			Set<Contatto>  c = trovaContattiDuplicati();
+			for (Contatto contatto : c) {
+				System.out.println(contatto);
+			}
 			break;
 		}
 
-		case 6: {
+		case 7: {
 			System.out.println("Unisci contatti : ");
 			unisciContatti();
 			break;
@@ -123,171 +134,60 @@ public class Rubricamanager {
 		System.out.println("1 contatti ordinati : ");
 		System.out.println("2 cerca contatto : ");
 		System.out.println("3 inserisci nuovo contatto : ");
-		System.out.println("4 cancella contatto : ");
-		System.out.println("5 trova contatti duplicati");
-		System.out.println("6 unisci contatti duplicati");
+		System.out.println("4 modifica contatto : ");
+		System.out.println("5 cancella contatto : ");
+		System.out.println("6 trova contatti duplicati");
+		System.out.println("7 unisci contatti duplicati");
 		System.out.println("#######################");
 	}
 
 	public static List<Contatto> allContacts(String categoria) throws Exception {
-		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
-
-		StringBuilder stringBuilder = new StringBuilder("get")
-				.append(categoria.toLowerCase().substring(0, 1).toUpperCase() + categoria.substring(1));
-
-		Collections.sort(contatti, new Comparator<Contatto>() {
-			Class<?> c = Class.forName("it.beije.pascal.rubrica.Contatto");
-
-			public int compare(Contatto a1, Contatto a2) {
-				Method method = null;
-				String a = "", b = "";
-				try {
-					method = c.getDeclaredMethod(stringBuilder.toString());
-					a = (String) method.invoke(a1);
-					b = (String) method.invoke(a2);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-						| SecurityException | NoSuchMethodException e) {
-					e.printStackTrace();
-				}
-
-				return a.compareTo(b);
-			}
-		});
-
 		
-		//JDBC
+		//return JDBCmanager.sortCategoriaJDBC(categoria);
 		
+		return JDBCmanager.sortCategoriaJDBCPrepareStamtement(categoria);
 		
-		
-		return contatti;
+		//return XMLmanager.allContacts(categoria);
 
 	}
 
 	public static List<Contatto> find(String s, String categoria) throws Exception {
-		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
-		List<Contatto> trovati = new ArrayList<Contatto>();
-
-		Class<?> c = Class.forName("it.beije.pascal.rubrica.Contatto");
-
-		StringBuilder stringBuilder = new StringBuilder("get")
-				.append(categoria.toLowerCase().substring(0, 1).toUpperCase() + categoria.substring(1));
-
-		for (Contatto cont : contatti) {
-			Method method = c.getDeclaredMethod(stringBuilder.toString());
-			String a = (String) method.invoke(cont);
-			if (a.equals(s))
-				trovati.add(cont);
-		}
-
 		
-		// JDBC
-		List<Contatto> trovatijdbc = new ArrayList<Contatto>();
-		Class<?> c2 = Class.forName("it.beije.pascal.rubrica.Contatto");
-
-		StringBuilder stringBuilder2 = new StringBuilder()
-				.append(categoria.toLowerCase().substring(0, 1).toUpperCase() + categoria.substring(1));
-
-		ResultSet rs = createConn()
-				.executeQuery("SELECT * FROM contatti where " + stringBuilder2.toString() + " = '" + s + "';");
-
-		while (rs.next()) {
-			trovatijdbc.add(new Contatto(rs.getString("cognome"), rs.getString("nome"), rs.getString("telefono"),
-					rs.getString("email"), rs.getString("note")));
-		}
-
-		System.out.println("######################");
-		for (Contatto contatto : trovatijdbc) {
-			System.out.println(contatto);
-		}
-		System.out.println("######################");
-
-		return trovati;
+		return JDBCmanager.findJDBCPrepareStamtement(s, categoria);
+		
+		//return JDBCmanager.findJDBC(s, categoria);
+		
+		//return XMLmanager.find(s, categoria);
 	}
 
 	public static void insert(Contatto c) throws Exception {
-		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
-
-		contatti.add(c);
+		//XMLmanager.insert(c);
 		
-		XMLmanager.writeRubricaXML(contatti, PATH);
+		JDBCmanager.insertJDBCPrepareStamtement(c);
+		//JDBCmanager.insertJDBC(c);
+	}
+	
+	public static void updateContatto(int id, String categoria, String val) throws SQLException {
+		//JDBCmanager.updateContattoJDBC(id, categoria, val);
 		
-		// JDBC
-		int r = createConn().executeUpdate("INSERT INTO contatti VALUES (null, '" + c.getCognome() + "', '"
-				+ c.getNome() + "', '" + c.getTelefono() + "', '" + c.getEmail() + "', '" + c.getNote() + "')");
-
-
+		JDBCmanager.updateContattoJDBCPrepareStamtement(id, categoria, val);
 	}
 
 	public static void deleteContatto(Contatto c) throws Exception {
-		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
-		boolean contains = false;
-		for (Contatto contatto : contatti) {
-			if (contatto.equals(c)) {
-				contains = true;
-			}
-		}
-		if (contains) {
-			contatti.remove(c);
-			XMLmanager.writeRubricaXML(contatti, PATH);
-		} else {
-			System.out.println("nessun contatto trovato XML");
-		}
-		// JDBC
-		int r = createConn().executeUpdate("DELETE FROM contatti WHERE cognome = '" + c.getCognome() + "' "
-				+ "AND nome = '" + c.getNome() + "' AND telefono = '" + c.getTelefono() + "'" + "AND email = '"
-				+ c.getEmail() + "'AND note = '" + c.getNote() + "'; ");
-
-		if (r == 0)
-			System.out.println("nessun contatto trovato JDBC");
+		//XMLmanager.deleteContatto(c);
+		
+		JDBCmanager.deleteContattoJDBC(c);
+		//JDBCmanager.deleteContattoJDBCPrepareStamtement(c);
 	}
 
-	public static void trovaContattiDuplicati() throws Exception {
-		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
-
-		List<Contatto> uniqueContatti = new ArrayList<Contatto>();
-
-		if (contatti.size() == 0)
-			return;
-
-		for (Contatto contatto : contatti) {
-			if (!uniqueContatti.contains(contatto))
-				uniqueContatti.add(contatto);
-		}
-
-		XMLmanager.writeRubricaXML(contatti, PATH);
+	public static Set<Contatto> trovaContattiDuplicati() throws Exception {
+		return JDBCmanager.trovaContattiDuplicatiJDBC();
 	}
 
 	public static void unisciContatti() throws Exception {
-		List<Contatto> contatti = XMLmanager.loadRubricaFromXML(PATH);
-
-		List<Contatto> uniqueContatti = new ArrayList<Contatto>();
-
-		if (contatti.size() == 0)
-			return;
-
-		for (Contatto contatto : contatti) {
-			if (!uniqueContatti.contains(contatto))
-				uniqueContatti.add(contatto);
-		}
-
-		XMLmanager.writeRubricaXML(contatti, PATH);
+		JDBCmanager.unisciContattiDuplicatiJDBC();
 	}
 
-	public static Statement createConn() {
-		Statement statement = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection connection = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Chinetti");
-			statement = connection.createStatement();
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		if (statement != null)
-			return statement;
-		else
-			return null;
 
-	}
 
 }
