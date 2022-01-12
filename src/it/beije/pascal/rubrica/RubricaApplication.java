@@ -168,7 +168,6 @@ public class RubricaApplication {
 	
 	//ELIMINA UN CONTATTO
 	private static void deleteContact(int Id) { 
-		
 		Connection con = null;
 		
 		try {
@@ -185,7 +184,7 @@ public class RubricaApplication {
 				con.close();	
 			} catch(Exception e) {
 				e.printStackTrace();
-			} 
+			}
 		}
 	}
 	
@@ -200,8 +199,11 @@ public class RubricaApplication {
 		
 		try {
 			con = getCon();
-			PreparedStatement st = con.prepareStatement("SELECT * FROM contatti");
+			PreparedStatement st = con.prepareStatement("SELECT * FROM contatti C1, contatti C2"
+					+ "WHERE C1.nome = C2.nome AND C1.cognome = C2.cognome");
 			ResultSet rs = st.executeQuery();
+			
+			//variabili dopo nome, C1.nome = ""
 			
 			while(rs.next()) {
 				sb.append(rs.getString("cognome") + " " + rs.getString("nome"));
@@ -217,6 +219,7 @@ public class RubricaApplication {
 					}
 				}
 			}
+			showMenu();
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -399,6 +402,7 @@ public class RubricaApplication {
 		}
 	}
 	
+	//index negativo nella split
 	
 	//MOSTRA IL MENU
 	private static void showMenu() {
