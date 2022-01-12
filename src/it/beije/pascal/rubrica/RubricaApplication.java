@@ -35,8 +35,11 @@ public class RubricaApplication {
 	
 	//LISTA TUTTI I CONTATTI PRESENTI NEL DATABASE + ordinamento eventuale 
 	public static void listContacts() { 
+		
+		Connection con = null;
+		
 		try {
-			Connection con = getCon();
+			con = getCon();
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * FROM contatti");
 			
@@ -58,22 +61,31 @@ public class RubricaApplication {
 				switch(sortingChoice) {
 				case 1: sortByNames();
 					break;
-//				case 2: sortBySurnames();
-//					break;
+				case 2: sortBySurnames();
+					break;
 				}
 			}
 			
 			showMenu();
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				con.close();	
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	
 	//CERCA UN CONTATTO CON NOME E COGNOME
 	private static void lookForContact(String nome, String cognome) { 
+		
+		Connection con = null;
+		
 		try {
-			Connection con = getCon();
+			con = getCon();
 			PreparedStatement psSel = con.prepareStatement("SELECT * FROM contatti WHERE nome = ? AND cognome = ?");
 			psSel.setString(1, nome);
 			psSel.setString(2, cognome);
@@ -90,14 +102,23 @@ public class RubricaApplication {
 			showMenu();
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				con.close();	
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	
 	//CREA UN NUOVO CONTATTO
 	private static void newContact(String cognome, String nome, String tel, String email, String note) {
+		
+		Connection con = null;
+		
 		try {
-			Connection con = getCon();		
+			con = getCon();		
 			PreparedStatement psIns = con.prepareStatement("INSERT INTO contatti (cognome, nome, telefono, email, note) VALUES (?,?,?,?,?)");
 			psIns.setString(1, cognome);
 			psIns.setString(2, nome);
@@ -110,14 +131,23 @@ public class RubricaApplication {
 			showMenu();
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				con.close();	
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	
 	//AGGIORNA UN CONTATTO ESISTENTE
 	private static void updateContact(int Id, String column, String newValue) {
+		
+		Connection con = null;
+		
 		try {
-			Connection con = getCon();
+			con = getCon();
 			PreparedStatement psUpd = con.prepareStatement("UPDATE contatti SET " + column + " = ? WHERE id = ?"); //impossibile mettere un comando SQL al posto di ? senza concatenazione (?)
 			psUpd.setString(1, newValue);
 			psUpd.setInt(2, Id);
@@ -126,14 +156,23 @@ public class RubricaApplication {
 			showMenu();
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				con.close();	
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	
 	//ELIMINA UN CONTATTO
 	private static void deleteContact(int Id) { 
+		
+		Connection con = null;
+		
 		try {
-			Connection con = getCon();
+			con = getCon();
 			PreparedStatement psDel = con.prepareStatement("DELETE FROM contatti WHERE id = ?");
 			psDel.setInt(1, Id);
 			psDel.executeUpdate();
@@ -141,13 +180,52 @@ public class RubricaApplication {
 			showMenu();
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				con.close();	
+			} catch(Exception e) {
+				e.printStackTrace();
+			} 
 		}
 	}
 	
 	
 	//TROVA I CONTATTI DUPLICATI
 	private static void findAllDuplicate() { 
-		//Connection con = getCon();
+		
+		Connection con = null;
+		StringBuilder sb = new StringBuilder();
+		List<String> list = new ArrayList<String>();
+		List<String> duplicate = new ArrayList<String>();
+		
+		try {
+			con = getCon();
+			PreparedStatement st = con.prepareStatement("SELECT * FROM contatti");
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()) {
+				sb.append(rs.getString("cognome") + " " + rs.getString("nome"));
+				list.add(sb.toString());
+				sb.delete(0, sb.length());
+			}
+			
+			for(int i = 0; i < list.size(); i++) {
+				String temp = list.get(i);
+				for(int j = i; j < list.size(); j++) {
+					if(temp.equalsIgnoreCase(list.get(j))) {
+						duplicate.add(list.get(j));
+					}
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		showMenu();
 	}
@@ -164,6 +242,42 @@ public class RubricaApplication {
 	
 	//ORDINA I CONTATTI IN ORDINE ALFABETICO IN BASE AI NOMI
 	private static void sortByNames() {
+		try {
+			List<Contatto> contacts = new ArrayList<>();
+			Connection con = getCon();
+			
+			PreparedStatement pr = con.prepareStatement("SELECT * FROM contatti");
+			ResultSet rs = pr.executeQuery();
+			
+			while(rs.next()) {
+				Contatto contact = new Contatto();
+				contact.setId(rs.getInt("id"));
+				contact.setCognome(rs.getString("cognome"));
+				contact.setNome(rs.getString("nome"));
+				contact.setTelefono(rs.getString("telefono"));
+				contact.setEmail(rs.getString("email"));
+				contact.setNote(rs.getString("note"));
+				
+				contacts.add(contact);
+			}
+			
+			contacts.sort(new SortName());
+			
+			for(Contatto cont : contacts) {
+				System.out.println("id: " + cont.getId());
+				System.out.print("cognome: " + cont.getCognome());
+				System.out.println(", nome: " + cont.getNome());
+				System.out.print("telefono: " + cont.getTelefono());
+				System.out.println(", email: " + cont.getEmail());
+				System.out.println("note: " + cont.getNote() + "\n");
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void sortBySurnames() {
 		try {
 			List<Contatto> contacts = new ArrayList<>();
 			Connection con = getCon();
