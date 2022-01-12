@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GestoreRubrica {
-	public static RubricaJDBC rubricaDB = new RubricaJDBC();
+	public static RubricaJDBCManager rubricaDB = new RubricaJDBCManager();
 
 	public static void modificaContatto(Contatto c) throws Exception {
 		Contatto daModificare = rubricaDB.cercaContatto(c);
@@ -41,7 +41,6 @@ public class GestoreRubrica {
 		}
 		
 		rubricaDB.modificaContatto(daModificare.getId(), daModificare);
-		in.close();
 	}
 	
 	public static void importCSVInDB() {
@@ -107,7 +106,7 @@ public class GestoreRubrica {
 		                   + "11 -Esporta Rubrica da DB a CSV\n"
 		                   + "12 -Esporta Rubrica da DB a XML\n"
 		                   + "0 -Esci");
-		System.out.println("Inserisci il numero della funzione da eseguire: ");
+		System.out.println("Inserisci il numero della funzione da eseguire");
 		String scelta = in.nextLine();
 		switch(scelta) {
 		default:
@@ -136,6 +135,9 @@ public class GestoreRubrica {
 			modificaContatto(appoggio);
 			break;
 		case "6":
+			System.out.println("Inserisci contatto da cancellare");
+			appoggio = inputContatto();
+			rubricaDB.cancellaContatto(appoggio);
 			break;
 		case "7":
 			break;
