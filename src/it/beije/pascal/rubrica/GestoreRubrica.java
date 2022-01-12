@@ -1,166 +1,47 @@
 package it.beije.pascal.rubrica;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class GestoreRubrica {
-	public static final String INSERT_INTO_RUBRICA = "INSERT INTO contatti (cognome, nome, telefono, email, note) VALUES (?,?,?,?,?)";
-	public static final String SELECT_CONTATTI = "SELECT * FROM contatti";
-	public static final String SELECT_CONTATTO = "SELECT * FROM contatti WHERE cognome = ? AND nome = ? AND telefono = ? AND email = ? AND note = ?;";
-	public static final String SELECT_ORDER_COGNOME = "SELECT * FROM rubrica.contatti ORDER BY cognome;";
-	public static final String SELECT_ORDER_NOME = "SELECT * FROM rubrica.contatti ORDER BY nome;";
-	
-	private static Connection connectDB() throws Exception {
-		Connection connection = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "rosario");
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} 
-		
-		return connection;	
-	}
-	
-	public static List<Contatto> getRubricaFromDB(String select) throws Exception{
-		List<Contatto> rows = new ArrayList<>();
-		
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStatement = null;
-		
-		try {
-			connection = connectDB();
-			preparedStatement = connection.prepareStatement(select);
-			rs = preparedStatement.executeQuery();
-			
-			while (rs.next()) {
-				Contatto appoggio = new Contatto();
-				appoggio.setId(rs.getInt("id"));
-				appoggio.setNome(rs.getString("nome"));
-				appoggio.setCognome(rs.getString("cognome"));
-				appoggio.setTelefono(rs.getString("telefono"));
-				appoggio.setEmail(rs.getString("email"));
-				appoggio.setNote(rs.getString("note"));
-				rows.add(appoggio);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw e;
-		}finally {
-			try {
-				rs.close();
-				connection.close();
-			} catch (Exception fEx) {
-				fEx.printStackTrace();
-			}
+	public static RubricaJDBC rubricaDB = new RubricaJDBC();
+
+	public static void modificaContatto(Contatto c) throws Exception {
+		Contatto daModificare = rubricaDB.cercaContatto(c);
+		Scanner in = new Scanner(System.in);
+		System.out.println("Quale campo vuoi modificare?\n"
+				+ "1- nome\n"
+				+ "2- cognome\n"
+				+ "3- telefono\n"
+				+ "4- email\n"
+				+ "5- note");
+		System.out.println("Scelta: ");
+		String scelta = in.nextLine();
+		switch(scelta) {
+		case "1":
+			System.out.println("Nuovo nome: ");
+			daModificare.setNome(in.nextLine());
+			break;
+		case "2":
+			System.out.println("Nuovo Cognome: ");
+			daModificare.setCognome(in.nextLine());
+			break;
+		case "3":
+			System.out.println("Nuovo Telefono: ");
+			daModificare.setTelefono(in.nextLine());
+			break;
+		case "4":
+			System.out.println("Nuova Email: ");
+			daModificare.setEmail(in.nextLine());
+			break;
+		case "5":
+			System.out.println("Nuove Note: ");
+			daModificare.setNote(in.nextLine());
+			break;
 		}
-		return rows;
-	}
-	
-    public static List<Contatto> ordinaPerNome() throws Exception{
-		List<Contatto> ordinaN = new ArrayList<>();
 		
-		ordinaN = getRubricaFromDB(GestoreRubrica.SELECT_ORDER_NOME);
-		
-		return ordinaN;
-	}
-	
-    public static List<Contatto> ordinaPerCognome() throws Exception{
-    	List<Contatto> ordinaC = new ArrayList<>();
-		
-    	ordinaC = getRubricaFromDB(GestoreRubrica.SELECT_ORDER_COGNOME);
-		
-    	return ordinaC;
-	}
-	
-	public static Contatto cercaContatto(Contatto c) throws Exception {
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStatement = null;
-		
-		Contatto contatto = new Contatto();
-		
-		try {
-			connection = connectDB();
-			preparedStatement = connection.prepareStatement(GestoreRubrica.SELECT_CONTATTO);
-			preparedStatement.setString(1, c.getCognome());
-			preparedStatement.setString(2, c.getNome());
-			preparedStatement.setString(3, c.getTelefono());
-			preparedStatement.setString(4, c.getEmail());
-			preparedStatement.setString(5, c.getNote());
-			rs = preparedStatement.executeQuery();
-			
-			while (rs.next()) {
-				contatto.setId(rs.getInt("id"));
-				contatto.setNome(rs.getString("nome"));
-				contatto.setCognome(rs.getString("cognome"));
-				contatto.setTelefono(rs.getString("telefono"));
-				contatto.setEmail(rs.getString("email"));
-				contatto.setNote(rs.getString("note"));
-			}
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw e;
-		}finally {
-			try {
-				rs.close();
-				connection.close();
-			} catch (Exception fEx) {
-				fEx.printStackTrace();
-			}
-		}
-		return contatto;
-	}
-	
-	public static void inserisciContatto(String cognome, String nome, String telefono, String email, String note) throws Exception {
-		Connection connection = null;
-		PreparedStatement psInsert = null;
-		
-		try {
-			connection = connectDB();
-			psInsert = connection.prepareStatement(GestoreRubrica.INSERT_INTO_RUBRICA);
-			psInsert.setString(1, cognome);
-			psInsert.setString(2, nome);
-			psInsert.setString(3, telefono);
-			psInsert.setString(4, email);
-			psInsert.setString(5, note);
-			int r = psInsert.executeUpdate();
-			System.out.println("r = " + r);
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw e;
-		}finally {
-			try {
-				connection.close();
-			} catch (Exception fEx) {
-				fEx.printStackTrace();
-			}
-		}
-	}
-	
-	public static void modificaContatto(Contatto c) {
-		
-		
-	}
-	
-	public static void cancellaContatto() {
-		
-	}
-	
-	public static void trovaContattiDup() {
-		
-	}
-	
-	public static void unisciContattiDup() {
-		
+		rubricaDB.modificaContatto(daModificare.getId(), daModificare);
+		in.close();
 	}
 	
 	public static void importCSVInDB() {
@@ -190,74 +71,69 @@ public class GestoreRubrica {
 	public static void stampaContatto(Contatto c) {
 		System.out.println(c.toString());	
 	}
+	
+	public static Contatto inputContatto() {
+		Scanner in = new Scanner(System.in);
+		Contatto appoggio = new Contatto();
+		System.out.print("Cognome: ");
+		appoggio.setCognome(in.nextLine()); 
+		System.out.print("Nome: ");
+		appoggio.setNome(in.nextLine());
+		System.out.print("Telefono: ");
+		appoggio.setTelefono(in.nextLine());
+		System.out.print("Email: ");
+		appoggio.setEmail(in.nextLine());
+		System.out.print("Note: ");
+		appoggio.setNote(in.nextLine());
+		//in.close();
+		return appoggio;
+	}
 
 	public static void main(String[] args) throws Exception {
-		List<Contatto> rubrica = new ArrayList<Contatto>();
-		String cognome;
-		String nome;
-		String telefono;
-		String email;
-		String note;
 		Contatto appoggio = new Contatto();
 		Scanner in = new Scanner(System.in);
 		System.out.println("-Gestore Rubrica-");
 		System.out.println("Menu:");
-		System.out.println("1 -Vedi lista contatti ordinata per Nome");
-		System.out.println("2 -Vedi lista contatti ordinata per Cognome");
-		System.out.println("3 -Cerca Contatto");
-		System.out.println("4 -Inserisci Contatto");
-		System.out.println("5 -Modifica Contatto");
-		System.out.println("6 -Cancella Contatto");
-		System.out.println("7 -Trova Contatti Duplicati");
-		System.out.println("8 -Unisci Contatti Duplicati");
-		System.out.println("9 -Importa Rubrica da CSV a DB");
-		System.out.println("10 -Importa Rubrica da XML a DB");
-		System.out.println("11 -Esporta Rubrica da DB a CSV");
-		System.out.println("12 -Esporta Rubrica da DB a XML");
-		System.out.println("0 -Esci");
-		System.out.print("Inserisci il numero della funzione da eseguire: ");
-		String scelta = in.next();
+		System.out.println("1 -Vedi lista contatti ordinata per Nome\n" 
+		                   + "2 -Vedi lista contatti ordinata per Cognome\n"
+				           + "3 -Cerca Contatto\n" 
+		                   + "4 -Inserisci Contatto\n"  
+				           + "5 -Modifica Contatto\n"
+		                   + "6 -Cancella Contatto\n"
+		                   + "7 -Trova Contatti Duplicati\n"
+		                   + "8 -Unisci Contatti Duplicati\n"
+		                   + "9 -Importa Rubrica da CSV a DB\n"
+		                   + "10 -Importa Rubrica da XML a DB\n"
+		                   + "11 -Esporta Rubrica da DB a CSV\n"
+		                   + "12 -Esporta Rubrica da DB a XML\n"
+		                   + "0 -Esci");
+		System.out.println("Inserisci il numero della funzione da eseguire: ");
+		String scelta = in.nextLine();
 		switch(scelta) {
+		default:
 		case "0":
+			System.out.println("Uscita");
 			break;
 		case "1":
-			rubrica = ordinaPerNome();
-			stampaRubrica(rubrica);
+			stampaRubrica(rubricaDB.ordinaPerNome());
 			break;
 		case "2":
-			rubrica = ordinaPerCognome();
-			stampaRubrica(rubrica);
+			stampaRubrica(rubricaDB.ordinaPerCognome());
 			break;
 		case "3":
-			System.out.println("Inserisci dati del contatto da cercare:");
-			System.out.print("Cognome: ");
-			appoggio.setCognome(in.next()); 
-			System.out.print("Nome: ");
-			appoggio.setNome(in.next());
-			System.out.print("Telefono: ");
-			appoggio.setTelefono(in.next());
-			System.out.print("Email: ");
-			appoggio.setEmail(in.next());
-			System.out.print("Note: ");
-			appoggio.setNote(in.next());
-			stampaContatto(cercaContatto(appoggio));
-			
+			System.out.println("Inserisci dati del contatto da cercare");
+			appoggio = inputContatto();
+			stampaContatto(rubricaDB.cercaContatto(appoggio));
 			break;
 		case "4":
-			System.out.println("Inserisci dati del contatto da inserire:");
-			System.out.print("Cognome: ");
-			cognome = in.next();
-			System.out.print("Nome: ");
-			nome = in.next();
-			System.out.print("Telefono: ");
-			telefono = in.next();
-			System.out.print("Email: ");
-			email = in.next();
-			System.out.print("Note: ");
-			note = in.nextLine();
-			inserisciContatto(cognome, nome, telefono, email, note);
+			System.out.println("Inserisci dati del contatto da inserire");
+			appoggio = inputContatto();
+			rubricaDB.inserisciContatto(appoggio);
 			break;
 		case "5":
+			System.out.println("Inserisci contatto da modificare");
+			appoggio = inputContatto();
+			modificaContatto(appoggio);
 			break;
 		case "6":
 			break;

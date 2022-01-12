@@ -20,9 +20,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class LoadReadXML_CSV {
-	
-	public List<Contatto> loadRubricaFromCSV(String pathFile, String separator) throws IOException {
+public class LoadReadXML_CSV {	
+	public static List<Contatto> loadRubricaFromCSV(String pathFile, String separator) throws IOException {
 		List<Contatto> rows = new ArrayList<Contatto>();
 		
 		FileReader reader = null;
@@ -36,16 +35,51 @@ public class LoadReadXML_CSV {
 			Contatto contatto;
 			String[] r;
 			
+			int posNome = -1;
+			int posCognome = -1;
+			int posTelefono = -1;
+			int posEmail = -1;
+			int posNote = -1;
+			
+			row = bufferedReader.readLine();
+			r = row.split(separator);
+			
+			for (int i = 0; i < r.length; i++) {
+				switch(r[i]) {
+				case "COGNOME":
+					posCognome = i;
+					break;
+				case "NOME":
+					posNome = i;
+					break;
+				case "TELEFONO":
+					posTelefono = i;
+					break;
+				case "EMAIL":
+					posEmail = i;
+					break;
+				case "NOTE":
+					posEmail = i;
+					break;
+				} 
+			}
+			
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
 			
 				r = row.split(separator);
 				
 				contatto = new Contatto();
-				contatto.setNome(r[0]);
-				contatto.setCognome(r[1]);
-				contatto.setTelefono(r[2]);
-				contatto.setEmail(r[3]);
+				if(posNome != -1)
+					contatto.setNome(r[posNome]);
+				if(posCognome != -1)
+					contatto.setCognome(r[posCognome]);
+				if(posTelefono != -1)
+					contatto.setTelefono(r[posTelefono]);
+				if(posEmail != -1)
+					contatto.setEmail(r[posEmail]);
+				if(posNote != -1)
+					contatto.setEmail(r[posNote]);
 				
 				rows.add(contatto);
 			}
@@ -133,11 +167,6 @@ public class LoadReadXML_CSV {
 					check = false;
 				
 				}else {
-					if(c.toString().contains("NOME")) {
-						continue; /*Se leggo da un altro file rubrica e lo aggiungo a questo
-						            evito di riscrivere la prima riga, ad esempio se voglio
-						            mettere tutti i contatti di rubrica1 in rubrica2*/
-					}
 					writeF.write("\n" + c.getNome() + separator + c.getCognome() + separator
 							+ c.getTelefono() + separator + c.getEmail());
 				}
