@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.jdbc.preparedstatement;
+package it.beije.pascal.rubrica.jdbc.gestorerubrica;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import it.beije.pascal.rubrica.Contatto;
-import it.beije.pascal.rubrica.jdbc.DataSource;
-import it.beije.pascal.rubrica.util.DBUtil;
+import it.beije.pascal.rubrica.jdbc.util.DBUtil;
+import it.beije.pascal.rubrica.jdbc.util.DataSource;
 
 public class ContattoDAO {
 

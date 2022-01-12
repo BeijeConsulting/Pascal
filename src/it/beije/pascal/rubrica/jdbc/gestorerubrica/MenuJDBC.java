@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.jdbc.preparedstatement;
+package it.beije.pascal.rubrica.jdbc.gestorerubrica;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica;
+package it.beije.pascal.file.xml;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import it.beije.pascal.rubrica.util.RubricaXmlUtil;
+import it.beije.pascal.file.util.RubricaXmlUtil;
+import it.beije.pascal.rubrica.Contatto;
 
 public class RubricaXML {
 	private static Scanner scanner = new Scanner(System.in);

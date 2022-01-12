@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.util;
+package it.beije.pascal.rubrica.jdbc.util;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
