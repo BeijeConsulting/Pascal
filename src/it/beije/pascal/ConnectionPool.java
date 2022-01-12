@@ -25,8 +25,8 @@ public class ConnectionPool {
 		if (maxConnection > 0) {
 			maxConnection--;
 			Connection connection = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Chinetti");
-			System.out.println("connessione aperta restano " + maxConnection + " connesisoni");
+					.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "ardente");
+			System.out.println("connessione aperta restano " + maxConnection + " connessioni");
 			return connection;
 		}
 		System.out.println("connessione non aperta");
