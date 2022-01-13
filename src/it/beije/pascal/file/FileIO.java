@@ -1,5 +1,6 @@
 package it.beije.pascal.file;
 
+import it.beije.pascal.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
