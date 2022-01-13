@@ -65,7 +65,8 @@ public class GestoreRubrica {
 			//man.printContatti(listcontatto);
 			
 			while (!quit) {
-				System.out.println("Enter your choice");
+				System.out.println("\n");
+				System.out.println("--------Menu' principale--------");
 				System.out.println("0: Visualizza intera lista");
 				System.out.println("1: Cerca contatto");
 				System.out.println("2: Inserisci nuovo contatto");
@@ -74,6 +75,7 @@ public class GestoreRubrica {
 				System.out.println("5: Trova contatti duplicati");
 				System.out.println("6: Unisci contatti duplicati");
 				System.out.println("7: Chiudi applicazione");
+				System.out.println("\n");
 				choice = sc.nextInt();
 				sc.nextLine();
 				switch (choice) {
@@ -92,20 +94,28 @@ public class GestoreRubrica {
 					InsertFromKb(listcontatto);
 					break;
 				case 3:
+					System.out.println("Inserisci il cognome del contatto da modificare");
+					Scanner mod = new Scanner(System.in);
+					str = mod.next();
+					mod.close();
 					break;
 				case 4:
 					System.out.println("Inserisci il cognome del contatto da eliminare");
 					Scanner sca = new Scanner(System.in);
 					String cognome = sca.next();
 					connection.removeContatto(listcontatto, cognome);
+					sca.close();
 					break;
 				case 5:
 					List<Contatto> duplicates = connection.findDuplicateContatti(listcontatto);
+					/*
 					for(Contatto c: duplicates) {
 						System.out.println(c.toString());
 					}
+					*/
 					break;
-				case 6: 
+				case 6:
+					man.mergeContatti(dupcontatto,listcontatto);
 					break;
 				case 7:
 					quit = true;

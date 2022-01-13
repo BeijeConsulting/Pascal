@@ -55,7 +55,7 @@ public class DBConnection {
 		connection = DriverManager
 				.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Soos1234");
 
-		System.out.println(!connection.isClosed());
+		//System.out.println(!connection.isClosed());
 		
 		statement = connection.createStatement();
 
@@ -76,7 +76,7 @@ public class DBConnection {
 			psInsert.setString(5, c.getNote());
 			int r = psInsert.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Insert Soos");
 			e.printStackTrace();
 		}
 	}

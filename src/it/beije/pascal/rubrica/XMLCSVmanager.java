@@ -331,7 +331,40 @@ public class XMLCSVmanager {
 	 * if(duplicatecont.isEmpty()) return "Non esistono contatti duplicati"; else
 	 * return duplicatecont.toString(); }
 	 */
+	
+	
+	public static void mergeContatti(List<Contatto> dupcont, List<Contatto> listcontatto) {
+		Scanner sc = new Scanner(System.in);
+		String st = null;
+		int choice = sc.nextInt();
+		boolean quit = false;
+		
+		System.out.println("Menu' unione duplicati");
+		
+		while(!quit) {
+			System.out.println("\n");
+			System.out.println("0: Scrivi il cognome del contatto da unire e stampalo");
+			System.out.println("1: Unisci n. di telefono");
+			System.out.println("2: Unisci e-mail");
+			System.out.println("3: Unisci note");
+			System.out.println("4: Stampa lista contatti duplicati");
+			System.out.println("5: Torna al menu principale");
+			
+			switch(choice) {
+			case 0:
+				st = sc.next();
+				Contatto c = searchContatto(dupcont, st);
+				System.out.println(c.toString());
+				break;
+			case 5: 
+				quit = true;
+				break;
+			}
+		}
+	}
 
+		
+/*
 	public static void main(String[] args) {
 		String fileXML = "C:/Users/franc/git/Pascal/rubrica.xml";
 		String fileCSV = "C:/Users/franc/git/Pascal/rubrica.csv";
@@ -340,7 +373,7 @@ public class XMLCSVmanager {
 		
 		List<Contatto> XMLcontact = new ArrayList<Contatto>();
 		List<Contatto> CSVcontact = new ArrayList<Contatto>();
-		RubricaCSV rb = new RubricaCSV();
+		//RubricaCSV rb = new RubricaCSV();
 		/*
 		 * try { CSVcontact = RubricaCSV.loadRubricaFromCSV(fileCSV, "\t"); } catch
 		 * (IOException e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
@@ -352,6 +385,5 @@ public class XMLCSVmanager {
 		 * Auto-generated catch block e.printStackTrace(); } List<Contatto> soscont= new
 		 * ArrayList<Contatto>(); //addContatto(soscont); printContatti(CSVcontact);
 		 */
-	}
-
 }
+
