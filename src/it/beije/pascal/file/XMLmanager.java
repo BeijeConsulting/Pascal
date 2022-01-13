@@ -35,10 +35,12 @@ public class XMLmanager {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
-		Document document = documentBuilder.parse("/temp/rubrica.xml");
+		Document document = documentBuilder.parse("./rubrica.xml");
+		
 		
 		Element root = document.getDocumentElement();
-		System.out.println("root : " + root.getTagName());
+		//System.out.println("root : " + root.getTagName());
+		System.out.println(root);
 		
 		NodeList contatti = root.getElementsByTagName("contatto");
 		
@@ -46,7 +48,7 @@ public class XMLmanager {
 			Element contatto = (Element)contatti.item(i);
 			System.out.println("contatto " + i + " : " + contatto.getAttribute("eta"));
 		}
-		
+		/*
 //		NodeList nomi = root.getElementsByTagName("nome");
 //		System.out.println(nomi.getLength());
 		
@@ -69,13 +71,13 @@ public class XMLmanager {
 				}
 				
 			}
-		}
+		}*/
 		
 
 	}
 
 	public static void main(String[] args) throws Exception {
-		
+		/*
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
@@ -123,8 +125,10 @@ public class XMLmanager {
 		transformer.transform(source, result);
 		transformer.transform(source, syso);
 
-		//System.out.println("File saved!");		
+		//System.out.println("File saved!");		*/
+	
 		
+		readXML();
 	}
 	
 }
