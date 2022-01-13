@@ -39,9 +39,11 @@ public class GestoreRubrica {
 		// importFromCSV();
 		// exportFromDatabaseToCsv();
 
-		exportFromDatabaseToXml();
+		//exportFromDatabaseToXml();
 		// fromListToXML(getContactsFromDatabase());
 		//getListFromXML();
+		
+		getListFromCSV("/Users/ema29/javafile/jdbc/rubrica.csv");
 	}
 
 	private static void importFromCSV() {
@@ -74,7 +76,7 @@ public class GestoreRubrica {
 				colonne = riga.split(";");
 				Contatto contatto = new Contatto();
 
-				switch (colonne.length) {
+				switch (colonne.length) {					
 				case 1:
 					contatto.setCognome(colonne[0]);
 					contatti.add(contatto);
