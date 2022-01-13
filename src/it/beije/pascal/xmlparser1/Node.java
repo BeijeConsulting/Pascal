@@ -18,6 +18,7 @@ public class Node {
 	public Node addChild(Tag child) {
 		
 		Node childNode = new Node(child);
+		childNode.parent = this;
 		this.children.add(childNode);
 		return childNode;
 		
@@ -46,6 +47,11 @@ public class Node {
 		
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Node [root=" + root + ", parent=" + parent + ", children=" + children + "]";
+	}
 	
-	  
+		  
 }
