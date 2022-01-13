@@ -35,7 +35,7 @@ public class XMLmanager {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
-		Document document = documentBuilder.parse("/temp/rubrica.xml");
+		Document document = documentBuilder.parse("/javaFiles/rubrica.xml");
 		
 		Element root = document.getDocumentElement();
 		System.out.println("root : " + root.getTagName());
@@ -76,54 +76,56 @@ public class XMLmanager {
 
 	public static void main(String[] args) throws Exception {
 		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		
-		Document doc = documentBuilder.newDocument();
-		
-		Element contatti = doc.createElement("contatti");
-		doc.appendChild(contatti);
-		
-		Element contatto = doc.createElement("contatto");
-		contatto.setAttribute("eta", "35");
-		
-		Element cognome = doc.createElement("cognome");
-		cognome.setTextContent("Marrone");
-		contatto.appendChild(cognome);
-
-		Element nome = doc.createElement("nome");
-		nome.setTextContent("Emma");
-		contatto.appendChild(nome);
-
-		Element telefono = doc.createElement("telefono");
-		telefono.setTextContent("432423");
-		contatto.appendChild(telefono);
-
-		Element email = doc.createElement("email");
-		email.setTextContent("emma@marrone.it");
-		contatto.appendChild(email);
-
-		Element note = doc.createElement("note");
-		note.setTextContent("la nota cantante");
-		contatto.appendChild(note);
-		
-		contatti.appendChild(contatto);
-		
-		
-		// write the content into xml file
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(doc);
-		
-		StreamResult result = new StreamResult(new File("/temp/new_rubrica.xml"));
-
-		// Output to console for testing
-		StreamResult syso = new StreamResult(System.out);
-
-		transformer.transform(source, result);
-		transformer.transform(source, syso);
+//		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+//		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+//		
+//		Document doc = documentBuilder.newDocument();
+//		
+//		Element contatti = doc.createElement("contatti");
+//		doc.appendChild(contatti);
+//		
+//		Element contatto = doc.createElement("contatto");
+//		contatto.setAttribute("eta", "35");
+//		
+//		Element cognome = doc.createElement("cognome");
+//		cognome.setTextContent("Marrone");
+//		contatto.appendChild(cognome);
+//
+//		Element nome = doc.createElement("nome");
+//		nome.setTextContent("Emma");
+//		contatto.appendChild(nome);
+//
+//		Element telefono = doc.createElement("telefono");
+//		telefono.setTextContent("432423");
+//		contatto.appendChild(telefono);
+//
+//		Element email = doc.createElement("email");
+//		email.setTextContent("emma@marrone.it");
+//		contatto.appendChild(email);
+//
+//		Element note = doc.createElement("note");
+//		note.setTextContent("la nota cantante");
+//		contatto.appendChild(note);
+//		
+//		contatti.appendChild(contatto);
+//		
+//		
+//		// write the content into xml file
+//		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//		Transformer transformer = transformerFactory.newTransformer();
+//		DOMSource source = new DOMSource(doc);
+//		
+//		StreamResult result = new StreamResult(new File("/temp/new_rubrica.xml"));
+//
+//		// Output to console for testing
+//		StreamResult syso = new StreamResult(System.out);
+//
+//		transformer.transform(source, result);
+//		transformer.transform(source, syso);
 
 		//System.out.println("File saved!");		
+		
+		XMLmanager.readXML();
 		
 	}
 	
