@@ -7,12 +7,12 @@ import java.sql.SQLException;
 public class SingletonConnDB {
 	private static final String URL = "jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET";
 	private static final String USERNAME = "root";
-	private static final String PASSWORD = "admin";
+	private static final String PASSWORD = "rosario";
+	
+	private SingletonConnDB(){}
 	
 	private static SingletonConnDB instance;
 
-	private SingletonConnDB(){}
-	
 	public static SingletonConnDB getInstance() {
 		if(instance == null) {
 			instance = new SingletonConnDB();
