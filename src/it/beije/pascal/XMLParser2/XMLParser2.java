@@ -9,24 +9,20 @@ public class XMLParser2 {
 	
 	public int counter;
 	
-	public int contaElementiFigli(int Index, String toFind, String testo) {
+	public int contaElementiFigli(int Index, String daCercare, String testo) {
 		
+		boolean esisteParolaDaCercare = testo.contains(daCercare);
 		
-		System.out.println("sono nel metodo");
-		
-		boolean esisteParolaDaCercare = testo.contains(toFind);
-		
-		System.out.println(esisteParolaDaCercare);
-		
-		if(esisteParolaDaCercare) {
-			
-			System.out.println(counter);
+		if(esisteParolaDaCercare) {	
 			counter++;
-			int indiceElementoFiglio = testo.indexOf(toFind, Index);
-			System.out.println(indiceElementoFiglio);
-			contaElementiFigli(indiceElementoFiglio, toFind, testo.substring(indiceElementoFiglio + 1, testo.length()));
+			int indiceElementoFiglio = testo.indexOf(daCercare, Index);
+			contaElementiFigli(indiceElementoFiglio, daCercare, testo.substring(indiceElementoFiglio + daCercare.length(), testo.length()));
 		}
-		return counter ;
+		return counter / 2;
+	}
+	
+	public void getChildNodes() {
+		
 	}
 	
 	
