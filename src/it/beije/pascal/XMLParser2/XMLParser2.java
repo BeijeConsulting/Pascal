@@ -3,28 +3,37 @@ package it.beije.pascal.XMLParser2;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class XMLParser2 {
 	
-	public int counter;
+	static String root; //FATTO
+	List<DocumentElement> elementi = new ArrayList<DocumentElement>();
 	
-	public int contaElementiFigli(int Index, String daCercare, String testo) {
-		
-		boolean esisteParolaDaCercare = testo.contains(daCercare);
-		
-		if(esisteParolaDaCercare) {	
-			counter++;
-			int indiceElementoFiglio = testo.indexOf(daCercare, Index);
-			contaElementiFigli(indiceElementoFiglio, daCercare, testo.substring(indiceElementoFiglio + daCercare.length(), testo.length()));
-		}
-		return counter / 2;
-	}
 	
+//	public int counter;
+//	
+//	public int contaElementiFigli(int Index, String daCercare, String testo) {
+//		
+//		boolean esisteParolaDaCercare = testo.contains(daCercare);
+//		
+//		if(esisteParolaDaCercare) {	
+//			counter++;
+//			int indiceElementoFiglio = testo.indexOf(daCercare, Index);
+//			contaElementiFigli(indiceElementoFiglio, daCercare, testo.substring(indiceElementoFiglio + daCercare.length(), testo.length()));
+//		}
+//		return counter / 2;
+//	}
+//	
 	public void getChildNodes() {
 		
 	}
-	
 	
 	//RITORNA IL NOME DELL'ELEMENTO ROOT
 	public static String getRootElement(String testoDelFileCompleto) {
@@ -58,31 +67,24 @@ public class XMLParser2 {
 			
 			String testoCompleto = sb.toString();
 			
-			System.out.println(new XMLParser2().contaElementiFigli(0, "contatto", testoCompleto)); 
+			root = XMLParser2.getRootElement(testoCompleto);
+			
+			boolean chiusuraTagElementoRoot = sb.toString().contains("/" + root);
+			if(!chiusuraTagElementoRoot) {
+				throw new Exception("File xml mal formattato");
+			}
 			
 			
-//			String nomeElementoRoot = XMLParser2.getRootElement(sb.toString());
-//			
-//			boolean chiusuraTagElementoRoot = sb.toString().contains("/" + nomeElementoRoot);
-//			if(!chiusuraTagElementoRoot) {
-//				throw new Exception("File xml mal formattato");
-//			}
-//			
-//			
-//			int indiceTagAperturaPrimoElementoFiglio = testoCompleto.indexOf("<", testoCompleto.indexOf(nomeElementoRoot));
-//			int indiceTagChiusuraPrimoElementoFiglio = testoCompleto.indexOf(">", indiceTagAperturaPrimoElementoFiglio);
-//			String nomePrimoTagFiglio = testoCompleto.substring(indiceTagAperturaPrimoElementoFiglio + 1, indiceTagChiusuraPrimoElementoFiglio);
-//			
-//			System.out.println(nomePrimoTagFiglio);
-//			
-//			int indicePartenza = testoCompleto.indexOf(nomePrimoTagFiglio);
-//			int count = 1;
-//			for(int i = indicePartenza; i < sb.length(); i++) {
-//				
-//				
-//			}
-//			
-//			
+			int indiceTagAperturaPrimoElementoFiglio = testoCompleto.indexOf("<", testoCompleto.indexOf(root));
+			int indiceTagChiusuraPrimoElementoFiglio = testoCompleto.indexOf(">", indiceTagAperturaPrimoElementoFiglio);
+			
+			
+			
+			String nomePrimoTagFiglio = testoCompleto.substring(indiceTagAperturaPrimoElementoFiglio + 1, indiceTagChiusuraPrimoElementoFiglio);
+			
+			
+			
+			
 			
 		} catch(Exception e) {
 			System.out.println("sono in eccezione");
@@ -92,8 +94,7 @@ public class XMLParser2 {
 		return new Document();
 	}
 	
-	public static void main(String[] args) {
-		XMLParser2.parse("/javaFiles/test_parser1");
-		
+	public static void main(String[] args) throws Exception {
+//		XMLParser2.parse("/javaFiles/test_parser1");
 	}
 }

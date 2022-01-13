@@ -51,6 +51,9 @@ public class XMLmanager {
 //		System.out.println(nomi.getLength());
 		
 		NodeList childNodes = root.getChildNodes();
+		
+		
+		
 		System.out.println(childNodes.getLength());
 		for (int i = 0; i < childNodes.getLength(); i++) {
 			Node node = childNodes.item(i);
