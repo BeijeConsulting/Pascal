@@ -57,6 +57,7 @@ public class XMLmanager {
 		System.out.println(childNodes.getLength());
 		for (int i = 0; i < childNodes.getLength(); i++) {
 			Node node = childNodes.item(i);
+			
 			if (node instanceof Element) {
 				Element el = (Element)node;
 				System.out.println("node " + i + " : " + el.getAttribute("eta"));
