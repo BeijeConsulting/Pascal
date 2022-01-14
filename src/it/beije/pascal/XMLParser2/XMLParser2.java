@@ -2,8 +2,8 @@ package it.beije.pascal.XMLParser2;
 
 import java.io.File;
 import java.io.FileReader;
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -23,16 +23,14 @@ import java.io.FileReader;
 */
 
 public class XMLParser2 {
-		
-//	List<DocumentNode> nodi = new ArrayList<>();
 	
 	String root; 
+	
+	Document documento = new Document();
 	
 	//prima di tutto facciamo il metodo principale: parse
 	public Document parse(String url) throws Exception {
 		File f = new File(url);
-		
-		Document documento = new Document();
 		
 		FileReader fr = new FileReader(f);
 		StringBuilder sb = new StringBuilder();
@@ -42,8 +40,9 @@ public class XMLParser2 {
 			sb.append(temp);
 		}
 		
-		String testoFile = sb.toString();
+		String testoFile = sb.toString().trim();
 		documento.setTesto(testoFile);
+		
 		
 		if(testoFile.contains("<?")) { //il file contiene un'instazione, allora estraiamone le informazioni
 			int inizioNumeroVersione = testoFile.indexOf("\"");
@@ -60,6 +59,7 @@ public class XMLParser2 {
 			documento.setEncoding(encoding);
 		}
 		
+		//IMPOSTAZIONE ELEMENTO ROOT DEL DOCUMENTO
 		String rootElement;
 		
 		int aperturaPrimoTag = testoFile.indexOf("<");
@@ -67,15 +67,11 @@ public class XMLParser2 {
 		int chiusuraRoot = testoFile.indexOf(">", aperturaRoot);
 		rootElement = testoFile.substring(aperturaRoot + 1, chiusuraRoot);
 		
-		DocumentElement dc = new DocumentElement(); //siamo sicuri che è un elemento
-		dc.setNome(rootElement);
-		documento.setRoot(dc);
-		System.out.println(documento.getRoot().getNome());
+		DocumentElement elementoRoot = new DocumentElement(); //siamo sicuri che è un elemento
+		elementoRoot.setNome(rootElement);
+		documento.setRoot(elementoRoot);
 		
-		
-		
-		//DETERMINIAMO IL TESTO INTERNO AL FILE AL DI FUORI DEL ROOT TAG
-		
+		//DETERMINIAMO IL TESTO INTERNO AL FILE INTERNO AL ROOT TAG
 		String testoInternoAlRoot = "";
 		StringBuilder testo = new StringBuilder();
 		
@@ -89,108 +85,83 @@ public class XMLParser2 {
 		testo.delete(testo.length() - rootElement.length() - 2, testo.length());
 		
 		testoInternoAlRoot = testo.toString();
-		System.out.println(testoInternoAlRoot);
+		System.out.println("stampa del testo interno al root" + testoInternoAlRoot);
+		
+		elementoRoot.setTestoInterno(testoInternoAlRoot);		
+		
+		//DETERMINIAMO: 1.NUMERO DI ELEMENTI FIGLI DIRETTI DEL ROOT, 2. NOME DEGLI ELEMENTI FIGLI DIRETTI, 3. CONTENUTO INTERNO AI VARI ELEMENTI FIGLI
+		List<DocumentElement> listaDiElementi = new ArrayList<>();
+		
+		int numero = new XMLParser2().ottieniNumeroDiSottoElementi(testoInternoAlRoot);
+		System.out.println("numero di elementi contatto " + numero);
+		
+		String nomeElementiDaInserire = new XMLParser2().ottieniNomeTagFiglioDiretto(testoInternoAlRoot);
+		System.out.println("nome degli elementi interi: " + nomeElementiDaInserire);
+		
+		List<String> sottoTesto = new XMLParser2().ottieniSottotesti(testoInternoAlRoot, numero, nomeElementiDaInserire);
+		System.out.println(sottoTesto.get(1));
+		
+		for(int j = 0; j < numero; j++) {
+			DocumentElement contatto = new DocumentElement();
+			contatto.setNome(nomeElementiDaInserire);
+			contatto.setTestoInterno(sottoTesto.get(j));
+			contatto.settextValue(null);
+			listaDiElementi.add(contatto);
+		}
+		
+		System.out.println("stampa finale: " + listaDiElementi.get(1).getNome());
+		System.out.println("stampa finale root: " + elementoRoot.getTestoInterno());
 		
 		
-		
-//		for(int i = 0; i < testoFile.length(); i++) {
-//			if(testoFile.charAt(i) == '<') {
-//				DocumentElement elemento = new DocumentElement();
-//				String nomeElemento = "";
-//				int j = i;
-//				while(testoFile.charAt(j) != '>') {
-//					nomeElemento += testoFile.charAt(j);
-//					j++;
-//				}
-//				elemento.setNome(nomeElemento);
-//			}
-//		}
-		
+//		elementoRoot.parseAncora(testoInternoAlRoot, 1);		
 		fr.close();
 		return documento;
 	}
 	
-	public void metodo(int index, String nomeTag, String testoIniziale) {
+	public String ottieniNomeTagFiglioDiretto(String testo) throws Exception {
+		String testoFile = testo;
+		//NOME DEL PRIMO TAG PRESENTE NEL SOTTOTESTO
+		String contatto; 
+		int aperturaRoot = testoFile.indexOf("<");
+		int chiusuraRoot = testoFile.indexOf(">", aperturaRoot);
+		contatto = testoFile.substring(aperturaRoot + 1, chiusuraRoot);
 		
+		return contatto;		
 	}
 	
+	public List<String> ottieniSottotesti(String sottoTesto, int count, String tagDaCercare) {
+		String s = sottoTesto;
+		
+		String sottoS = s; 
+		List<String> sottoTestoLista = new ArrayList<String>();
+		for(int i=0; i < count; i++) {
+			String s2 = sottoS.substring(sottoS.indexOf(">")+1, sottoS.indexOf("</" + tagDaCercare + ">"));
+			
+			sottoTestoLista.add(s2);
+			
+			sottoS = sottoS.substring(sottoS.indexOf("</" + tagDaCercare + ">") + (tagDaCercare.length()+ 3));
+		}		
+		return sottoTestoLista;
+	}
 	
-//	public int counter;
-//	
-//	public int contaElementiFigli(int Index, String daCercare, String testo) {
-//		
-//		boolean esisteParolaDaCercare = testo.contains(daCercare);
-//		
-//		if(esisteParolaDaCercare) {	
-//			counter++;
-//			int indiceElementoFiglio = testo.indexOf(daCercare, Index);
-//			contaElementiFigli(indiceElementoFiglio, daCercare, testo.substring(indiceElementoFiglio + daCercare.length(), testo.length()));
-//		}
-//		return counter / 2;
-//	}
-//	
-//	public void getChildNodes() {
-//		
-//	}
-	
-	//RITORNA IL NOME DELL'ELEMENTO ROOT
-//	public static String getRootElement(String testoDelFileCompleto) {
-//		String rootElement;
-//		
-//		int aperturaPrimoTag = testoDelFileCompleto.indexOf("<");
-//		int chiusuraPrimoTag = testoDelFileCompleto.indexOf(">");
-//		int aperturaRoot = testoDelFileCompleto.indexOf("<", aperturaPrimoTag + 1);
-//		int chiusuraRoot = testoDelFileCompleto.indexOf(">", aperturaRoot);
-//		rootElement = testoDelFileCompleto.substring(aperturaRoot + 1, chiusuraRoot);
-//		
-//		return rootElement;
-//	}
-	
-//	public static Document parse(String url) {
-//		
-//		try {
-//			
-//			
-//			File f = new File("/javaFiles/xmlTest.xml");
-//			FileReader fr = new FileReader(f);
-//			
-//			StringBuilder sb = new StringBuilder();
-//			
-//			while(fr.ready()) {
-//				char c = (char)fr.read();
-//				sb.append(c);
-//			}
-//			
-//			fr.close();
-//			
-//			String testoCompleto = sb.toString();
-//			
-//			root = XMLParser2.getRootElement(testoCompleto);
-//			
-//			boolean chiusuraTagElementoRoot = sb.toString().contains("/" + root);
-//			if(!chiusuraTagElementoRoot) {
-//				throw new Exception("File xml mal formattato");
-//			}
-//			
-//			
-//			int indiceTagAperturaPrimoElementoFiglio = testoCompleto.indexOf("<", testoCompleto.indexOf(root));
-//			int indiceTagChiusuraPrimoElementoFiglio = testoCompleto.indexOf(">", indiceTagAperturaPrimoElementoFiglio);
-//			
-//			
-//			
-//			String nomePrimoTagFiglio = testoCompleto.substring(indiceTagAperturaPrimoElementoFiglio + 1, indiceTagChiusuraPrimoElementoFiglio);
-//			
-//			
-//			
-//			
-//			
-//		} catch(Exception e) {
-//			System.out.println("sono in eccezione");
-//		}
-//		
-//		
-//		return new Document();
-//	}
+	public int ottieniNumeroDiSottoElementi(String testo) {
+		String s = testo;
+		int primaApertura = s.indexOf("<");
+		int primaChiusura = s.indexOf(">");
+		String nome = s.substring(primaApertura + 1, primaChiusura);
+		int count = 0;
+		
+		for(int i=s.length(); i>0 || i!=-1; i--) {
+			if(s.contains(nome)) {
+				count++;
+				s = s.substring(s.indexOf(nome) + nome.length());
+			} else {
+				continue;
+			}
+		}
+		count = count / 2;
+		return count;
+	}
 	
 	public static void main(String[] args) throws Exception {
 		XMLParser2 x = new XMLParser2();
