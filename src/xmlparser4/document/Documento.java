@@ -15,10 +15,7 @@ public class Documento implements Nodo {
 
     public Documento(){}
 
-    public String getTreeString(){
-        //TODO
-        return null;
-    }
+    
 
     @Override
     public List<Nodo> getChildNodes() {

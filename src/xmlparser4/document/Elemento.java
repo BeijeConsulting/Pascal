@@ -13,11 +13,16 @@ public class Elemento implements Nodo{
     private Testo testo;
     List<Elemento> figliList;
     List<Attributo> attributi;
+    boolean isIgnorato = false;
 
     public Elemento(String tagName) {
         this.tagName = tagName;
         figliList = new ArrayList<>();
         attributi = new ArrayList<>();
+    }
+
+    void setIgnorato(){
+        this.isIgnorato = true;
     }
 
     public void setText(String text) {
@@ -99,5 +104,27 @@ public class Elemento implements Nodo{
         nodiFigli.add(testo);
         return nodiFigli;
     }
+
+    public List<String> getAlbero(int indents){
+        Elemento root = this;
+		List<String> tree = new ArrayList<>();
+		StringBuilder strb = new StringBuilder();
+		for (int i = 0; i < indents; i++) {
+			strb.append('\t');
+		}
+		tree.add(strb.append(root.getTagName()).toString());
+		if(root.hasFigli()){
+            indents++;
+            for(Elemento e : root.figliList){
+                tree.addAll(e.getAlbero(indents));
+            }
+        }
+		return tree;
+	}
+
+    private boolean hasFigli() {
+        return (!this.figliList.isEmpty());
+    }
+
     
 }
