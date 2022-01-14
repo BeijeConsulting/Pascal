@@ -32,14 +32,17 @@ public class XMLParser {
 		// System.out.println(root.getTagName());
 		root = RecursivePrint(documentString, 1, 0, root, root);
 
-		/*
-		 * for (Element element : root.getChildNodes()) { System.out.println(element);
-		 * if(element.getTagName().equals("contatto")) { for (Element e :
-		 * element.getChildNodes()) { System.out.println("\t "+ e);
-		 * System.out.println("\t\t "+ e.getTextContent()); } } }
-		 */
-
-		List<Element> elements = getElementsByTagName("nome");
+		for (Element element : root.getChildNodes()) {
+			System.out.println(element);
+			if (element.getTagName().equals("contatto")) {
+				for (Element e : element.getChildNodes()) {
+					System.out.println("\t " + e);
+					System.out.println("\t\t " + e.getTextContent());
+				}
+			}
+		}
+		System.out.println("##########################");
+		List<Element> elements = getElementsByTagName("cognome");
 
 		for (Element element : elements) {
 			System.out.println(element.getTagName());
@@ -142,21 +145,13 @@ public class XMLParser {
 	}
 
 	private void test(Element e, String s, List<Element> elements) {
-
+		System.out.println("sndna --> " + e.getTagName());
 		for (Element el : e.getChildNodes()) {
-			if (el == null)
-				break;
-			else {
-				System.out.println("tagname " + e.getTagName());
-				System.out.println("s " + s);
-				System.out.println(e.getTagName() + "    " + el.getTagName().equals(s));
-				if (el.getTagName().equals(s)) {
-					elements.add(e);
-					System.out.println("dansijndisanjdsaniodnsaj " + e.getTagName());
-					System.out.println("dansijndisanjdsaniodnsaj " + e.getTextContent());
-				}
-				test(el, s, elements);
+			System.out.println(e.getTagName() + "  -  " + s + "  -  " + el.getTagName().equals(s));
+			if (el.getTagName().equals(s)) {
+				elements.add(e);
 			}
+			test(el, s, elements);
 		}
 
 	}
