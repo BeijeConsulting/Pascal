@@ -48,7 +48,10 @@ public class XMLParser {
 				continue;
 			}
 		}
+		
+		
 
+		
 	}
 
 	private boolean controllo(BufferedReader bufferedReader) throws IOException {
