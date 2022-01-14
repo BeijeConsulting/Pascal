@@ -14,4 +14,10 @@ public class Nodo extends Elemento{
     public String getTextContent() {
     	return this.text;
     }
+
+    @Override
+    public String toString() {
+        
+        return super.toString() + " Nodo [text=" + text + "]";
+    }
 }

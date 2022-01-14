@@ -19,7 +19,10 @@ import xmlparser4.document.Nodo;
 public class Parser {
 
     public static void main(String[] args) {
-        parse("./test_parser5.xml");
+        Documento doc = parse("./test_parser5.xml");
+        for(Elemento e : doc.getRoot().getElementsByTagName("class")){
+            System.out.println(e.toString());
+        }
     }
 
     public static Documento parse(String fileName){
@@ -41,7 +44,7 @@ public class Parser {
                 if (readChar == -1 ) throw new FileNotValidoException("File non valido: sembra essere vuoto");
             }
             
-             LeggiBufferato(bfr);
+              return LeggiBufferato(bfr);
             
             
             

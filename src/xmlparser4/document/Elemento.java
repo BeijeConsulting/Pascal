@@ -11,14 +11,12 @@ public class Elemento {
         this.tagName = tagName;
         figliList = new ArrayList<>();
         attributi = new ArrayList<>();
-        risultato = new ArrayList<Elemento>();
     }
     
     private Elemento padre;
     private String tagName;
     List<Elemento> figliList;
     List<Attributo> attributi;
-	List<Elemento> risultato;
 
 	public Elemento getPadre() {
         return padre;
@@ -30,6 +28,11 @@ public class Elemento {
 
     public String getTagName() {
         return tagName;
+    }
+
+    @Override
+    public String toString() {
+        return "Elemento [padre=" + padre.getTagName() + ", tagName=" + tagName + "figli: " +"]";
     }
 
     public void setTagName(String tagName) {
@@ -66,12 +69,13 @@ public class Elemento {
 	// getElementsByTagName(String tagName) //torna TUTTI gli elementi con quello specifico nome
 	
 	public List<Elemento> getElementsByTagName(String tagName) {
+        List<Elemento> risultato = new ArrayList<>();
+        if(this.getTagName().equalsIgnoreCase(tagName) && this !=null)
+            risultato.add(this);
 		for(Elemento e: figliList) {
-			if( e.getTagName().equalsIgnoreCase(tagName)) {
-				risultato.add(e);
-			}
-				e.getElementsByTagName(tagName);
-				risultato.add(e);
+            List<Elemento> parziale = e.getElementsByTagName(tagName);
+            if(!parziale.isEmpty())
+				risultato.addAll(parziale);
 			}
 		return risultato;
 	}
