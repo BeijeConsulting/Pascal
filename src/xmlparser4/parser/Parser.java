@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import xmlparser4.document.Attributo;
 import xmlparser4.document.Documento;
 import xmlparser4.document.Elemento;
+import xmlparser4.document.Nodo;
 
 public class Parser {
 
@@ -22,7 +23,22 @@ public class Parser {
         for (String string : albero) {
             System.out.println(string);
         }
-        System.out.println("Documento getRootElement: \n\t");
+        System.out.print("Documento getRootElement: \n");
+        System.out.println(doc.getRoot().toString());
+        System.out.print("Documento getChildNodes:\n");
+         for (Nodo  nodo  : doc.getChildNodes()) {
+             System.out.println(nodo.toString() + "\n");
+         }
+        System.out.println("get child elements di root");
+        for (Elemento e : doc.getRoot().getFigliList()) {
+            System.out.println(e.toString());
+        }
+        System.out.println();
+        System.out.println("get element tag name: nome");
+        System.out.println(doc.getRoot().getElementsByTagName("nome"));
+        System.out.println("tag name : " +doc.getRoot().getTagName());
+        System.out.println("text content : " + doc.getRoot().getElementsByTagName("class").get(0).getTextContent());
+        System.out.println("attribute (name) : " + doc.getRoot().getElementsByTagName("property").get(0).getAttribute("name"));
     }
 
     public static Documento parse(String fileName) {

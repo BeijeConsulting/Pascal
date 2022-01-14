@@ -23,7 +23,7 @@ public class Documento implements Nodo {
     
     @Override
     public List<Nodo> getChildNodes() {
-    	List<Nodo> figliRoot = this.getChildNodes();
+    	List<Nodo> figliRoot = this.getRoot().getChildNodes();
         return figliRoot;
     }
 

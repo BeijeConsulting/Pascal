@@ -12,7 +12,7 @@ public class Testo implements Nodo {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public void setText(String text) {
@@ -22,6 +22,11 @@ public class Testo implements Nodo {
     @Override
     public List<Nodo> getChildNodes() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
     
 }
