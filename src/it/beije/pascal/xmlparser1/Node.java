@@ -15,12 +15,9 @@ public class Node {
 		
 	}
 	
-	public Node addChild(Tag child) {
-		
-		Node childNode = new Node(child);
-		childNode.parent = this;
-		this.children.add(childNode);
-		return childNode;
+	public void addChild(Node child) {			
+		child.parent = this;
+		this.children.add(child);		
 		
 	}
 	
@@ -32,26 +29,32 @@ public class Node {
 		return parent == null;
 	}
 	
-	public boolean isLeaf() {
-		
+	public boolean isLeaf() {		
 		return children.size() == 0;
 		
 	}
 	
-	public int getLevel() {
-		
+	public int getLevel() {		
 		if(this.isRoot())
 			return 0;
 		else
-			return parent.getLevel()+1;
-		
-		
+			return parent.getLevel()+1;				
+	}
+	
+	public Node getParent() {
+		return this.parent;
+	}
+	
+	
+
+	public ArrayList<Node> getChildren() {
+		return children;
 	}
 
 	@Override
 	public String toString() {
-		return "Node [root=" + root + ", parent=" + parent + ", children=" + children + "]";
-	}
+		return "Node [root = " + root + ", parent = " + parent + ", children = " + children + "]";
+	}	
 	
-		  
+	  
 }

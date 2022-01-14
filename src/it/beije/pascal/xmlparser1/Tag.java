@@ -40,6 +40,11 @@ public class Tag {
 		this.son=son;
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Tag [name = " + name + ", value = " + value + ", son = " + son + "]";
+	}
 	
 	
 }
