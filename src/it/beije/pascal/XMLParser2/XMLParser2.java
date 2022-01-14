@@ -24,12 +24,12 @@ import java.util.List;
 
 public class XMLParser2 {
 	
-	String root; 
-	
-	Document documento = new Document();
+	String root;
+//	Document documento = new Document();
 	
 	//prima di tutto facciamo il metodo principale: parse
 	public Document parse(String url) throws Exception {
+		Document documento = new Document();
 		File f = new File(url);
 		
 		FileReader fr = new FileReader(f);
@@ -48,12 +48,12 @@ public class XMLParser2 {
 			int inizioNumeroVersione = testoFile.indexOf("\"");
 			int fineNumeroVersione = testoFile.indexOf("\"", inizioNumeroVersione + 1);
 			String versione = testoFile.substring(inizioNumeroVersione + 1, fineNumeroVersione);
-			System.out.println(versione); //funziona
+//			System.out.println(versione); //funziona
 			
 			int inizioEncoding = testoFile.indexOf("\"", fineNumeroVersione + 1);
 			int fineEncoding = testoFile.indexOf("\"", inizioEncoding + 1);
 			String encoding = testoFile.substring(inizioEncoding + 1, fineEncoding);
-			System.out.println(encoding); //funziona
+//			System.out.println(encoding); //funziona
 			
 			documento.setVersione(Double.parseDouble(versione));
 			documento.setEncoding(encoding);
@@ -85,7 +85,7 @@ public class XMLParser2 {
 		testo.delete(testo.length() - rootElement.length() - 2, testo.length());
 		
 		testoInternoAlRoot = testo.toString();
-		System.out.println("stampa del testo interno al root" + testoInternoAlRoot);
+//		System.out.println("stampa del testo interno al root" + testoInternoAlRoot);
 		
 		elementoRoot.setTestoInterno(testoInternoAlRoot);		
 		
@@ -93,13 +93,13 @@ public class XMLParser2 {
 		List<DocumentElement> listaDiElementi = new ArrayList<>();
 		
 		int numero = new XMLParser2().ottieniNumeroDiSottoElementi(testoInternoAlRoot);
-		System.out.println("numero di elementi contatto " + numero);
+//		System.out.println("numero di elementi contatto " + numero);
 		
 		String nomeElementiDaInserire = new XMLParser2().ottieniNomeTagFiglioDiretto(testoInternoAlRoot);
-		System.out.println("nome degli elementi interi: " + nomeElementiDaInserire);
+//		System.out.println("nome degli elementi interi: " + nomeElementiDaInserire);
 		
 		List<String> sottoTesto = new XMLParser2().ottieniSottotesti(testoInternoAlRoot, numero, nomeElementiDaInserire);
-		System.out.println(sottoTesto.get(1));
+//		System.out.println(sottoTesto.get(1));
 		
 		for(int j = 0; j < numero; j++) {
 			DocumentElement contatto = new DocumentElement();
@@ -108,10 +108,14 @@ public class XMLParser2 {
 			contatto.settextValue(null);
 			listaDiElementi.add(contatto);
 		}
+		documento.getRoot().setNodi(listaDiElementi);
 		
-		System.out.println("stampa finale: " + listaDiElementi.get(1).getNome());
-		System.out.println("stampa finale root: " + elementoRoot.getTestoInterno());
+//		System.out.println("stampa finale: " + listaDiElementi.get(1).getNome());
+//		System.out.println("stampa finale root: " + elementoRoot.getTestoInterno())
 		
+		new XMLParser2().leggiElementiInterni(listaDiElementi.get(0).getTestoInterno().trim(), 0, documento);
+		
+		System.out.println(documento.getRoot().getNodi().get(0).getNodi().get(0).gettextValue());
 		
 //		elementoRoot.parseAncora(testoInternoAlRoot, 1);		
 		fr.close();
@@ -163,8 +167,39 @@ public class XMLParser2 {
 		return count;
 	}
 	
+	
+	
+	
+	public void leggiElementiInterni(String testoInterno, int indiceContatto, Document document) {
+		String daLavorare = testoInterno;
+		
+	
+		String[] arrayDiString = daLavorare.split("\n");
+		
+		List<DocumentElement> elemInterni = new ArrayList<>();
+		
+		for(String s : arrayDiString) {
+			
+			DocumentElement nuovoElemento = new DocumentElement();
+			
+			String nomeDelTag = s.substring((s.indexOf("<") + 1), s.indexOf(">"));
+			
+			nuovoElemento.setNome(nomeDelTag);
+			
+			String valoreInterno = s.substring(s.indexOf(">") + 1, s.indexOf("</"));
+			
+			nuovoElemento.settextValue(valoreInterno);
+			//<tag>valore</tag>
+			elemInterni.add(nuovoElemento);
+		}
+//		System.out.println(document.getRoot().getNodi().get(0).getNome());
+		
+		document.getRoot().getNodi().get(indiceContatto).setNodi(elemInterni);	
+	}
+	
 	public static void main(String[] args) throws Exception {
 		XMLParser2 x = new XMLParser2();
 		x.parse("/javaFiles/test_parser1.xml");
+//		x.metodo("<nome>Ciao</nome>", 1);
 	}
 }
