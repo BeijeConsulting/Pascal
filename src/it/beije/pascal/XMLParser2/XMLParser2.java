@@ -43,7 +43,6 @@ public class XMLParser2 {
 		String testoFile = sb.toString().trim();
 		documento.setTesto(testoFile);
 		
-		
 		if(testoFile.contains("<?")) { //il file contiene un'instazione, allora estraiamone le informazioni
 			int inizioNumeroVersione = testoFile.indexOf("\"");
 			int fineNumeroVersione = testoFile.indexOf("\"", inizioNumeroVersione + 1);
@@ -130,7 +129,7 @@ public class XMLParser2 {
 		int chiusuraRoot = testoFile.indexOf(">", aperturaRoot);
 		contatto = testoFile.substring(aperturaRoot + 1, chiusuraRoot);
 		
-		return contatto;		
+		return contatto;	
 	}
 	
 	public List<String> ottieniSottotesti(String sottoTesto, int count, String tagDaCercare) {
@@ -167,9 +166,6 @@ public class XMLParser2 {
 		return count;
 	}
 	
-	
-	
-	
 	public void leggiElementiInterni(String testoInterno, int indiceContatto, Document document) {
 		String daLavorare = testoInterno;
 		
@@ -177,9 +173,7 @@ public class XMLParser2 {
 		String[] arrayDiString = daLavorare.split("\n");
 		
 		List<DocumentElement> elemInterni = new ArrayList<>();
-		
 		for(String s : arrayDiString) {
-			
 			DocumentElement nuovoElemento = new DocumentElement();
 			
 			String nomeDelTag = s.substring((s.indexOf("<") + 1), s.indexOf(">"));
@@ -187,13 +181,11 @@ public class XMLParser2 {
 			nuovoElemento.setNome(nomeDelTag);
 			
 			String valoreInterno = s.substring(s.indexOf(">") + 1, s.indexOf("</"));
-			
 			nuovoElemento.settextValue(valoreInterno);
 			//<tag>valore</tag>
 			elemInterni.add(nuovoElemento);
 		}
-//		System.out.println(document.getRoot().getNodi().get(0).getNome());
-		
+//		System.out.println(document.getRoot().getNodi().get(0).getNome());	
 		document.getRoot().getNodi().get(indiceContatto).setNodi(elemInterni);	
 	}
 	
