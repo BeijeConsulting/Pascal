@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.w3c.dom.Attr;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import xmlparser4.document.Attributo;
 import xmlparser4.document.Documento;
@@ -19,7 +19,7 @@ import xmlparser4.document.Nodo;
 public class Parser {
 
     public static void main(String[] args) {
-        parse("./test_parser2.xml");
+        parse("./test_parser5.xml");
     }
 
     public static Documento parse(String fileName){
@@ -96,7 +96,6 @@ public class Parser {
         Elemento elem = null;
         //test
         //TODO riconosci commenti 
-        System.out.println("Token trimmato: " + token.trim());
         if(isTagDiChiusura(token)){    //caso 3
             System.out.println("caso 3");
             if (padre.getTagName().equals(token.substring(1, token.indexOf('>')))){
@@ -181,20 +180,34 @@ public class Parser {
     private static List<Attributo> parseAttributi(String tagBody){
         //take first word (tag name) and delete it
         //TODO testami
+        List<Attributo> aList = new ArrayList<>();
+        if(tagBody.indexOf("=") ==-1) return aList; //se non ho attrubuti ritorno la lista vuota
         String attributiString = tagBody.substring(tagBody.indexOf(" ") + 1);
         
-        List<Attributo> aList = new ArrayList<>();
-        StringTokenizer st = new StringTokenizer(attributiString);
+        StringTokenizer st = new StringTokenizer(attributiString, "=");
         String nomeAttr = null;
-        do{
-            nomeAttr = st.nextToken("=").trim();
-            if(!nomeAttr.equals("") || nomeAttr == null){
-                st.nextToken("\"");
-                String campo = st.nextToken("\"");
-                Attributo att = new Attributo(nomeAttr, campo);
-                aList.add(att);
-            }
-        } while(!nomeAttr.equals("") || nomeAttr == null);
+        String textAttr = null;
+        
+        // int numTok = st.countTokens();
+        // for (int i = 0; i < numTok; i++) {
+        //      String campoString = st.nextToken("=");
+        //      st.nextToken("\"");
+        //      String valoreString = st.nextToken("\"");
+        //      Attributo attr = new Attributo(campoString, valoreString);
+        //      aList.add(attr);
+        // }
+        String regex = "(.*?)=(\".*?\") ";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(attributiString+" ");
+
+        while(matcher.find()){
+            nomeAttr = matcher.group(1);
+            textAttr = matcher.group(2);
+            //test
+            System.out.println(String.format("attr: %s : %s", nomeAttr, textAttr));
+        }
+
+        
         return aList;
     }
 
