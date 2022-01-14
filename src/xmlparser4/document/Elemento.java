@@ -10,12 +10,17 @@ public class Elemento {
     public Elemento(String tagName) {
         this.tagName = tagName;
         figliList = new ArrayList<>();
+        attributi = new ArrayList<>();
+        risultato = new ArrayList<Elemento>();
     }
-    //TODO ordina tutto
-
+    
     private Elemento padre;
+    private String tagName;
+    List<Elemento> figliList;
+    List<Attributo> attributi;
+	List<Elemento> risultato;
 
-    public Elemento getPadre() {
+	public Elemento getPadre() {
         return padre;
     }
 
@@ -31,24 +36,44 @@ public class Elemento {
         this.tagName = tagName;
     }
 
-    private String tagName;
-    List<Attributo> attributi;
-    List<Elemento> figliList;
 
     public void setAttributi(List<Attributo> attributi) {
         this.attributi = attributi;
     }
 
-    public void addFiglio(Elemento figlio) {
+    public List<Elemento> getFigliList() {
+		return this.figliList;
+	}
+
+	public List<Attributo> getAttributi() {
+		return this.attributi;
+	}
+
+	public void addFiglio(Elemento figlio) {
         figliList.add(figlio);
         figlio.setPadre(this);
     }
+	
+	public String getAttribute(String attribute) {
+		for(Attributo a : attributi) {
+			if(a.getName().equalsIgnoreCase(attribute)) {
+				return a.getValue();
+			} 
+		}
+		return "Attributo non trovato";
+	}
 
-    // TODO funzioni
-    // getTagName() //torna il nome del tag
-//     // getTextContent() //torna il contenuto del tag
-//     getAttributes() //torna l'elenco degli attributi dell'elemento
-// getAttribute(String attribute) //torna il valore dell'attributo specificato
-
+	// getElementsByTagName(String tagName) //torna TUTTI gli elementi con quello specifico nome
+	
+	public List<Elemento> getElementsByTagName(String tagName) {
+		for(Elemento e: figliList) {
+			if( e.getTagName().equalsIgnoreCase(tagName)) {
+				risultato.add(e);
+			}
+				e.getElementsByTagName(tagName);
+				risultato.add(e);
+			}
+		return risultato;
+	}
     
 }

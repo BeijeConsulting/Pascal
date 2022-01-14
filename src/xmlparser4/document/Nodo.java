@@ -1,13 +1,17 @@
 package xmlparser4.document;
 
 public class Nodo extends Elemento{
-    String argumenString;
+    String text;
 
     public Nodo(String tagName ){
         super(tagName);
     }
 
     public void setText(String nodeText) {
-        this.argumenString = nodeText;
+        this.text = nodeText;
+    }
+    
+    public String getTextContent() {
+    	return this.text;
     }
 }
