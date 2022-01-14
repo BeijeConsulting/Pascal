@@ -2,56 +2,66 @@ package XMLParser;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class XMLParser {
 
-	private List<Element> document = new ArrayList<Element>();
+	public StringBuilder xml;
+	BufferedReader bufferedReader;
+	FileReader reader;
 	private List<String> documentString = new ArrayList<String>();
 
 	public void parse(String path) throws IOException {
 		File file = new File(path);
-		FileReader reader = new FileReader(file);
-		BufferedReader bufferedReader = new BufferedReader(reader);
+		reader = new FileReader(file);
+		bufferedReader = new BufferedReader(reader);
 
 		if (!controllo(bufferedReader))
 			System.out.println("non si può continuare");
 
-		addElement();
+		reader = new FileReader(file);
+		bufferedReader = new BufferedReader(reader);
+		Element root = new Element(bufferedReader.readLine());
+		RecursivePrint(documentString, 1, 0, root);
 
-		for (Element element : document) {
-			System.out.println(element);
+		for (Element e : root.getChilds()) {
+			System.out.println(e);
+			if (e.getTagName().equals("<contatto eta=\"30\">"))
+				for (Element el : e.getChilds()) {
+					System.out.println("\t" + el);
+				}
 		}
+
 	}
 
-	private void addElement() {
-		int inizio, fine = 0;
-		boolean root = true;
-		for (int i = 0; i < documentString.size(); i++) {
-			if (root) {
-				String first = documentString.get(i);
-				first.replace("<", "").replace(">", "");
-				Element element = new Element(first);
-				document.add(element);
-				root = false;
-				continue;
-			}
+	public void RecursivePrint(List<String> arr, int index, int level, Element parent) {
+		if (index == arr.size()) {
+			return;
 		}
-		
-		
 
-		
+		for (int i = 0; i < level; i++)
+			System.out.print("\t");
+
+		if (arr.get(index).contains("</")) {
+			if (!arr.get(index).contains("</contatto")) {
+				Element el = new Element(arr.get(index).trim());
+				System.out.println(level + " </");
+				parent.addChild(el);
+				RecursivePrint(arr, ++index, level, parent);
+			} else {
+				System.out.println("dasd");
+				RecursivePrint(arr, ++index, level - 1, parent);
+			}
+		} else {
+			System.out.println(level + " " + arr.get(index));
+			Element el = new Element(arr.get(index).trim());
+			parent.addChild(el);
+			RecursivePrint(arr, ++index, level + 1, el);
+		}
 	}
 
 	private boolean controllo(BufferedReader bufferedReader) throws IOException {

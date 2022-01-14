@@ -20,6 +20,11 @@ public class Element {
 		this.tagName = elementName;
 	}
 	
+	
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
+
 	// torna il nome del tag
 	public String getTagName() {
 		return this.tagName;
@@ -47,7 +52,25 @@ public class Element {
 	public void getAttribute(String attribute) {
 	}
 
+	public void addChild(Element el) {
+		this.childs.add(el);
+	}
 
+	public List<Element> getChilds() {
+		return childs;
+	}
+
+	public void setChilds(List<Element> childs) {
+		this.childs = childs;
+	}
+
+	@Override
+	public String toString() {
+		return "Element [tagName=" + tagName + "]";
+	}
+
+	
+	
 	
 
 
