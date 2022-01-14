@@ -5,7 +5,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
+
+import org.w3c.dom.Attr;
 
 import xmlparser4.document.Attributo;
 import xmlparser4.document.Documento;
@@ -91,6 +95,7 @@ public class Parser {
     private static Elemento leggiToken(String token, Elemento padre, BufferedReader bfr) throws IOException, FileNotValidoException {
         Elemento elem = null;
         //test
+        //TODO riconosci commenti 
         System.out.println("Token trimmato: " + token.trim());
         if(isTagDiChiusura(token)){    //caso 3
             System.out.println("caso 3");
@@ -109,15 +114,17 @@ public class Parser {
         else if(isTagDiApertura(token)){ //caso 1
             System.out.println("caso 1");
             String tagName = parseTagName(parseTagBodyFromTokenApertura(token));
+            boolean isCommentato = isTagNameCommentato(tagName);
             elem = new Elemento(tagName);
             elem.setAttributi(parseAttributi(parseTagBodyFromTokenApertura(token)));
-            //TODO leggi se ha attributi
             Elemento figlioLetto = leggiToken(nextToken(bfr), elem, bfr);
             while(figlioLetto !=null){
                 elem.addFiglio(figlioLetto);
                 figlioLetto = leggiToken(nextToken(bfr), elem, bfr);
             }
-            return elem;
+            //FIXME devo supportare l'aggiunta di null ai figli
+            if (isCommentato) return null;
+            else return elem;
         }
         else if(isTagConNodo(token)){    //caso 2
             System.out.println("caso 2");
@@ -130,6 +137,10 @@ public class Parser {
         else throw new FileNotValidoException("Errore sconosciuto");
     }
     
+    private static boolean isTagNameCommentato(String tagName) {
+        return (tagName.startsWith("!--"));
+    }
+
     private static Nodo leggiAutoconclusivo(String token) {
         String trimmed = token.trim();
         String tagBody = trimmed.substring(0, trimmed.length()-2);
@@ -168,8 +179,23 @@ public class Parser {
     }
 
     private static List<Attributo> parseAttributi(String tagBody){
-        //TODO da fare
-        return null;
+        //take first word (tag name) and delete it
+        //TODO testami
+        String attributiString = tagBody.substring(tagBody.indexOf(" ") + 1);
+        
+        List<Attributo> aList = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(attributiString);
+        String nomeAttr = null;
+        do{
+            nomeAttr = st.nextToken("=").trim();
+            if(!nomeAttr.equals("") || nomeAttr == null){
+                st.nextToken("\"");
+                String campo = st.nextToken("\"");
+                Attributo att = new Attributo(nomeAttr, campo);
+                aList.add(att);
+            }
+        } while(!nomeAttr.equals("") || nomeAttr == null);
+        return aList;
     }
 
     private static boolean isTagConNodo(String token) {
