@@ -11,6 +11,7 @@ public class Elemento {
         this.tagName = tagName;
         figliList = new ArrayList<>();
     }
+    //TODO ordina tutto
 
     private Elemento padre;
 
@@ -42,4 +43,12 @@ public class Elemento {
         figliList.add(figlio);
         figlio.setPadre(this);
     }
+
+    // TODO funzioni
+    // getTagName() //torna il nome del tag
+//     // getTextContent() //torna il contenuto del tag
+//     getAttributes() //torna l'elenco degli attributi dell'elemento
+// getAttribute(String attribute) //torna il valore dell'attributo specificato
+
+    
 }

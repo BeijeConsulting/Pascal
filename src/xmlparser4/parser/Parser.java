@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import xmlparser4.document.Attributo;
 import xmlparser4.document.Documento;
@@ -20,11 +19,10 @@ public class Parser {
     }
 
     public static Documento parse(String fileName){
-        // TODO
         //leggere il file
         File file;
-        FileReader fr;
-        BufferedReader bfr;
+        FileReader fr = null;
+        BufferedReader bfr = null;
         
         
         //TODO controlli sul nome del file
@@ -52,12 +50,20 @@ public class Parser {
         } catch (FileNotValidoException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
+        }finally{
+            try {
+                if (bfr != null) bfr.close();
+                if (fr != null)fr.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         
         return null;
     }
     
-    private static void LeggiBufferato(BufferedReader bfr) throws IOException, FileNotValidoException {
+    private static Documento LeggiBufferato(BufferedReader bfr) throws IOException, FileNotValidoException {
         int readChar;
         //prima apertura di tag
         if((readChar = bfr.read()) == '?') {
@@ -78,6 +84,7 @@ public class Parser {
         String nextToken = nextToken(bfr);
         doc.addFiglio(leggiToken(nextToken, null, bfr));
         
+        return doc;
         
     }
     
@@ -94,6 +101,11 @@ public class Parser {
             }
             else throw new FileNotValidoException("Tag non chiusa");
         }
+        else if(isTagAutoconclusivo(token)){
+            System.out.println("caso 4 : autocon");
+            elem = leggiAutoconclusivo(token);
+            return elem;
+        }
         else if(isTagDiApertura(token)){ //caso 1
             System.out.println("caso 1");
             String tagName = parseTagName(parseTagBodyFromTokenApertura(token));
@@ -105,6 +117,7 @@ public class Parser {
                 elem.addFiglio(figlioLetto);
                 figlioLetto = leggiToken(nextToken(bfr), elem, bfr);
             }
+            return elem;
         }
         else if(isTagConNodo(token)){    //caso 2
             System.out.println("caso 2");
@@ -115,9 +128,22 @@ public class Parser {
             else throw new FileNotValidoException("Tag non chiusa"); //non dovrebbe succedere se caso 3 funziona
         } 
         else throw new FileNotValidoException("Errore sconosciuto");
-        return null;
     }
     
+    private static Nodo leggiAutoconclusivo(String token) {
+        String trimmed = token.trim();
+        String tagBody = trimmed.substring(0, trimmed.length()-2);
+        String tagName = parseTagName(tagBody);
+        Nodo elem = new Nodo(tagName);
+        elem.setAttributi(parseAttributi(tagBody));
+        return elem;
+    }
+
+    private static boolean isTagAutoconclusivo(String token) {
+        String trimmed = token.trim();
+        return ((trimmed.charAt(trimmed.length()-1)) == '>' && token.charAt(trimmed.length()-2) == '/');
+    }
+
     private static boolean isTagDiChiusura(String token) {
         String trimmed = token.trim();
         return (token.charAt(0) == '/' && (trimmed.charAt(trimmed.length()-1) == '>'));
@@ -138,12 +164,11 @@ public class Parser {
     }
 
     private static String parseTagName(String tagBody){
-        //TODO
         return (tagBody.split(" "))[0];
     }
 
     private static List<Attributo> parseAttributi(String tagBody){
-        //TODO
+        //TODO da fare
         return null;
     }
 
@@ -162,8 +187,9 @@ public class Parser {
         String token = "";
         int letto;
         while((letto = bfr.read()) != '<'){
-            if (letto == -1 ) throw new FileNotValidoException("File non valido: si chiude in un tag");
-            token += (char) letto;
+            if (letto != -1 ) //se non ho finito il file
+                token += (char) letto;
+            else break;
         }
         return token;
     }
