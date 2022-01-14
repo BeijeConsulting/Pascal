@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +14,7 @@ public class XMLParser {
 	public StringBuilder xml;
 	BufferedReader bufferedReader;
 	FileReader reader;
+	Element root = null;
 	private List<String> documentString = new ArrayList<String>();
 
 	public void parse(String path) throws IOException {
@@ -25,43 +27,57 @@ public class XMLParser {
 
 		reader = new FileReader(file);
 		bufferedReader = new BufferedReader(reader);
-		Element root = new Element(bufferedReader.readLine());
-		RecursivePrint(documentString, 1, 0, root);
 
-		for (Element e : root.getChilds()) {
-			System.out.println(e);
-			if (e.getTagName().equals("<contatto eta=\"30\">"))
-				for (Element el : e.getChilds()) {
-					System.out.println("\t" + el);
-				}
+		root = new Element("rubrica");
+		// System.out.println(root.getTagName());
+		root = RecursivePrint(documentString, 1, 0, root, root);
+
+		/*
+		 * for (Element element : root.getChildNodes()) { System.out.println(element);
+		 * if(element.getTagName().equals("contatto")) { for (Element e :
+		 * element.getChildNodes()) { System.out.println("\t "+ e);
+		 * System.out.println("\t\t "+ e.getTextContent()); } } }
+		 */
+
+		List<Element> elements = getElementsByTagName("nome");
+
+		for (Element element : elements) {
+			System.out.println(element.getTagName());
+			System.out.println(element.getTextContent());
 		}
 
 	}
 
-	public void RecursivePrint(List<String> arr, int index, int level, Element parent) {
-		if (index == arr.size()) {
-			return;
+	public Element RecursivePrint(List<String> arr, int index, int level, Element parent, Element root) {
+		if (index == arr.size() || index == arr.size() - 1) {
+			return root;
 		}
-
-		for (int i = 0; i < level; i++)
-			System.out.print("\t");
 
 		if (arr.get(index).contains("</")) {
-			if (!arr.get(index).contains("</contatto")) {
-				Element el = new Element(arr.get(index).trim());
-				System.out.println(level + " </");
+			if (!arr.get(index).contains(parent.getTagName())) {
+				Element el = new Element(nomeTag(arr.get(index).trim()));
 				parent.addChild(el);
-				RecursivePrint(arr, ++index, level, parent);
+				el.setTextContent(context(arr.get(index).trim(), el));
+				RecursivePrint(arr, ++index, level, parent, root);
 			} else {
-				System.out.println("dasd");
-				RecursivePrint(arr, ++index, level - 1, parent);
+				RecursivePrint(arr, ++index, level - 1, root, parent);
 			}
 		} else {
-			System.out.println(level + " " + arr.get(index));
-			Element el = new Element(arr.get(index).trim());
+			Element el = new Element(nomeTag(arr.get(index).trim()));
 			parent.addChild(el);
-			RecursivePrint(arr, ++index, level + 1, el);
+			RecursivePrint(arr, ++index, level + 1, el, root);
 		}
+
+		return root;
+	}
+
+	private String nomeTag(String tag) {
+		return tag.replace("<", " ").replace(">", " ").replace("</", " ").split(" ")[1];
+	}
+
+	private String context(String tag, Element el) {
+		return tag.replace("<", "").replace(">", "").replace("<", "").replace("/", "").replace(el.getTagName(), "");
+
 	}
 
 	private boolean controllo(BufferedReader bufferedReader) throws IOException {
@@ -117,16 +133,31 @@ public class XMLParser {
 		return true;
 	}
 
-	// torna tutti i nodi "figli" interni all'elemento su cui viene eseguito
-	public void getChildNodes() {
-
+	// torna TUTTI gli elementi con quello specifico nome
+	public List<Element> getElementsByTagName(String tagName) {
+		List<Element> elements = new ArrayList<Element>();
+		System.out.println(root.getTagName());
+		test(root, tagName, elements);
+		return elements;
 	}
 
-	public void getChildElements() {
-	}// torna i soli elementi figli dell'elemento su cui viene eseguito
+	private void test(Element e, String s, List<Element> elements) {
 
-	// torna TUTTI gli elementi con quello specifico nome
-	public void getElementsByTagName(String tagName) {
+		for (Element el : e.getChildNodes()) {
+			if (el == null)
+				break;
+			else {
+				System.out.println("tagname " + e.getTagName());
+				System.out.println("s " + s);
+				System.out.println(e.getTagName() + "    " + el.getTagName().equals(s));
+				if (el.getTagName().equals(s)) {
+					elements.add(e);
+					System.out.println("dansijndisanjdsaniodnsaj " + e.getTagName());
+					System.out.println("dansijndisanjdsaniodnsaj " + e.getTextContent());
+				}
+				test(el, s, elements);
+			}
+		}
 
 	}
 

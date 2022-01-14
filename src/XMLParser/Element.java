@@ -8,6 +8,7 @@ public class Element {
 
 	private String tagName;
 	private String textContent;
+	private Element parent;
 	private HashMap<String, String> attributes = new HashMap<String, String>();
 	private List<Element> childs = new ArrayList<>();
 
@@ -21,6 +22,14 @@ public class Element {
 	}
 	
 	
+	public Element getParent() {
+		return parent;
+	}
+
+	public void setParent(Element parent) {
+		this.parent = parent;
+	}
+
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
 	}
@@ -56,10 +65,15 @@ public class Element {
 		this.childs.add(el);
 	}
 
-	public List<Element> getChilds() {
+	// torna tutti i nodi "figli" interni all'elemento su cui viene eseguito
+	public List<Element> getChildNodes() {
 		return childs;
 	}
+	
+	public void getChildElements() {
+	}// torna i soli elementi figli dell'elemento su cui viene eseguito
 
+	
 	public void setChilds(List<Element> childs) {
 		this.childs = childs;
 	}
