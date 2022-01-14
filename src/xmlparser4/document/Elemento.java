@@ -40,10 +40,6 @@ public class Elemento implements Nodo{
         return tagName;
     }
 
-    @Override
-    public String toString() {
-        return "Elemento [padre=" + padre.getTagName() + ", tagName=" + tagName + "figli: " +"]";
-    }
 
     public void setTagName(String tagName) {
         this.tagName = tagName;
@@ -92,12 +88,27 @@ public class Elemento implements Nodo{
 
     @Override
     public List<Nodo> getChildNodes() {
-        //TODO
         List<Nodo> nodiFigli = new ArrayList<>();
         nodiFigli.addAll(figliList);
         nodiFigli.addAll(attributi);
         nodiFigli.add(testo);
+        for (Nodo n : figliList) {
+        	List<Nodo> figli  = n.getChildNodes();
+        	nodiFigli.addAll(figli);
+        }
         return nodiFigli;
     }
     
+    
+
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(" Nome: ").append(tagName).append("\n").append("Attributi : \n");
+    	for(Attributo a : attributi) {
+    		sb.append(a.toString());
+    	}
+    	sb.append("\n").append(testo.getText());
+        return sb.toString();
+    }
 }

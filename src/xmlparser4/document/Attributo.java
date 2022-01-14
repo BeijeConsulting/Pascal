@@ -19,6 +19,10 @@ public class Attributo implements Nodo{
     public String getValue() {
         return value;
     }
+    
+    public String toString() {
+    	return name + ":" + value;
+    }
 
     @Override
     public List<Nodo> getChildNodes() { //ritorna vuoto

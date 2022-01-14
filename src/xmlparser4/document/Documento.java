@@ -20,10 +20,14 @@ public class Documento implements Nodo {
         return null;
     }
 
+    public String toString() {
+    	return root.getTagName();
+    }
+    
     @Override
     public List<Nodo> getChildNodes() {
-        // TODO Auto-generated method stub
-        return null;
+    	List<Nodo> figliRoot = this.getChildNodes();
+        return figliRoot;
     }
 
     
