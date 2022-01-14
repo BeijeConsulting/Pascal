@@ -6,17 +6,27 @@ import java.util.List;
 /**
  * An Element is defined as everything between a tag start and a tag end
  */
-public class Elemento {
+public class Elemento implements Nodo{
+    
+    private Elemento padre;
+    private String tagName;
+    private Testo testo;
+    List<Elemento> figliList;
+    List<Attributo> attributi;
+
     public Elemento(String tagName) {
         this.tagName = tagName;
         figliList = new ArrayList<>();
         attributi = new ArrayList<>();
     }
+
+    public void setText(String text) {
+        this.testo = new Testo(text);
+    }
     
-    private Elemento padre;
-    private String tagName;
-    List<Elemento> figliList;
-    List<Attributo> attributi;
+    public Testo getTextContent() {
+    	return this.testo;
+    }
 
 	public Elemento getPadre() {
         return padre;
@@ -79,5 +89,15 @@ public class Elemento {
 			}
 		return risultato;
 	}
+
+    @Override
+    public List<Nodo> getChildNodes() {
+        //TODO
+        List<Nodo> nodiFigli = new ArrayList<>();
+        nodiFigli.addAll(figliList);
+        nodiFigli.addAll(attributi);
+        nodiFigli.add(testo);
+        return nodiFigli;
+    }
     
 }

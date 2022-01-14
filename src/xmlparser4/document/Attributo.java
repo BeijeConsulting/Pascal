@@ -1,6 +1,9 @@
 package xmlparser4.document;
 
-public class Attributo {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Attributo implements Nodo{
     private String name;
     private String value;
 
@@ -15,5 +18,10 @@ public class Attributo {
 
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public List<Nodo> getChildNodes() { //ritorna vuoto
+        return new ArrayList<Nodo>();
     }
 }

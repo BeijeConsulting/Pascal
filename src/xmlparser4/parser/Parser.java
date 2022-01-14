@@ -7,14 +7,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import xmlparser4.document.Attributo;
 import xmlparser4.document.Documento;
 import xmlparser4.document.Elemento;
-import xmlparser4.document.Nodo;
 
 public class Parser {
 
@@ -89,7 +87,7 @@ public class Parser {
         Documento doc = new Documento();
 
         String nextToken = nextToken(bfr);
-        doc.addFiglio(leggiToken(nextToken, null, bfr));
+        doc.setRoot(leggiToken(nextToken, null, bfr));
         
         return doc;
         
@@ -97,24 +95,18 @@ public class Parser {
     
     private static Elemento leggiToken(String token, Elemento padre, BufferedReader bfr) throws IOException, FileNotValidoException {
         Elemento elem = null;
-        //test
-        //TODO riconosci commenti 
+        //TODO testa riconosci commenti 
         if(isTagDiChiusura(token)){    //caso 3
-            System.out.println("caso 3");
             if (padre.getTagName().equals(token.substring(1, token.indexOf('>')))){
-                //test
-                System.out.println("Letta chiusura tag: " + padre.getTagName());
                 return null;
             }
             else throw new FileNotValidoException("Tag non chiusa");
         }
-        else if(isTagAutoconclusivo(token)){
-            System.out.println("caso 4 : autocon");
+        else if(isTagAutoconclusivo(token)){//caso 4 
             elem = leggiAutoconclusivo(token);
             return elem;
         }
         else if(isTagDiApertura(token)){ //caso 1
-            System.out.println("caso 1");
             String tagName = parseTagName(parseTagBodyFromTokenApertura(token));
             boolean isCommentato = isTagNameCommentato(tagName);
             elem = new Elemento(tagName);
@@ -128,10 +120,8 @@ public class Parser {
             if (isCommentato) return null;
             else return elem;
         }
-        else if(isTagConNodo(token)){    //caso 2
-            System.out.println("caso 2");
-
-            elem  = leggiNodoDa(token);
+        else if(isTagConText(token)){   
+            elem  = leggiFogliaDa(token);
             if (leggiToken(nextToken(bfr), elem, bfr) == null)
                 return elem;
             else throw new FileNotValidoException("Tag non chiusa"); //non dovrebbe succedere se caso 3 funziona
@@ -143,11 +133,11 @@ public class Parser {
         return (tagName.startsWith("!--"));
     }
 
-    private static Nodo leggiAutoconclusivo(String token) {
+    private static Elemento leggiAutoconclusivo(String token) {
         String trimmed = token.trim();
         String tagBody = trimmed.substring(0, trimmed.length()-2);
         String tagName = parseTagName(tagBody);
-        Nodo elem = new Nodo(tagName);
+        Elemento elem = new Elemento(tagName);
         elem.setAttributi(parseAttributi(tagBody));
         return elem;
     }
@@ -162,13 +152,13 @@ public class Parser {
         return (token.charAt(0) == '/' && (trimmed.charAt(trimmed.length()-1) == '>'));
     }
 
-    private static Nodo leggiNodoDa(String token) {
+    private static Elemento leggiFogliaDa(String token) {
         String tagBody = token.substring(0, token.indexOf('>'));
-        Nodo nodo = new Nodo(parseTagName(tagBody));
-        nodo.setAttributi(parseAttributi(tagBody));
+        Elemento foglia = new Elemento(parseTagName(tagBody));
+        foglia.setAttributi(parseAttributi(tagBody));
         String nodeText = token.substring(token.indexOf('>')+1);
-        nodo.setText(nodeText);
-        return nodo;
+        foglia.setText(nodeText);
+        return foglia;
     }
 
     static String parseTagBodyFromTokenApertura(String tokenApertura){
@@ -187,18 +177,9 @@ public class Parser {
         if(tagBody.indexOf("=") ==-1) return aList; //se non ho attrubuti ritorno la lista vuota
         String attributiString = tagBody.substring(tagBody.indexOf(" ") + 1);
         
-        StringTokenizer st = new StringTokenizer(attributiString, "=");
         String nomeAttr = null;
         String textAttr = null;
         
-        // int numTok = st.countTokens();
-        // for (int i = 0; i < numTok; i++) {
-        //      String campoString = st.nextToken("=");
-        //      st.nextToken("\"");
-        //      String valoreString = st.nextToken("\"");
-        //      Attributo attr = new Attributo(campoString, valoreString);
-        //      aList.add(attr);
-        // }
         String regex = "(.*?)=(\".*?\") ";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(attributiString+" ");
@@ -206,15 +187,12 @@ public class Parser {
         while(matcher.find()){
             nomeAttr = matcher.group(1);
             textAttr = matcher.group(2);
-            //test
-            System.out.println(String.format("attr: %s : %s", nomeAttr, textAttr));
+            aList.add(new Attributo(nomeAttr, textAttr));
         }
-
-        
         return aList;
     }
 
-    private static boolean isTagConNodo(String token) {
+    private static boolean isTagConText(String token) {
         int posChius = token.indexOf('>');
         if (posChius == -1) return false;
         else return true;
@@ -235,27 +213,5 @@ public class Parser {
         }
         return token;
     }
-    
-    private static Elemento leggiElemento(BufferedReader bfr) throws IOException, FileNotValidoException {
-        Elemento elemento;
-        //inizio con il reader che punta alla < del tag di inizio
-        //memorizzo tutto il tag in String
-        String tag = "";
-        int letto;
-        while((letto = bfr.read()) != '>'){
-            if (letto == -1 ) throw new FileNotValidoException("File non valido: si chiude in un tag");
-            tag += (char) letto;
-        }
-        //riconosco il tag
-        if (tag.charAt(tag.length()-1) == '/') {
-            //tag autoconclusivo
-            elemento = new Elemento(tag.substring(0, tag.length()-1));
-        }
-        else {
-            elemento = new Elemento(tag); //TODO
-        }
-        return elemento;
-    }
-    
     
 }

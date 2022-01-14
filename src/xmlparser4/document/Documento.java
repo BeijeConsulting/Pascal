@@ -1,6 +1,8 @@
 package xmlparser4.document;
 
-public class Documento {
+import java.util.List;
+
+public class Documento implements Nodo {
     private Elemento root;
 
     public Elemento getRoot() {
@@ -13,14 +15,16 @@ public class Documento {
 
     public Documento(){}
 
-    public void addFiglio(Elemento figlio) {
-        setRoot(figlio);    
+    public String getTreeString(){
+        //TODO
+        return null;
     }
 
-//     //TODO getRootElement() //torna l'elemento root
-// getChildNodes() //torna tutti i nodi "figli" interni all'elemento su cui viene eseguito
-// getChildElements() //torna i soli elementi figli dell'elemento su cui viene eseguito
-
+    @Override
+    public List<Nodo> getChildNodes() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     
 }
