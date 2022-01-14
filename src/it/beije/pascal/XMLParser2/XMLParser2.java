@@ -109,14 +109,11 @@ public class XMLParser2 {
 		}
 		documento.getRoot().setNodi(listaDiElementi);
 		
-//		System.out.println("stampa finale: " + listaDiElementi.get(1).getNome());
-//		System.out.println("stampa finale root: " + elementoRoot.getTestoInterno())
 		
 		new XMLParser2().leggiElementiInterni(listaDiElementi.get(0).getTestoInterno().trim(), 0, documento);
 		
 		System.out.println(documento.getRoot().getNodi().get(0).getNodi().get(0).gettextValue());
-		
-//		elementoRoot.parseAncora(testoInternoAlRoot, 1);		
+				
 		fr.close();
 		return documento;
 	}
@@ -182,16 +179,13 @@ public class XMLParser2 {
 			
 			String valoreInterno = s.substring(s.indexOf(">") + 1, s.indexOf("</"));
 			nuovoElemento.settextValue(valoreInterno);
-			//<tag>valore</tag>
 			elemInterni.add(nuovoElemento);
 		}
-//		System.out.println(document.getRoot().getNodi().get(0).getNome());	
 		document.getRoot().getNodi().get(indiceContatto).setNodi(elemInterni);	
 	}
 	
 	public static void main(String[] args) throws Exception {
 		XMLParser2 x = new XMLParser2();
 		x.parse("/javaFiles/test_parser1.xml");
-//		x.metodo("<nome>Ciao</nome>", 1);
 	}
 }
