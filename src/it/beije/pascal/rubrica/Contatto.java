@@ -13,7 +13,7 @@ PRIMARY KEY (`id`));
 
 
 public class Contatto {
-	private int id;
+
 	private String cognome;
 	private String nome;
 	private String telefono;
