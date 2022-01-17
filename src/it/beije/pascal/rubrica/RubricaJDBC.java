@@ -1,6 +1,5 @@
 package it.beije.pascal.rubrica;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -28,7 +27,7 @@ public class RubricaJDBC {
 			
 			statement = connection.createStatement();
 			
-			/*/SELECT
+			//SELECT
 			//rs = statement.executeQuery("SELECT * FROM contatti WHERE cognome = '" + args[0] + "'");
 			PreparedStatement preparedStatement = connection.prepareStatement(RubricaJDBC.SELECT_COGNOME_NOME);
 			preparedStatement.setString(1, args[0]);
@@ -57,18 +56,18 @@ public class RubricaJDBC {
 				System.out.println("email : " + rs.getString("email"));
 				System.out.println("note : " + rs.getString("note"));
 				System.out.println("\n");
-			}*/
+			}
 			
 			//INSERT
 			//int r = statement.executeUpdate("INSERT INTO contatti VALUES (null, 'Verdi', 'Mauro', '3474646467', 'verdi.mauro@beije.it', 'sono un nuovo contatto')");
-			PreparedStatement psInsert = connection.prepareStatement(INSERT_INTO_RUBRICA);
-			psInsert.setString(1, "Verdi");
-			psInsert.setString(2, "Luisa");
-			psInsert.setString(3, "24341412");
-			psInsert.setString(4, null);
-			psInsert.setString(5, "");
-			int r = psInsert.executeUpdate();
-			System.out.println("r = " + r);
+//			PreparedStatement psInsert = connection.prepareStatement(INSERT_INTO_RUBRICA);
+//			psInsert.setString(1, "Verdi");
+//			psInsert.setString(2, "Luisa");
+//			psInsert.setString(3, "24341412");
+//			psInsert.setString(4, null);
+//			psInsert.setString(5, "");
+//			int r = psInsert.executeUpdate();
+//			System.out.println("r = " + r);
 			
 			//UPDATE
 //			int r = statement.executeUpdate("UPDATE contatti SET cognome = 'rossi' WHERE cognome = 'rosa'");
