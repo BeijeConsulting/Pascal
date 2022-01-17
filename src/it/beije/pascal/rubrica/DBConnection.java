@@ -133,7 +133,7 @@ public class DBConnection {
 			PreparedStatement preparedStatement;
 			try {
 				preparedStatement = connection.prepareStatement(DELETE_CONTACT);
-				preparedStatement.setInt(1, Integer.parseInt(cont.getId()));
+				preparedStatement.setInt(1, cont.getId());
 				rs = preparedStatement.executeQuery();
 				
 			} catch (SQLException e) {
