@@ -14,20 +14,32 @@ PRIMARY KEY (`id`));
 
 public class Contatto {
 	
+<<<<<<< HEAD
 	private String id;
 
+=======
+	private int id;
+>>>>>>> refs/remotes/origin/main
 	private String cognome;
 	private String nome;
 	private String telefono;
 	private String email;
 	private String note;
 	
+<<<<<<< HEAD
 	
 	public String getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = String.valueOf(id);
+=======
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+>>>>>>> refs/remotes/origin/main
 	}
 	
 	public String getCognome() {
@@ -67,11 +79,20 @@ public class Contatto {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder()
+<<<<<<< HEAD
 				.append(" cognome : ").append(this.cognome + "\n")
 				.append(" nome : ").append(this.nome + "\n")
 				.append(" telefono : ").append(this.telefono + "\n")
 				.append(" email : ").append(this.email + "\n")
 				.append(" note : ").append(this.note + "\n");
+=======
+				.append("{ id : ").append(this.id)
+				.append(", cognome : ").append(this.cognome)
+				.append(", nome : ").append(this.nome)
+				.append(", telefono : ").append(this.telefono)
+				.append(", email : ").append(this.email)
+				.append(", note : ").append(this.note).append(" }");
+>>>>>>> refs/remotes/origin/main
 		
 		return builder.toString();
 	}
