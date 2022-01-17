@@ -23,7 +23,7 @@ public class RubricaJDBC {
 		ResultSet rs = null;
 		
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "beije");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "rosario");
 
 			System.out.println(!connection.isClosed());
 			
