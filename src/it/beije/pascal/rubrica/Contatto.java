@@ -1,7 +1,11 @@
 package it.beije.pascal.rubrica;
 
-
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /*
 CREATE TABLE `rubrica`.`contatti` (
@@ -15,13 +19,28 @@ PRIMARY KEY (`id`));
 */
 
 
+@Entity
+@Table(name = "contatti")
 public class Contatto {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
+	
+	@Column(name = "cognome")
 	private String cognome;
+
+	@Column(name = "nome")
 	private String nome;
+
+	@Column(name = "telefono")
 	private String telefono;
+
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "note")
 	private String note;
 	
 	public int getId() {
@@ -65,19 +84,15 @@ public class Contatto {
 	public void setNote(String note) {
 		this.note = note;
 	}
-		
-	public Contatto() {
-		super();
-	}
 	
 	public Contatto(String cognome, String nome, String telefono, String email, String note) {
-		super();
 		this.cognome = cognome;
 		this.nome = nome;
 		this.telefono = telefono;
 		this.email = email;
 		this.note = note;
 	}
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder()
 				.append("{ id : ").append(this.id)
@@ -89,27 +104,5 @@ public class Contatto {
 		
 		return builder.toString();
 	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(cognome, email, nome, note, telefono);
-	}
-	
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Contatto other = (Contatto) obj;
-		return Objects.equals(cognome, other.cognome) && Objects.equals(email, other.email)
-				&& Objects.equals(nome, other.nome) && Objects.equals(note, other.note)
-				&& Objects.equals(telefono, other.telefono);
-	}
-	
-	
 	
 }

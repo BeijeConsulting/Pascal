@@ -161,9 +161,13 @@ public class Rubricamanager {
 	}
 
 	public static void insert(Contatto c) throws Exception {
+		
+		
+		
 		//XMLmanager.insert(c);
 		
-		JDBCmanager.insertJDBCPrepareStamtement(c);
+		//JDBCmanager.insertJDBCPrepareStamtement(c);
+		
 		//JDBCmanager.insertJDBC(c);
 	}
 	
