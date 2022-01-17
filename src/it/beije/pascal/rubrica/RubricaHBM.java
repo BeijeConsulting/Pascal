@@ -13,8 +13,10 @@ public class RubricaHBM {
 
 	public static void main(String[] args) {
 
-		Configuration configuration = new Configuration().configure();
-				//.addAnnotatedClass(Contatto.class);
+		Configuration configuration = new Configuration().configure()
+				.addAnnotatedClass(Contatto.class);			
+				//.addAnnotatedClass(AltraClasse.class)				
+				
 		
 		SessionFactory sessionFactory = configuration.buildSessionFactory();
 		
@@ -32,7 +34,8 @@ public class RubricaHBM {
 			if (c.getId() == 15) contatto = c;
 		}
 
-		Transaction transaction = session.beginTransaction();
+//		Transaction transaction = session.beginTransaction();
+
 //		Transaction transaction = session.getTransaction();
 //		transaction.begin();
 		
@@ -61,7 +64,7 @@ public class RubricaHBM {
 //		//DELETE
 //		session.remove(contatto);
 		
-		transaction.commit();
+//		transaction.commit();
 		
 		session.close();
 	}
