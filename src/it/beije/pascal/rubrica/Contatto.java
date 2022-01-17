@@ -1,5 +1,12 @@
 package it.beije.pascal.rubrica;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /*
 CREATE TABLE `rubrica`.`contatti` (
 `id` INT NOT NULL AUTO_INCREMENT,
@@ -12,34 +19,35 @@ PRIMARY KEY (`id`));
 */
 
 
+@Entity
+@Table(name = "contatti")
 public class Contatto {
 	
-<<<<<<< HEAD
-	private String id;
-
-=======
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
->>>>>>> refs/remotes/origin/main
+	
+	@Column(name = "cognome")
 	private String cognome;
+
+	@Column(name = "nome")
 	private String nome;
+
+	@Column(name = "telefono")
 	private String telefono;
+
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "note")
 	private String note;
 	
-<<<<<<< HEAD
-	
-	public String getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = String.valueOf(id);
-=======
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
->>>>>>> refs/remotes/origin/main
 	}
 	
 	public String getCognome() {
@@ -79,20 +87,12 @@ public class Contatto {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder()
-<<<<<<< HEAD
-				.append(" cognome : ").append(this.cognome + "\n")
-				.append(" nome : ").append(this.nome + "\n")
-				.append(" telefono : ").append(this.telefono + "\n")
-				.append(" email : ").append(this.email + "\n")
-				.append(" note : ").append(this.note + "\n");
-=======
 				.append("{ id : ").append(this.id)
 				.append(", cognome : ").append(this.cognome)
 				.append(", nome : ").append(this.nome)
 				.append(", telefono : ").append(this.telefono)
 				.append(", email : ").append(this.email)
 				.append(", note : ").append(this.note).append(" }");
->>>>>>> refs/remotes/origin/main
 		
 		return builder.toString();
 	}
