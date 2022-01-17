@@ -56,12 +56,6 @@ public class Contatto {
 		this.note = note;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder()

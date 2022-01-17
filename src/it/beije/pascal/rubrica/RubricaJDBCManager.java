@@ -46,7 +46,7 @@ public class RubricaJDBCManager {
 			
 			while (rs.next()) {
 				Contatto appoggio = new Contatto();
-				appoggio.setId(rs.getInt("id"));
+				//appoggio.setId(rs.getInt("id"));
 				appoggio.setNome(rs.getString("nome"));
 				appoggio.setCognome(rs.getString("cognome"));
 				appoggio.setTelefono(rs.getString("telefono"));
@@ -82,7 +82,7 @@ public class RubricaJDBCManager {
 			
 			while (rs.next()) {
 				Contatto appoggio = new Contatto();
-				appoggio.setId(rs.getInt("id"));
+				//appoggio.setId(rs.getInt("id"));
 				appoggio.setNome(rs.getString("nome"));
 				appoggio.setCognome(rs.getString("cognome"));
 				appoggio.setTelefono(rs.getString("telefono"));
@@ -146,7 +146,7 @@ public class RubricaJDBCManager {
 			rs = preparedStatement.executeQuery();
 			
 			while (rs.next()) {
-				contatto.setId(rs.getInt("id"));
+				//contatto.setId(rs.getInt("id"));
 				contatto.setNome(rs.getString("nome"));
 				contatto.setCognome(rs.getString("cognome"));
 				contatto.setTelefono(rs.getString("telefono"));

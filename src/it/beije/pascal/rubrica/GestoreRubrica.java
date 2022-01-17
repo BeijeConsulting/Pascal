@@ -40,7 +40,7 @@ public class GestoreRubrica {
 			break;
 		}
 		
-		rubricaDB.modificaContatto(daModificare.getId(), daModificare);
+		//rubricaDB.modificaContatto(daModificare.getId(), daModificare);
 	}
 	
 	public static void importCSVInDB() {
