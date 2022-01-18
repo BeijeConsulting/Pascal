@@ -14,7 +14,6 @@ public class EntityManagerProvider {
 		if (entityManagerFactory == null) {
 			entityManagerFactory = Persistence.createEntityManagerFactory("pascal-rubrica");
 		}
-		
 		return entityManagerFactory.createEntityManager();
 	}
 
