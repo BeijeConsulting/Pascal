@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.jdbc.statement;
+package it.beije.pascal.jdbc.statement;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import it.beije.pascal.jdbc.util.DBUtil;
+import it.beije.pascal.jdbc.util.DataSource;
 import it.beije.pascal.rubrica.Contatto;
-import it.beije.pascal.rubrica.jdbc.util.DBUtil;
-import it.beije.pascal.rubrica.jdbc.util.DataSource;
 
-public class ContattoDAO {
+public class RubricaService {
 
 	public static void addContact(Contatto contatto) {
 		String sql = "INSERT INTO contatti VALUES(null,'" + contatto.getCognome() + "','" + contatto.getNome() + "', '"
