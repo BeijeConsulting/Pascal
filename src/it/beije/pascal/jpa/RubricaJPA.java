@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica;
+package it.beije.pascal.jpa;
 
 import java.util.List;
 
@@ -7,6 +7,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import it.beije.pascal.rubrica.Contatto;
+import it.beije.pascal.rubrica.EntityManagerProvider;
 
 
 public class RubricaJPA {
