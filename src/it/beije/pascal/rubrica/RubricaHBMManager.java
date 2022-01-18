@@ -10,11 +10,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 public class RubricaHBMManager {
-	public static void main(String[] args) {
-		List<Contatto> prova = null;
-		
-	}
-	
 	private static Session getSession() {
 		Configuration configuration = new Configuration().configure()
 				.addAnnotatedClass(Contatto.class);			
@@ -26,7 +21,7 @@ public class RubricaHBMManager {
 		return session;
 	}
 	
-	private static List<Contatto> getRubrica(){
+	public List<Contatto> getRubrica(){
 		Session session = getSession();
 		
 		Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c");//SELECT * FROM contatti
@@ -54,7 +49,7 @@ public class RubricaHBMManager {
 		return contatti;
 	}
 	
-	public static Contatto cercaContatto(Contatto c){
+	public Contatto cercaContatto(Contatto c){
 		Session session = getSession();
 		Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c WHERE cognome = '" + c.getCognome()
 				                                                              + "' AND nome = '" + c.getNome()
@@ -133,7 +128,7 @@ public class RubricaHBMManager {
         session.close();
     }
 	
-	public static List<Contatto> trovaContattiDup() {
+	public List<Contatto> trovaContattiDup() {
 		List<Contatto> dup = new ArrayList<>();
 		
 		List<Contatto> appoggio = getRubrica();
@@ -157,6 +152,8 @@ public class RubricaHBMManager {
 	}
 	
 	public void unisciContattiDup() {
+		List<Contatto> duplicati = new ArrayList<>();
+		
 		
 	}
 

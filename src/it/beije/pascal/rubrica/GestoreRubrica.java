@@ -1,12 +1,14 @@
 package it.beije.pascal.rubrica;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class GestoreRubrica {
-	public static RubricaJDBCManager rubricaDB = new RubricaJDBCManager();
-
-	public static void modificaContatto(Contatto c) throws Exception {
+	//private static RubricaJDBCManager rubricaDB = new RubricaJDBCManager();
+    private static RubricaHBMManager rubricaDB = new RubricaHBMManager();
+	
+    private static void modificaContatto(Contatto c) throws Exception {
 		Contatto daModificare = rubricaDB.cercaContatto(c);
 		Scanner in = new Scanner(System.in);
 		System.out.println("Quale campo vuoi modificare?\n"
@@ -17,49 +19,79 @@ public class GestoreRubrica {
 				+ "5- note");
 		System.out.println("Scelta: ");
 		String scelta = in.nextLine();
+		String campoMod = null;
 		switch(scelta) {
 		case "1":
 			System.out.println("Nuovo nome: ");
-			daModificare.setNome(in.nextLine());
+			//daModificare.setNome(in.nextLine());
+			campoMod = in.nextLine();
 			break;
 		case "2":
 			System.out.println("Nuovo Cognome: ");
-			daModificare.setCognome(in.nextLine());
+			//daModificare.setCognome(in.nextLine());
+			campoMod = in.nextLine();
 			break;
 		case "3":
 			System.out.println("Nuovo Telefono: ");
-			daModificare.setTelefono(in.nextLine());
+			//daModificare.setTelefono(in.nextLine());
+			campoMod = in.nextLine();
 			break;
 		case "4":
 			System.out.println("Nuova Email: ");
-			daModificare.setEmail(in.nextLine());
+			//daModificare.setEmail(in.nextLine());
+			campoMod = in.nextLine();
 			break;
 		case "5":
 			System.out.println("Nuove Note: ");
-			daModificare.setNote(in.nextLine());
+			//daModificare.setNote(in.nextLine());
+			campoMod = in.nextLine();
 			break;
 		}
 		
 		//rubricaDB.modificaContatto(daModificare.getId(), daModificare);
+		rubricaDB.updateContact(daModificare.getId(), scelta, campoMod);
 	}
 	
-	public static void importCSVInDB() {
+	private static void importCSVInDB(String pathFile, String separator) throws Exception {
+		List<Contatto> contattiCSV = LoadReadXML_CSV.loadRubricaFromCSV(pathFile, separator);
+		
+		for(Contatto c: contattiCSV) {
+			rubricaDB.inserisciContatto(c);
+		}
+		
+		System.out.println("Import avvenuto\n Rubrica Aggiornata:");
+		stampaRubrica(rubricaDB.getRubrica());
+	}
+	
+	private static void importXMLInDB(String pathFile) throws Exception {
+		List<Contatto> contattiXML = LoadReadXML_CSV.loadRubricaFromXML(pathFile);
+		
+		for(Contatto c: contattiXML) {
+			rubricaDB.inserisciContatto(c);
+		}
+		
+		System.out.println("Import avvenuto\n Rubrica Aggiornata:");
+		stampaRubrica(rubricaDB.getRubrica());
 		
 	}
 	
-	public static void importXMLInDB() {
+	private static void exportDBInCSV(String pathFile, String separator) {
+		List<Contatto> contattiDB = rubricaDB.getRubricaOrderCognome();
 		
+		LoadReadXML_CSV.writeRubricaCSV(contattiDB, pathFile, separator);
+		
+		System.out.println("Export Avvenuto");
 	}
 	
-	public static void exportDBInCSV() {
+	private static void exportDBInXML(String pathFile) throws Exception {
+		List<Contatto> contattiDB = rubricaDB.getRubricaOrderCognome();
 		
+		LoadReadXML_CSV.writeRubricaXML(contattiDB, pathFile);
+		
+		System.out.println("Export Avvenuto");
 	}
 	
-	public static void exportDBInXML() {
-		
-	}
-	
-	public static void stampaRubrica(List<Contatto> rubrica)
+	private static void stampaRubrica(List<Contatto> rubrica)
 	{
 		for(Contatto c : rubrica) {		
 			System.out.println(c.toString());
@@ -67,7 +99,7 @@ public class GestoreRubrica {
 		
 	}
 	
-	public static void stampaContatto(Contatto c) {
+	private static void stampaContatto(Contatto c) {
 		System.out.println(c.toString());	
 	}
 	
@@ -114,10 +146,12 @@ public class GestoreRubrica {
 			System.out.println("Uscita");
 			break;
 		case "1":
-			stampaRubrica(rubricaDB.ordinaPerNome());
+			//stampaRubrica(rubricaDB.ordinaPerNome());
+			stampaRubrica(rubricaDB.getRubricaOrderNome());
 			break;
 		case "2":
-			stampaRubrica(rubricaDB.ordinaPerCognome());
+			//stampaRubrica(rubricaDB.ordinaPerCognome());
+			stampaRubrica(rubricaDB.getRubricaOrderCognome());
 			break;
 		case "3":
 			System.out.println("Inserisci dati del contatto da cercare");
@@ -144,12 +178,28 @@ public class GestoreRubrica {
 		case "8":
 			break;
 		case "9":
+			System.out.println("Inserisci Percorso del file CSV da cui leggere i dati:");
+			String pathFileCSV = in.nextLine();
+			System.out.println("Inserisci Separatore Dati:");
+			String separator = in.nextLine();
+			importCSVInDB(pathFileCSV, separator);
 			break;
 		case "10":
+			System.out.println("Inserisci Percorso del file XML da cui leggere i dati");
+			String pathFileXML = in.nextLine();
+			importXMLInDB(pathFileXML);
 			break;
 		case "11":
+			System.out.println("Inserisci Nome del file CSV in cui inserire i dati:");
+			String pathWriteCSV = in.nextLine();
+			System.out.println("Inserisci Separatore Dati:");
+			String separatorWrite = in.nextLine();
+			exportDBInCSV(pathWriteCSV, separatorWrite);
 			break;
 		case "12":
+			System.out.println("Inserisci Nome del file XML in cui Inserire i dati");
+			String pathWriteXML = in.nextLine();
+			exportDBInXML(pathWriteXML);
 			break;
 		}
 		in.close();

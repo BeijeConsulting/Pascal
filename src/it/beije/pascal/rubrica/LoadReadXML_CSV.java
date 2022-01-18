@@ -67,19 +67,39 @@ public class LoadReadXML_CSV {
 			while (bufferedReader.ready()) {
 				row = bufferedReader.readLine();
 			
-				r = row.split(separator);
+				r = row.split(separator, -1);
 				
 				contatto = new Contatto();
 				if(posNome != -1)
-					contatto.setNome(r[posNome]);
+					if(r[posNome].isEmpty()) {
+						contatto.setNome(null);
+					}else {
+						contatto.setNome(r[posNome]);
+					}
 				if(posCognome != -1)
-					contatto.setCognome(r[posCognome]);
+					if(r[posCognome].isEmpty()) {
+						contatto.setCognome(null);
+					}else {
+						contatto.setCognome(r[posCognome]);
+					}
 				if(posTelefono != -1)
-					contatto.setTelefono(r[posTelefono]);
+					if(r[posTelefono].isEmpty()) {
+						contatto.setTelefono(null);
+					}else {
+						contatto.setTelefono(r[posTelefono]);
+					}
 				if(posEmail != -1)
-					contatto.setEmail(r[posEmail]);
+					if(r[posEmail].isEmpty()) {
+						contatto.setEmail(null);
+					}else {
+						contatto.setEmail(r[posEmail]);
+					}
 				if(posNote != -1)
-					contatto.setEmail(r[posNote]);
+					if(r[posNote].isEmpty()) {
+						contatto.setNote(null);
+					}else {
+						contatto.setNote(r[posNote]);
+					}
 				
 				rows.add(contatto);
 			}
@@ -105,7 +125,7 @@ public class LoadReadXML_CSV {
 		
 	}
 	
-	public List<Contatto> loadRubricaFromXML(String pathFile) throws Exception {
+	public static List<Contatto> loadRubricaFromXML(String pathFile) throws Exception {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
@@ -152,7 +172,7 @@ public class LoadReadXML_CSV {
 			
 	}
 	
-	public void writeRubricaCSV(List<Contatto> contatti, String pathFile, String separator) {
+	public static void writeRubricaCSV(List<Contatto> contatti, String pathFile, String separator) {
 		File newF = new File(pathFile);
 		boolean check = controlloNuovoFile(newF);
 		FileWriter writeF = setWriteFile(newF, check);
@@ -177,7 +197,7 @@ public class LoadReadXML_CSV {
 		}
 	}
 	
-	public void writeRubricaXML(List<Contatto> contatti, String pathFile) throws Exception {
+	public static void writeRubricaXML(List<Contatto> contatti, String pathFile) throws Exception {
 		File f = new File(pathFile);
 		boolean check = controlloNuovoFile(f);
 		
@@ -241,7 +261,7 @@ public class LoadReadXML_CSV {
 		transformer.transform(source, syso);
 	}
 	
-	private List<Element> getChildElements(Element element) {
+	private static List<Element> getChildElements(Element element) {
 		List<Element> childElements = new ArrayList<Element>();
 		NodeList nodeList = element.getChildNodes();
 		for (int n = 0; n < nodeList.getLength(); n++) {
@@ -251,7 +271,7 @@ public class LoadReadXML_CSV {
 		return childElements;
 	}
 	
-	private boolean controlloNuovoFile(File f) {
+	private static boolean controlloNuovoFile(File f) {
 		boolean check = false;
 		try {
 			if(f.createNewFile()) {
@@ -264,7 +284,7 @@ public class LoadReadXML_CSV {
 		return check;
 	}
 	
-	private FileWriter setWriteFile(File newF, boolean check) {
+	private static FileWriter setWriteFile(File newF, boolean check) {
 		FileWriter writeF = null;
 		if(check) {
 			try {
