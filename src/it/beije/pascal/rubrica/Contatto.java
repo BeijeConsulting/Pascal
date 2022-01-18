@@ -1,15 +1,48 @@
-
 package it.beije.pascal.rubrica;
 
 import java.util.List;
 
-public class Contatto {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+/*
+CREATE TABLE `rubrica`.`contatti` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`cognome` VARCHAR(45) NULL,
+`nome` VARCHAR(45) NULL,
+`telefono` VARCHAR(20) NULL,
+`email` VARCHAR(100) NULL,
+`note` VARCHAR(200) NULL,
+PRIMARY KEY (`id`));
+*/
+
+
+@Entity
+@Table(name = "contatti")
+public class Contatto {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
+	
+	@Column(name = "cognome")
 	private String cognome;
+
+	@Column(name = "nome")
 	private String nome;
+
+	@Column(name = "telefono")
 	private String telefono;
+
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "note")
 	private String note;
 	
 
@@ -17,6 +50,13 @@ public class Contatto {
 		super();
 	}
 
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public Contatto(String nome, String cognome, String telefono, String email, String note) {
 		super();
 		this.nome = nome;
@@ -76,14 +116,6 @@ public class Contatto {
 		this.note = note;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	// Overload metodo equals
 	public boolean equals(Contatto c) {
 		if (nome.equals(c.nome) && cognome.equals(c.cognome) && telefono.equals(c.telefono) && email.equals(c.email)
@@ -92,6 +124,18 @@ public class Contatto {
 		}
 		return false;
 	}
+
+/*	public String toString() {
+		StringBuilder builder = new StringBuilder()
+				.append("{ id : ").append(this.id)
+				.append(", cognome : ").append(this.cognome)
+				.append(", nome : ").append(this.nome)
+				.append(", telefono : ").append(this.telefono)
+				.append(", email : ").append(this.email)
+				.append(", note : ").append(this.note).append(" }");
+		
+		return builder.toString();
+	}*/
 	
 
 	public String toString() {
