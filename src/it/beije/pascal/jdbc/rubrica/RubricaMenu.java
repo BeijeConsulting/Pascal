@@ -85,12 +85,12 @@ public class RubricaMenu {
 		contatti.add(contatto4);
 		contatti.add(contatto5);
 
-		ContattoDAO.deleteAll();
-		ContattoDAO.addContact(contatti);
+		RubricaService.deleteAll();
+		RubricaService.addContact(contatti);
 	}
 
 	private static void printContacts() {
-		List<Contatto> contatti = ContattoDAO.getContactsList();		
+		List<Contatto> contatti = RubricaService.getContactsList();		
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
@@ -99,7 +99,7 @@ public class RubricaMenu {
 	private static void findContact() {
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
-		Contatto foundContact = ContattoDAO.findContact(contatto);
+		Contatto foundContact = RubricaService.findContact(contatto);
 		if (foundContact != null) {
 			System.out.println(foundContact);
 		} else {
@@ -109,24 +109,24 @@ public class RubricaMenu {
 
 	private static void addContact() {
 		Contatto contatto = new Contatto("nuovo", "nuovo", "nuovo", "nuovo", "nuovo");
-		ContattoDAO.addContact(contatto);
+		RubricaService.addContact(contatto);
 	}
 
 	private static void deleteContact() {
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
 		;
-		ContattoDAO.deleteContact(contatto);
+		RubricaService.deleteContact(contatto);
 	}
 
 	private static void updateContact() {
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
-		ContattoDAO.updateContact(contatto);
+		RubricaService.updateContact(contatto);
 	}
 	
 	private static void findDuplicates() {
-		List<Contatto> contatti = ContattoDAO.getContactsList();		
+		List<Contatto> contatti = RubricaService.getContactsList();		
 		//contatti = ContattoDAO.findDuplicates(contatti);
 		for(Contatto contatto:contatti) {
 			System.out.println(contatto);
