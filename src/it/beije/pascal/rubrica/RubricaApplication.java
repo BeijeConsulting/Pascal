@@ -17,7 +17,6 @@ public class RubricaApplication {
 	
 	static Scanner scan = new Scanner(System.in);
 	
-	
 	//METODO DRIVER E CONNESSIONE
 	private static Connection getCon() {
 		Connection con = null;
