@@ -24,6 +24,7 @@ public class RubricaHibernate {
 	//SELECT TUTTI I CONTATTI
 	public static List<Contatto> listContacts() {	
 		Session session = getSession();
+		@SuppressWarnings("unchecked")
 		Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c");
 		List<Contatto> contatti = query.getResultList();
 		
@@ -33,6 +34,7 @@ public class RubricaHibernate {
 	//SELECT ORDINATO PER NOME
 	public static List<Contatto> listContactsByName() {	
 		Session session = getSession();
+		@SuppressWarnings("unchecked")
 		Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c ORDERED BY nome");
 		List<Contatto> contatti = query.getResultList();
 		
@@ -42,6 +44,7 @@ public class RubricaHibernate {
 	//SELECT ORDINATO PER COGNOME
 	public static List<Contatto> listContactsByCognome() {	
 		Session session = getSession();
+		@SuppressWarnings("unchecked")
 		Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c ORDERED BY cognome");
 		List<Contatto> contatti = query.getResultList();
 		
@@ -51,6 +54,7 @@ public class RubricaHibernate {
 	//TROVA UN CONTATTO
 	public List<Contatto> lookForContact(String nome, String cognome) {
 		Session session = getSession();
+		@SuppressWarnings("unchecked")
 		Query<Contatto> query = session.createQuery("FROM Contatto as C WHERE C.nome = '" + nome + "' AND C.cognome = '" + cognome + "'");
 		List<Contatto> contatti = query.getResultList();
 		
@@ -167,7 +171,7 @@ public class RubricaHibernate {
 //			System.out.println(contatto);
 //		}
 		
-		RubricaHibernate rh = new RubricaHibernate();
+//		RubricaHibernate rh = new RubricaHibernate();
 		//rh.newContact("Baba", "Marco", "37492349", "marian.baba@gmail.com", "sono");
 //		rh.deleteContact(7);
 		RubricaHibernate.selectDuplicate();
