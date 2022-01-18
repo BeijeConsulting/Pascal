@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.jdbc.gestorerubrica;
+package it.beije.pascal.jdbc.rubrica;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import it.beije.pascal.rubrica.Contatto;
 
-public class MenuJDBC {
+public class RubricaMenu {
 
 	private static Scanner scanner = new Scanner(System.in);
 
