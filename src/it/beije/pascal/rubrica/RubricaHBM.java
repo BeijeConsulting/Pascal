@@ -31,7 +31,7 @@ public class RubricaHBM {
 		Contatto contatto = null;
 		for (Contatto c : contatti) {
 			System.out.println(c);
-			if (c.getId() == 15) contatto = c;
+			if (c.getId() == 19) contatto = c;
 		}
 
 //		Transaction transaction = session.beginTransaction();
@@ -54,14 +54,17 @@ public class RubricaHBM {
 		
 //		//UPDATE
 //		System.out.println("modifico : " + contatto);
-//		contatto.setId(20);
+//		contatto.setId(25);
 //		contatto.setNote("queste sono le note");
-//		contatto.setNome("Roberto");
+//		contatto.setNome("Paolo");
+//		contatto.setCognome("Gliori");
+//		contatto.setEmail("p.gliori@gmail.com");
 //		session.save(contatto);
 //		System.out.println("contatto POST update : " + contatto);
 
 		
 //		//DELETE
+//		System.out.println("Elimino " + contatto);
 //		session.remove(contatto);
 		
 //		transaction.commit();

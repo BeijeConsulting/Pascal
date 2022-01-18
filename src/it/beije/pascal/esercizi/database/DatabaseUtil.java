@@ -1,4 +1,4 @@
-package it.beije.pascal.esercizi;
+package it.beije.pascal.esercizi.database;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

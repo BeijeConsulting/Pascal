@@ -1,4 +1,4 @@
-package it.beije.pascal.esercizi;
+package it.beije.pascal.esercizi.file;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

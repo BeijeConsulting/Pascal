@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import it.beije.pascal.esercizi.database.ConnectionPull;
 import it.beije.pascal.rubrica.Contatto;
 
 public class Main {

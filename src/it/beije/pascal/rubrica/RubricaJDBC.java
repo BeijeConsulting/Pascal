@@ -25,51 +25,50 @@ public class RubricaJDBC {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "andrea23596");
 
 			System.out.println(!connection.isClosed());
-			//creo uno statement su cui ci sono molti metodi per fare le query
+			//creo uno statement dalla connection su cui ci sono molti metodi per fare le query
 			statement = connection.createStatement();
 
 			//SELECT
 			//eseguo una query che mi rende una ResultSet che è un'insieme di dati in base alla query che ho fatto che devo ciclare 
-			rs = statement.executeQuery("SELECT * FROM contatti WHERE cognome = 'gliori'");
+//			rs = statement.executeQuery("SELECT * FROM contatti");
 
 			//SELECT
-			//rs = statement.executeQuery("SELECT * FROM contatti WHERE cognome = '" + args[0] + "'");
+//			rs = statement.executeQuery("SELECT * FROM contatti WHERE cognome = '" + args[0] + "'");
 			//uso la PreparedStatement per fare la query in modo più comodo
-			PreparedStatement preparedStatement = connection.prepareStatement(RubricaJDBC.SELECT_COGNOME_NOME);
-			preparedStatement.setString(1, args[0]);
-			preparedStatement.setString(2, args[1]);
-			rs = preparedStatement.executeQuery();
+//			PreparedStatement preparedStatement = connection.prepareStatement(RubricaJDBC.SELECT_COGNOME_NOME);
+//			preparedStatement.setString(1, "Gliori");
+//			preparedStatement.setString(2, "Paolo");
+//			rs = preparedStatement.executeQuery();
 
 			
-			while (rs.next()) {
-				System.out.println("id : " + rs.getInt("idcontatti"));
-				System.out.println("cognome : " + rs.getString("cognome"));
-				System.out.println("nome : " + rs.getString("nome"));
-				System.out.println("telefono : " + rs.getString("telefono"));
-				System.out.println("email : " + rs.getString("email"));
-				System.out.println("note : " + rs.getString("note"));
-				System.out.println("\n");
-			}
+//			while (rs.next()) {
+//				System.out.println("id : " + rs.getInt("idcontatti"));
+//				System.out.println("cognome : " + rs.getString("cognome"));
+//				System.out.println("nome : " + rs.getString("nome"));
+//				System.out.println("telefono : " + rs.getString("telefono"));
+//				System.out.println("email : " + rs.getString("email"));
+//				System.out.println("note : " + rs.getString("note"));
+//				System.out.println("\n");
+//			}
 			
 
 			//solito procedimento con le altre query usando l'opportuno linguaggio di mysql
-
-			preparedStatement.setString(1, "bianchi");
-			preparedStatement.setString(2, "mario");
-			rs = preparedStatement.executeQuery();
+//			preparedStatement.setString(1, "bianchi");
+//			preparedStatement.setString(2, "mario");
+//			rs = preparedStatement.executeQuery();
 			
-			while (rs.next()) {
-				System.out.println("id : " + rs.getInt("id"));
-				System.out.println("cognome : " + rs.getString("cognome"));
-				System.out.println("nome : " + rs.getString("nome"));
-				System.out.println("telefono : " + rs.getString("telefono"));
-				System.out.println("email : " + rs.getString("email"));
-				System.out.println("note : " + rs.getString("note"));
-				System.out.println("\n");
-			}
+//			while (rs.next()) {
+//				System.out.println("id : " + rs.getInt("id"));
+//				System.out.println("cognome : " + rs.getString("cognome"));
+//				System.out.println("nome : " + rs.getString("nome"));
+//				System.out.println("telefono : " + rs.getString("telefono"));
+//				System.out.println("email : " + rs.getString("email"));
+//				System.out.println("note : " + rs.getString("note"));
+//				System.out.println("\n");
+//			}
 			
 			//INSERT
-			//int r = statement.executeUpdate("INSERT INTO contatti VALUES (null, 'Verdi', 'Mauro', '3474646467', 'verdi.mauro@beije.it', 'sono un nuovo contatto')");
+//			int r = statement.executeUpdate("INSERT INTO contatti VALUES (null, 'Verdi', 'Mauro', '3474646467', 'verdi.mauro@beije.it', 'sono un nuovo contatto')");
 //			PreparedStatement psInsert = connection.prepareStatement(INSERT_INTO_RUBRICA);
 //			psInsert.setString(1, "Verdi");
 //			psInsert.setString(2, "Luisa");
@@ -84,8 +83,8 @@ public class RubricaJDBC {
 //			System.out.println("r = " + r);
 
 			//DELETE
-//			int r = statement.executeUpdate("DELETE FROM contatti WHERE cognome = 'verdi'");
-//			System.out.println("r = " + r);
+			int r = statement.executeUpdate("DELETE FROM contatti WHERE cognome = 'Verdi'");
+			System.out.println("r = " + r);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

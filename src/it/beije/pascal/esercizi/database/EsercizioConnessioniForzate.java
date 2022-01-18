@@ -1,4 +1,4 @@
-package it.beije.pascal.esercizi;
+package it.beije.pascal.esercizi.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

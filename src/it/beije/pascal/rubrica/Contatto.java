@@ -24,7 +24,7 @@ public class Contatto {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name="idcontatti")
 	private int id;
 	
 	@Column(name = "cognome")

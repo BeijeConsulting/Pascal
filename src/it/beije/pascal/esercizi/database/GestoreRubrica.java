@@ -1,4 +1,4 @@
-package it.beije.pascal.esercizi;
+package it.beije.pascal.esercizi.database;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -52,6 +52,9 @@ public class GestoreRubrica {
 			System.out.println("Inserisci il nome del contatto che vuoi cercare:");
 			String nome = tastiera.next();
 			cercaContatto(nome);
+		}
+		else if(scelta == 3) {
+			
 		}
 
 		tastiera.close();

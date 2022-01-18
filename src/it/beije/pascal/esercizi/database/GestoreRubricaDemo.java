@@ -1,4 +1,4 @@
-package it.beije.pascal.esercizi;
+package it.beije.pascal.esercizi.database;
 
 import java.io.BufferedReader; 
 import java.io.File;
@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import it.beije.pascal.esercizi.file.FileUtil;
 import it.beije.pascal.rubrica.Contatto;
 
 
