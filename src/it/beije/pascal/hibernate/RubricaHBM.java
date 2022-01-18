@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica;
+package it.beije.pascal.hibernate;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+
+import it.beije.pascal.rubrica.Contatto;
 
 
 public class RubricaHBM {
