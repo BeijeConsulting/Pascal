@@ -8,9 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class ConnectionDB {
 
@@ -22,6 +28,7 @@ public class ConnectionDB {
 	public static final String DELETE = "DELETE FROM contatti WHERE cognome = ?";
 	public static final String DUPLICATE_BY_NUMBER = "SELECT id, cognome, nome, telefono, email, note, count(telefono) FROM contatti GROUP BY telefono HAVING COUNT(telefono)>1";
 	public static final String MERGE_DUPLICATE = "";
+	public static final String EMPTY ="DELETE FROM Contatto";
 	
 	public ConnectionDB() {
 		
@@ -29,8 +36,24 @@ public class ConnectionDB {
 	}
 	
 	public static Contatto cercaCognomeDB(String where) throws Exception {
-					
-				
+		
+		
+		// JPQL
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		Query query = entityManager.createQuery(SELECT_COGNOME);
+		
+		List<Contatto> contatti = query.setParameter(1,where).getResultList();
+		
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		
+		transaction.commit();
+		
+		entityManager.close();
+		
+		return contatti.get(0);
+		
+		/* METODI HQL
 		ConnectionHibernateSingleton conHib = ConnectionHibernateSingleton.getInstance();
 		Session sessione = conHib.openConnectionHibernate();
 		
@@ -41,6 +64,8 @@ public class ConnectionDB {
 		conHib.closeConnectionHibernate(sessione);
 		
 		return contatti.get(0);
+		
+		*/
 		
 		/* METODI CON CREATE STATEMENT
 		
@@ -107,7 +132,21 @@ public class ConnectionDB {
 	
 	public static Contatto cercaNomeDB(String where) throws Exception {
 		
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		Query query = entityManager.createQuery(SELECT_NOME);
 		
+		List<Contatto> contatti = query.setParameter(1,where).getResultList();
+		
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		
+		transaction.commit();
+		
+		entityManager.close();
+		
+		return contatti.get(0);
+		
+		/* METODI HQL
 		ConnectionHibernateSingleton conHib = ConnectionHibernateSingleton.getInstance();
 		Session sessione = conHib.openConnectionHibernate();
 		
@@ -118,6 +157,8 @@ public class ConnectionDB {
 		conHib.closeConnectionHibernate(sessione);
 		
 		return contatti.get(0);
+		
+		*/
 		
 		/* METODI CON CREATE STATEMENT
 		
@@ -185,7 +226,22 @@ public class ConnectionDB {
 	
 	public static List<Contatto> trovaRubricaDB() throws Exception {
 		
+
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		Query query = entityManager.createQuery(SELECT_ALL);
 		
+		List<Contatto> contatti = query.getResultList();
+		
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		
+		transaction.commit();
+		
+		entityManager.close();
+		
+		return contatti;
+		
+		/* METODI HQL
 		ConnectionHibernateSingleton conHib = ConnectionHibernateSingleton.getInstance();
 		Session sessione = conHib.openConnectionHibernate();
 		
@@ -196,6 +252,8 @@ public class ConnectionDB {
 		conHib.closeConnectionHibernate(sessione);
 		
 		return contatti;
+		
+		*/
 		
 		/*
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -259,6 +317,21 @@ public class ConnectionDB {
 	
 	public static void addDB(Contatto nuovo) throws Exception {
 		
+		
+		// JPQL
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		
+		entityManager.persist(nuovo);
+		
+		transaction.commit();
+
+		entityManager.close();
+
+		
+		/* metodi jdbc
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		
 		
@@ -305,7 +378,7 @@ public class ConnectionDB {
 			}
 		}
 	
-		
+		*/
 	}
 	
 	public static void updateDB(String vecchioCognome, String nuovoCognome) throws Exception {
