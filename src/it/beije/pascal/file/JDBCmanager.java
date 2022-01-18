@@ -55,61 +55,32 @@ public class JDBCmanager {
 			return null;
 	}
 
-	public static List<Contatto> sortList(List<Contatto> trovati, StringBuilder stringBuilder) throws ClassNotFoundException {
-		Collections.sort(trovati, new Comparator<Contatto>() {
-			Class<?> c = Class.forName("it.beije.pascal.rubrica.Contatto");
-
-			public int compare(Contatto a1, Contatto a2) {
-				Method method = null;
-				String a = "", b = "";
-				try {
-					method = c.getDeclaredMethod(stringBuilder.toString());
-					a = (String) method.invoke(a1);
-					b = (String) method.invoke(a2);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-						| SecurityException | NoSuchMethodException e) {
-					e.printStackTrace();
-				}
-
-				return a.compareTo(b);
-			}
-		});
-		return trovati;
-	}
 	
 	public static List<Contatto> sortCategoriaJDBC(String categoria) throws SQLException, ClassNotFoundException {
 		List<Contatto> trovatijdbc = new ArrayList<Contatto>();
-		Class<?> c = Class.forName("it.beije.pascal.rubrica.Contatto");
-
-		StringBuilder stringBuilder = new StringBuilder("get")
-				.append(categoria.toLowerCase().substring(0, 1).toUpperCase() + categoria.substring(1));
 
 		ResultSet rs = JDBCmanager.createStatement()
-				.executeQuery("SELECT * FROM contatti");
+				.executeQuery("SELECT * FROM contatti ORDER BY " + categoria + " ASC");
 
 		while (rs.next()) {
 			trovatijdbc.add(new Contatto(rs.getString("cognome"), rs.getString("nome"), rs.getString("telefono"),
 					rs.getString("email"), rs.getString("note")));
 		}
 
-		return sortList(trovatijdbc, stringBuilder);
+		return trovatijdbc;
 	} 
 	
 	public static List<Contatto> sortCategoriaJDBCPrepareStamtement(String categoria) throws SQLException, ClassNotFoundException {
 		List<Contatto> trovatijdbc = new ArrayList<Contatto>();
-		Class<?> c = Class.forName("it.beije.pascal.rubrica.Contatto");
 
-		StringBuilder stringBuilder = new StringBuilder("get")
-				.append(categoria.toLowerCase().substring(0, 1).toUpperCase() + categoria.substring(1));
-
-		PreparedStatement pstmt = createConnection().prepareStatement(SELECT_ALL);
+		PreparedStatement pstmt = createConnection().prepareStatement(SELECT_ALL + " ORDER BY " + categoria + " ASC");
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
 			trovatijdbc.add(new Contatto(rs.getString("cognome"), rs.getString("nome"), rs.getString("telefono"),
 					rs.getString("email"), rs.getString("note")));
 		}
 
-		return sortList(trovatijdbc, stringBuilder);
+		return trovatijdbc;
 	} 
 	
 	public static List<Contatto> findJDBC(String s, String categoria) throws Exception {

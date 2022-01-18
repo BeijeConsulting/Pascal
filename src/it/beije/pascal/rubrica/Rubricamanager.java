@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import it.beije.pascal.file.HDBmanager;
 import it.beije.pascal.file.JDBCmanager;
+import it.beije.pascal.file.XMLmanager;
 
 public class Rubricamanager {
 
@@ -91,6 +93,9 @@ public class Rubricamanager {
 
 		case 5: {
 			System.out.println("Elimina contatto: ");
+			System.out.print("inserisci id --> ");
+			int id = scanner.nextInt();
+			scanner.nextLine();
 			System.out.print("inserisci cognome --> ");
 			String cognome = scanner.nextLine();
 			System.out.print("inserisci nome --> ");
@@ -102,7 +107,7 @@ public class Rubricamanager {
 			System.out.print("inserisci note --> ");
 			String note = scanner.nextLine();
 
-			Contatto deletecontatto = new Contatto(cognome, nome, telefono, email, note);
+			Contatto deletecontatto = new Contatto(id, cognome, nome, telefono, email, note);
 			deleteContatto(deletecontatto);
 
 			break;
@@ -141,47 +146,58 @@ public class Rubricamanager {
 		System.out.println("#######################");
 	}
 
-	public static List<Contatto> allContacts(String categoria) throws Exception {
+	public static List<Contatto> allContacts(String categoria) throws Exception {	
 		
 		//return JDBCmanager.sortCategoriaJDBC(categoria);
 		
-		return JDBCmanager.sortCategoriaJDBCPrepareStamtement(categoria);
+		//return JDBCmanager.sortCategoriaJDBCPrepareStamtement(categoria);
 		
 		//return XMLmanager.allContacts(categoria);
-
+		
+		return HDBmanager.sortCategoriaHDB(categoria);
 	}
 
 	public static List<Contatto> find(String s, String categoria) throws Exception {
 		
-		return JDBCmanager.findJDBCPrepareStamtement(s, categoria);
+		//return JDBCmanager.findJDBCPrepareStamtement(s, categoria);
 		
 		//return JDBCmanager.findJDBC(s, categoria);
 		
 		//return XMLmanager.find(s, categoria);
+		
+		return HDBmanager.findHDB(s, categoria);
 	}
 
 	public static void insert(Contatto c) throws Exception {
-		
-		
-		
+
 		//XMLmanager.insert(c);
 		
 		//JDBCmanager.insertJDBCPrepareStamtement(c);
 		
 		//JDBCmanager.insertJDBC(c);
+		
+		HDBmanager.insertHDB(c);
 	}
 	
 	public static void updateContatto(int id, String categoria, String val) throws SQLException {
-		//JDBCmanager.updateContattoJDBC(id, categoria, val);
 		
-		JDBCmanager.updateContattoJDBCPrepareStamtement(id, categoria, val);
+		// JDBCmanager.updateContattoJDBC(id, categoria, val);
+		
+		// JDBCmanager.updateContattoJDBCPrepareStamtement(id, categoria, val);
+		
+		HDBmanager.updateContattoHDB(id, categoria, val);
+		
 	}
 
 	public static void deleteContatto(Contatto c) throws Exception {
-		//XMLmanager.deleteContatto(c);
 		
-		JDBCmanager.deleteContattoJDBC(c);
+		// XMLmanager.deleteContatto(c);
+		
+		// JDBCmanager.deleteContattoJDBC(c);
+		
 		//JDBCmanager.deleteContattoJDBCPrepareStamtement(c);
+		
+		HDBmanager.deleteHDB(c.getId());
 	}
 
 	public static Set<Contatto> trovaContattiDuplicati() throws Exception {

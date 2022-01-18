@@ -20,10 +20,10 @@
       </property>
       
       <property name = "hibernate.connection.username">root</property>
-      <property name = "hibernate.connection.password">beije</property>
+      <property name = "hibernate.connection.password">Chinetti</property>
       
       <!-- List of XML mapping files -->
-      <!-- mapping resource = "Contatto.hbm.xml"/ -->
+      <!-- <mapping resource = "Contatto.hbm.xml"/> -->
       
       <!-- property name="hibernate.show_sql">true</property -->
    </session-factory>

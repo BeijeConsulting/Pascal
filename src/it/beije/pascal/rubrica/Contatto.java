@@ -85,6 +85,17 @@ public class Contatto {
 		this.note = note;
 	}
 	
+	public Contatto() {
+	}
+	
+	public Contatto(int id, String cognome, String nome, String telefono, String email, String note) {
+		this.id = id;
+		this.cognome = cognome;
+		this.nome = nome;
+		this.telefono = telefono;
+		this.email = email;
+		this.note = note;
+	}
 	public Contatto(String cognome, String nome, String telefono, String email, String note) {
 		this.cognome = cognome;
 		this.nome = nome;
