@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GestoreRubrica {
-	//private static RubricaJDBCManager rubricaDB = new RubricaJDBCManager();
-    private static RubricaHBMManager rubricaDB = new RubricaHBMManager();
+	//private static RubricaJDBCManager rubrica = new RubricaJDBCManager();
+    //private static RubricaHBMManager rubrica = new RubricaHBMManage3r();
+	private static RubricaJPAManager rubrica = new RubricaJPAManager();
 	
     private static void modificaContatto(Contatto c) throws Exception {
-		Contatto daModificare = rubricaDB.cercaContatto(c);
+		Contatto daModificare = rubrica.cercaContatto(c);
 		Scanner in = new Scanner(System.in);
 		System.out.println("Quale campo vuoi modificare?\n"
 				+ "1- nome\n"
@@ -49,34 +50,34 @@ public class GestoreRubrica {
 		}
 		
 		//rubricaDB.modificaContatto(daModificare.getId(), daModificare);
-		rubricaDB.updateContact(daModificare.getId(), scelta, campoMod);
+		rubrica.updateContact(daModificare.getId(), scelta, campoMod);
 	}
 	
 	private static void importCSVInDB(String pathFile, String separator) throws Exception {
 		List<Contatto> contattiCSV = LoadReadXML_CSV.loadRubricaFromCSV(pathFile, separator);
 		
 		for(Contatto c: contattiCSV) {
-			rubricaDB.inserisciContatto(c);
+			rubrica.inserisciContatto(c);
 		}
 		
 		System.out.println("Import avvenuto\n Rubrica Aggiornata:");
-		stampaRubrica(rubricaDB.getRubrica());
+		stampaRubrica(rubrica.getRubrica());
 	}
 	
 	private static void importXMLInDB(String pathFile) throws Exception {
 		List<Contatto> contattiXML = LoadReadXML_CSV.loadRubricaFromXML(pathFile);
 		
 		for(Contatto c: contattiXML) {
-			rubricaDB.inserisciContatto(c);
+			rubrica.inserisciContatto(c);
 		}
 		
 		System.out.println("Import avvenuto\n Rubrica Aggiornata:");
-		stampaRubrica(rubricaDB.getRubrica());
+		stampaRubrica(rubrica.getRubrica());
 		
 	}
 	
 	private static void exportDBInCSV(String pathFile, String separator) {
-		List<Contatto> contattiDB = rubricaDB.getRubricaOrderCognome();
+		List<Contatto> contattiDB = rubrica.getRubricaOrderCognome();
 		
 		LoadReadXML_CSV.writeRubricaCSV(contattiDB, pathFile, separator);
 		
@@ -84,7 +85,7 @@ public class GestoreRubrica {
 	}
 	
 	private static void exportDBInXML(String pathFile) throws Exception {
-		List<Contatto> contattiDB = rubricaDB.getRubricaOrderCognome();
+		List<Contatto> contattiDB = rubrica.getRubricaOrderCognome();
 		
 		LoadReadXML_CSV.writeRubricaXML(contattiDB, pathFile);
 		
@@ -147,21 +148,21 @@ public class GestoreRubrica {
 			break;
 		case "1":
 			//stampaRubrica(rubricaDB.ordinaPerNome());
-			stampaRubrica(rubricaDB.getRubricaOrderNome());
+			stampaRubrica(rubrica.getRubricaOrderNome());
 			break;
 		case "2":
 			//stampaRubrica(rubricaDB.ordinaPerCognome());
-			stampaRubrica(rubricaDB.getRubricaOrderCognome());
+			stampaRubrica(rubrica.getRubricaOrderCognome());
 			break;
 		case "3":
 			System.out.println("Inserisci dati del contatto da cercare");
 			appoggio = inputContatto();
-			stampaContatto(rubricaDB.cercaContatto(appoggio));
+			stampaContatto(rubrica.cercaContatto(appoggio));
 			break;
 		case "4":
 			System.out.println("Inserisci dati del contatto da inserire");
 			appoggio = inputContatto();
-			rubricaDB.inserisciContatto(appoggio);
+			rubrica.inserisciContatto(appoggio);
 			break;
 		case "5":
 			System.out.println("Inserisci contatto da modificare");
@@ -171,9 +172,12 @@ public class GestoreRubrica {
 		case "6":
 			System.out.println("Inserisci contatto da cancellare");
 			appoggio = inputContatto();
-			rubricaDB.cancellaContatto(appoggio);
+			rubrica.cancellaContatto(appoggio);
 			break;
 		case "7":
+			List<Contatto> dup = rubrica.trovaContattiDup();
+			System.out.println("Lista contatti duplicati");
+			stampaRubrica(dup);
 			break;
 		case "8":
 			break;

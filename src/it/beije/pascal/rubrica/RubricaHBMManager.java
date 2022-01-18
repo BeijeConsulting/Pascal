@@ -129,23 +129,29 @@ public class RubricaHBMManager {
     }
 	
 	public List<Contatto> trovaContattiDup() {
-		List<Contatto> dup = new ArrayList<>();
+		Session session = getSession();
+        Transaction transaction = session.getTransaction(); 
 		
-		List<Contatto> appoggio = getRubrica();
 		
-		int cont = 1;
-		for(Contatto c : appoggio) {
-			for(int i = cont; i < appoggio.size(); i++) {
-				if(c.getCognome().equals(appoggio.get(i).getCognome())
-				   && c.getNome().equals(appoggio.get(i).getNome())
-				   && c.getTelefono().equals(appoggio.get(i).getTelefono())
-				   && c.getEmail().equals(appoggio.get(i).getEmail())
-				   && c.getNote().equals(appoggio.get(i).getNote())) {
-					dup.add(c);
-				}
-			}
-			cont++;
-		}
+		Query<Contatto> query = session.createQuery("SELECT c FROM  Contatto AS c GROUP BY c.nome, c.cognome, c.telefono, c.email, c.note HAVING COUNT(c.id) > 1");
+		
+		List<Contatto> dup = query.getResultList();
+		
+//		List<Contatto> appoggio = getRubrica();
+//		
+//		int cont = 1;
+//		for(Contatto c : appoggio) {
+//			for(int i = cont; i < appoggio.size(); i++) {
+//				if(c.getCognome().equals(appoggio.get(i).getCognome())
+//				   && c.getNome().equals(appoggio.get(i).getNome())
+//				   && c.getTelefono().equals(appoggio.get(i).getTelefono())
+//				   && c.getEmail().equals(appoggio.get(i).getEmail())
+//				   && c.getNote().equals(appoggio.get(i).getNote())) {
+//					dup.add(c);
+//				}
+//			}
+//			cont++;
+//		}
 		
 		
 		return dup;
