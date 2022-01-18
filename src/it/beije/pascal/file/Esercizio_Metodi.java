@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica;
+package it.beije.pascal.file;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,6 +24,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import it.beije.pascal.file.util.FileUtil;
+import it.beije.pascal.rubrica.Contatto;
 
 public class Esercizio_Metodi {
 
