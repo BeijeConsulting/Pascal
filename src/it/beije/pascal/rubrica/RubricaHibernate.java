@@ -165,16 +165,76 @@ public class RubricaHibernate {
         return dup;
     }
 	
+	//UNISCI TUTTI I DUPLICATI, OVVERO ELIMINALI TUTTI
+	public static void deleteDuplicate(List<Contatto> contactsToDelete) {
+		Session session = getSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
+		
+		List<Contatto> contatti = RubricaHibernate.listContacts();
+	
+		Contatto cont = null;
+		
+		for(int i = 0; i < contactsToDelete.size(); i++) {
+			for(int j = 0; j < contatti.size(); j++) {
+				if(contactsToDelete.get(i).getId() == contatti.get(j).getId()) {
+					cont = contatti.get(j);
+					session.delete(cont);
+					transaction.commit();
+					cont = null;
+				}
+			}
+		}
+		session.close();
+	}
+	
+	//ESPORTA I CONTATTI LETTI IN UN FILE XML
+	public static void exportContactsXML(String filePath) {
+		List<Contatto> contatti = RubricaHibernate.listContacts();
+		try {
+			RubricaUtils.writeRubricaXML(contatti, filePath);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//ESPORTA I CONTATTI LETTI IN UN FILE CSV
+	public static void exportContactsCSV(String filePath, String separator) {
+		List<Contatto> contatti = RubricaHibernate.listContacts();
+		try {
+			RubricaUtils.writeRubricaCSV(contatti, filePath, separator);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//IMPORTA DEI CONTATTI DA UN FILE XML
+	public static void importContactsXML(String pathFile) {
+		List<Contatto> contatti = null;
+		
+	}
+	
+	//IMPORTA DEI CONTATTI DA UN FILE CSV
+	public static void importContactsCSV(String pathFile) {
+		
+	}
+	
 	public static void main(String... args) {
 //		List<Contatto> cont = RubricaHibernate.listContacts();
 //		for(Contatto contatto : cont) {
 //			System.out.println(contatto);
 //		}
 		
-//		RubricaHibernate rh = new RubricaHibernate();
-		//rh.newContact("Baba", "Marco", "37492349", "marian.baba@gmail.com", "sono");
-//		rh.deleteContact(7);
-		RubricaHibernate.selectDuplicate();
+		RubricaHibernate.exportContactsCSV("/javaFiles/rubrica_hibernate.csv", ";");
 		
+		
+//		List<Contatto> listaDiDuplicati = RubricaHibernate.selectDuplicate();
+//		RubricaHibernate.deleteDuplicate(listaDiDuplicati);
+//		
+//		List<Contatto> cont = RubricaHibernate.listContacts();
+//		for(Contatto contatto : cont) {
+//			System.out.println(contatto);
+//		}
+		//rh.newContact("Bianchi", "Luigi", "37492349", "marian.baba@gmail.com", "sono");
 	}
 }

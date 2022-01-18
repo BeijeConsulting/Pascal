@@ -116,7 +116,7 @@ public class RubricaUtils {
 		return contatti;
 	}
 	
-	public void writeRubricaCSV(List<Contatto> contatti, String pathFile, String separator) throws Exception {
+	public static void writeRubricaCSV(List<Contatto> contatti, String pathFile, String separator) throws Exception {
 		
 		//metodo che prende in input una lista di contatti, il percorso di un file, e un separatore
 		//scrive nel file tutti i contatti che abbiamo nella lista
@@ -164,7 +164,7 @@ public class RubricaUtils {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		
-		if(file.length() == 0) {
+		if(file.length() == 0 || !file.exists()) {
 			file = RubricaUtils.createBasicXML(file);
 		}
 			
