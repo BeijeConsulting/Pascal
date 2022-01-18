@@ -13,9 +13,9 @@ public class RubricaJPA {
 
 	public static void main(String[] args) {
 		
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("pascal-rubrica");
-		
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("pascal-rubrica");
+//		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
 		
 		//JPQL
 		Query query = entityManager.createQuery("SELECT c FROM Contatto as c");
