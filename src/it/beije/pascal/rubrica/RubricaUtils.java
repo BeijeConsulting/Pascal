@@ -10,9 +10,7 @@ import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -24,7 +22,7 @@ import org.w3c.dom.NodeList;
 
 public class RubricaUtils {
 	
-	public List<Contatto> loadRubricaFromCSV(String pathFile, String separator) throws IOException {
+	public static List<Contatto> loadRubricaFromCSV(String pathFile, String separator) throws IOException {
 		
 		List<Contatto> contatti = new ArrayList<Contatto>();
 		
@@ -71,7 +69,7 @@ public class RubricaUtils {
 		return childElements;
 	}
 	
-	public List<Contatto> loadRubricaFromXML(String pathFile) throws Exception {
+	public static List<Contatto> loadRubricaFromXML(String pathFile) throws Exception {
 		
 		//l'obiettivo è il medesimo del metodo precedente, ma al posto di un file csv usiamo un file xml
 		
@@ -226,14 +224,14 @@ public class RubricaUtils {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		RubricaUtils ru = new RubricaUtils();
+//		RubricaUtils ru = new RubricaUtils();
 
-		List<Contatto> contatti = ru.loadRubricaFromCSV("/javaFiles/rubrica.csv", "\t");
+//		List<Contatto> contatti = ru.loadRubricaFromCSV("/javaFiles/rubrica.csv", "\t");
 //		System.out.println(contatti);
 //		
 //		List<Contatto> contattiXML = ru.loadRubricaFromXML("/javaFiles/rubrica.xml");
 //		System.out.println(contattiXML);
 
-		RubricaUtils.writeRubricaXML(contatti, "/javaFiles/emptyXML.xml");
+//		RubricaUtils.writeRubricaXML(contatti, "/javaFiles/emptyXML.xml");
 	}
 }

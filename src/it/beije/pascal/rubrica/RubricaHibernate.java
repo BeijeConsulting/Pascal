@@ -2,7 +2,7 @@ package it.beije.pascal.rubrica;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Scanner;
 
 import org.hibernate.Transaction;
 
@@ -13,6 +13,9 @@ import org.hibernate.query.Query;
 
 public class RubricaHibernate {
 	
+	RubricaHibernate core = new RubricaHibernate();
+	private static Scanner scan = new Scanner(System.in);
+	
 	//GET SESSION
 	private static Session getSession() {
 		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contatto.class);					
@@ -22,7 +25,7 @@ public class RubricaHibernate {
 	}
 	
 	//SELECT TUTTI I CONTATTI
-	public static List<Contatto> listContacts() {	
+	public List<Contatto> listContacts() {	
 		Session session = getSession();
 		@SuppressWarnings("unchecked")
 		Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c");
@@ -32,7 +35,7 @@ public class RubricaHibernate {
 	}
 	
 	//SELECT ORDINATO PER NOME
-	public static List<Contatto> listContactsByName() {	
+	public List<Contatto> listContactsByName() {	
 		Session session = getSession();
 		@SuppressWarnings("unchecked")
 		Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c ORDERED BY nome");
@@ -42,7 +45,7 @@ public class RubricaHibernate {
 	}
 	
 	//SELECT ORDINATO PER COGNOME
-	public static List<Contatto> listContactsByCognome() {	
+	public List<Contatto> listContactsByCognome() {	
 		Session session = getSession();
 		@SuppressWarnings("unchecked")
 		Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c ORDERED BY cognome");
@@ -86,7 +89,7 @@ public class RubricaHibernate {
 		Transaction transaction = session.getTransaction();
 		transaction.begin();
 		
-		List<Contatto> contatti = listContacts();
+		List<Contatto> contatti = core.listContacts();
 		Contatto contattoAggiornato = null;
 		
 		for(Contatto cont : contatti) {
@@ -129,7 +132,7 @@ public class RubricaHibernate {
 		Transaction transaction = session.getTransaction();
 		transaction.begin();
 		
-		List<Contatto> contatti = listContacts();
+		List<Contatto> contatti = core.listContacts();
 		Contatto contattoElim = null;
 		
 		for(Contatto cont : contatti) {
@@ -144,10 +147,10 @@ public class RubricaHibernate {
 	}
 	
 	//SELEZIONA DUPLICATI
-	public static List<Contatto> selectDuplicate() {
+	public List<Contatto> selectDuplicate() {
         List<Contatto> dup = new ArrayList<>();
 
-        List<Contatto> appoggio = listContacts();
+        List<Contatto> appoggio = core.listContacts();
 
         int cont = 1;
         for(Contatto c : appoggio) {
@@ -166,12 +169,12 @@ public class RubricaHibernate {
     }
 	
 	//UNISCI TUTTI I DUPLICATI, OVVERO ELIMINALI TUTTI
-	public static void deleteDuplicate(List<Contatto> contactsToDelete) {
+	public void deleteDuplicate(List<Contatto> contactsToDelete) {
 		Session session = getSession();
 		Transaction transaction = session.getTransaction();
 		transaction.begin();
 		
-		List<Contatto> contatti = RubricaHibernate.listContacts();
+		List<Contatto> contatti = core.listContacts();
 	
 		Contatto cont = null;
 		
@@ -189,8 +192,8 @@ public class RubricaHibernate {
 	}
 	
 	//ESPORTA I CONTATTI LETTI IN UN FILE XML
-	public static void exportContactsXML(String filePath) {
-		List<Contatto> contatti = RubricaHibernate.listContacts();
+	public void exportContactsXML(String filePath) {
+		List<Contatto> contatti = core.listContacts();
 		try {
 			RubricaUtils.writeRubricaXML(contatti, filePath);
 		} catch(Exception e) {
@@ -199,8 +202,8 @@ public class RubricaHibernate {
 	}
 	
 	//ESPORTA I CONTATTI LETTI IN UN FILE CSV
-	public static void exportContactsCSV(String filePath, String separator) {
-		List<Contatto> contatti = RubricaHibernate.listContacts();
+	public void exportContactsCSV(String filePath, String separator) {
+		List<Contatto> contatti = core.listContacts();
 		try {
 			RubricaUtils.writeRubricaCSV(contatti, filePath, separator);
 		} catch(Exception e) {
@@ -209,32 +212,83 @@ public class RubricaHibernate {
 	}
 	
 	//IMPORTA DEI CONTATTI DA UN FILE XML
-	public static void importContactsXML(String pathFile) {
+	public void importContactsXML(String pathFile) {
 		List<Contatto> contatti = null;
-		
+		try {
+			contatti = RubricaUtils.loadRubricaFromXML(pathFile);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		for(Contatto c : contatti) {
+			core.newContact(c.getCognome(), c.getNome(), c.getTelefono(), c.getEmail(), c.getNote());
+		}
 	}
 	
 	//IMPORTA DEI CONTATTI DA UN FILE CSV
-	public static void importContactsCSV(String pathFile) {
+	public void importContactsCSV(String pathFile, String separator) {
+		List<Contatto> contatti = null;
+		try {
+			contatti = RubricaUtils.loadRubricaFromCSV(pathFile, separator);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		for(Contatto c : contatti) {
+			core.newContact(c.getCognome(), c.getNome(), c.getTelefono(), c.getEmail(), c.getNote());
+		}
+	}
+	
+	//mostra il menù
+	public void showMenu() {
+		System.out.println("scegli un'operazione: \n"
+							+ "1. mostra tutti i contatti\n"
+							+ "2. cerca un contatto\n"
+							+ "3. aggiungi un contatto\n"
+							+ "4. modifica un contatto\n"
+							+ "5. elimina un contatto\n"
+							+ "6. mostra i contatti duplicati\n"
+							+ "7. elimina i contatti duplicati\n"
+							+ "8. esporta i contatti in un file (XML / CSV)\n"
+							+ "9. importa i contatti di un file (XML / CSV)\n"
+							);
+	
+		int choice = scan.nextInt();
+		switch(choice) {
+			case 1: {
+				
+				break;
+			}
+			case 2: {
+				break;
+			}
+			case 3: {
+				break;
+			}
+			case 4: {
+				break;
+			}
+			case 5: {
+				break;
+			}
+			case 6: {
+				break;
+			}
+			case 7: {
+				break;
+			}
+			case 8: {
+				break;
+			}
+			case 9: {
+				break;
+			}
+		}
+	}
+	
+	public void askSorting() {
 		
 	}
 	
 	public static void main(String... args) {
-//		List<Contatto> cont = RubricaHibernate.listContacts();
-//		for(Contatto contatto : cont) {
-//			System.out.println(contatto);
-//		}
-		
-		RubricaHibernate.exportContactsCSV("/javaFiles/rubrica_hibernate.csv", ";");
-		
-		
-//		List<Contatto> listaDiDuplicati = RubricaHibernate.selectDuplicate();
-//		RubricaHibernate.deleteDuplicate(listaDiDuplicati);
-//		
-//		List<Contatto> cont = RubricaHibernate.listContacts();
-//		for(Contatto contatto : cont) {
-//			System.out.println(contatto);
-//		}
-		//rh.newContact("Bianchi", "Luigi", "37492349", "marian.baba@gmail.com", "sono");
+		System.out.println("Benvenuto in Rubrica");
 	}
 }
