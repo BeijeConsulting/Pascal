@@ -8,11 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+
 public class ConnectionDB {
 
-	public static final String SELECT_COGNOME = "SELECT * FROM contatti WHERE cognome = ?";
-	public static final String SELECT_NOME = "SELECT * FROM contatti WHERE nome = ?";
-	public static final String SELECT_ALL = "SELECT * FROM contatti";
+	public static final String SELECT_COGNOME = "SELECT c FROM Contatto as c WHERE cognome = ?1"; // SELECT * FROM contatti WHERE cognome = ?
+	public static final String SELECT_NOME = "SELECT c FROM Contatto as c WHERE nome = ?1"; // SELECT * FROM contatti WHERE nome = ?
+	public static final String SELECT_ALL = "SELECT c FROM Contatto as c"; // SELECT * FROM contatti
 	public static final String INSERT_INTO_RUBRICA = "INSERT INTO contatti (cognome, nome, telefono, email, note) VALUES (?,?,?,?,?)";
 	public static final String UPDATE = "UPDATE contatti SET cognome = ? WHERE cognome = ?";
 	public static final String DELETE = "DELETE FROM contatti WHERE cognome = ?";
@@ -25,7 +29,20 @@ public class ConnectionDB {
 	}
 	
 	public static Contatto cercaCognomeDB(String where) throws Exception {
+					
+				
+		ConnectionHibernateSingleton conHib = ConnectionHibernateSingleton.getInstance();
+		Session sessione = conHib.openConnectionHibernate();
 		
+		//HQL
+		Query<Contatto> query = sessione.createQuery(SELECT_COGNOME); 
+		List<Contatto> contatti = query.setParameter(1,where).getResultList();
+		
+		conHib.closeConnectionHibernate(sessione);
+		
+		return contatti.get(0);
+		
+		/* METODI CON CREATE STATEMENT
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		
@@ -84,13 +101,25 @@ public class ConnectionDB {
 			}
 		}
 	
-		
-		return trovato;
+		*/
 		
 	}
 	
 	public static Contatto cercaNomeDB(String where) throws Exception {
 		
+		
+		ConnectionHibernateSingleton conHib = ConnectionHibernateSingleton.getInstance();
+		Session sessione = conHib.openConnectionHibernate();
+		
+		//HQL
+		Query<Contatto> query = sessione.createQuery(SELECT_NOME); 
+		List<Contatto> contatti = query.setParameter(1,where).getResultList();
+		
+		conHib.closeConnectionHibernate(sessione);
+		
+		return contatti.get(0);
+		
+		/* METODI CON CREATE STATEMENT
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		
@@ -151,11 +180,24 @@ public class ConnectionDB {
 	
 		
 		return trovato;
-		
+		*/
 	}
 	
 	public static List<Contatto> trovaRubricaDB() throws Exception {
 		
+		
+		ConnectionHibernateSingleton conHib = ConnectionHibernateSingleton.getInstance();
+		Session sessione = conHib.openConnectionHibernate();
+		
+		//HQL
+		Query<Contatto> query = sessione.createQuery(SELECT_ALL); 
+		List<Contatto> contatti = query.getResultList();
+		
+		conHib.closeConnectionHibernate(sessione);
+		
+		return contatti;
+		
+		/*
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		
 		List<Contatto> rubrica = new ArrayList<Contatto>();
@@ -210,6 +252,8 @@ public class ConnectionDB {
 		}
 		
 		return rubrica;
+		
+		*/
 
 	}
 	
