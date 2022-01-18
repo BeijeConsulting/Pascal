@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RubricaJDBC {
+public class RubricaJDBC implements DatabaseConnection {
 
 	public static final String SELECT_COGNOME_NOME = "SELECT * FROM contatti WHERE cognome = ? AND nome = ?";
 	public static final String SELECT_ALL_PARAMETERS = "SELECT * FROM contatti WHERE cognome = ? AND nome = ? AND telefono = ? AND email = ? AND note = ?";
@@ -42,6 +42,7 @@ public class RubricaJDBC {
 		//rubrica.cercaContatto("mario", "rossi");
 	}
 
+	@Override
 	public List<Contatto> cercaContattoNomeCognome(String nome, String cognome){
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
@@ -68,6 +69,7 @@ public class RubricaJDBC {
 		return null;
 	}
 	
+	@Override
 	public List<Contatto> cercaContatto(Contatto contatto){
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
@@ -116,6 +118,7 @@ public class RubricaJDBC {
 		return risultati;
 	}
 
+	@Override
 	public void inserisciContatto(Contatto contatto) {
 		try {
 			//test
@@ -146,6 +149,7 @@ public class RubricaJDBC {
 		}
 	}
 
+	@Override
 	public void modificaContatto(int id, Contatto contatto) {
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");
@@ -190,6 +194,7 @@ public class RubricaJDBC {
 
 	}
 	
+	@Override
 	public void eliminaContatto(int id) {
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET", "root", "Lobbiani");

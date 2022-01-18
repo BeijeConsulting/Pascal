@@ -10,15 +10,14 @@ import java.util.List;
 
 import it.beije.pascal.file.FileUtils;
 
-
 public class RubricaCSV {
 
 	final static String PATH = "./rubrica.csv";
 	final static String PATH_NEW = "./data/rubrica/nuova_rubrica.csv";
 	public static final String STANDARD_SEPARATOR = ";";
-	
+
 	public static void main(String[] args) throws IOException {
-		
+
 //		List<Contatto> contatti = loadRubricaFromCSV(PATH, STANDARD_SEPARATOR);
 //		writeContatti(contatti, PATH_NEW, "\t");
 	}
@@ -61,11 +60,11 @@ public class RubricaCSV {
 				
 				r = row.split(sep);
 				contatto = new Contatto();
-				if(posCognome != -1) contatto.setCognome(r[posCognome]);
-				if(posNome != -1) 	contatto.setNome(r[posNome]);
-				if(posTel != -1) 	contatto.setTelefono(r[posTel]);
-				if(posEmail != -1) 	contatto.setEmail(r[posEmail]);
-				if(posNote != -1) 	contatto.setNote(r[posNote]);
+				if(posCognome != -1) contatto.setCognome((r[posCognome].isEmpty())? null : r[posCognome]);
+				if(posNome != -1) 	contatto.setNome(	(r[posNome].isEmpty())? null : r[posNome]		);
+				if(posTel != -1) 	contatto.setTelefono((r[posTel].isEmpty())? null : r[posTel]		);
+				if(posEmail != -1) 	contatto.setEmail(	(r[posEmail].isEmpty())? null : r[posEmail]		);
+				if(posNote != -1) 	contatto.setNote(	(r[posNote].isEmpty())? null : r[posNote]); 
 				
 				System.out.println(contatto);
 				
@@ -90,36 +89,33 @@ public class RubricaCSV {
 		
 		return rows;
 	}
-	
+
 	public static void writeContatti(List<Contatto> contatti, String path, String sep) throws IOException {
 		File file;
 		FileWriter fileWriter = null;
 		StringBuilder row;
-		
+
 		try {
 			file = new File(path);
 			fileWriter = new FileWriter(file);
-			
-			//Header row
-			row = new StringBuilder()
-					.append("COGNOME").append(sep)
-					.append("NOME").append(sep)
-					.append("TELEFONO").append(sep)
-					.append("EMAIL").append(sep)
-					.append("NOTE").append('\n');
+
+			// Header row
+			row = new StringBuilder().append("COGNOME").append(sep).append("NOME").append(sep).append("TELEFONO")
+					.append(sep).append("EMAIL").append(sep).append("NOTE").append('\n');
 			fileWriter.append(row.toString());
-			
-			//read rows
-			for(Contatto c: contatti) {
+
+			// read rows
+			for (Contatto c : contatti) {
 				row = contattoToRow(sep, c);
 				fileWriter.append(row.toString());
 			}
-		}catch (IOException IOEX) {
+		} catch (IOException IOEX) {
 			IOEX.printStackTrace();
 			throw IOEX;
 		} finally {
 			try {
-				if(fileWriter != null) fileWriter.close();
+				if (fileWriter != null)
+					fileWriter.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw e;
@@ -129,15 +125,14 @@ public class RubricaCSV {
 
 	private static StringBuilder contattoToRow(String sep, Contatto c) {
 		StringBuilder row;
-		row = new StringBuilder()
-				.append(c.getCognome() == null ? "" : c.getCognome()).append(sep)
+		row = new StringBuilder().append(c.getCognome() == null ? "" : c.getCognome()).append(sep)
 				.append(c.getNome() == null ? "" : c.getNome()).append(sep)
 				.append(c.getTelefono() == null ? "" : c.getTelefono()).append(sep)
 				.append(c.getEmail() == null ? "" : c.getEmail()).append(sep)
 				.append(c.getNote() == null ? "" : c.getNote()).append('\n');
 		return row;
 	}
-	
+
 	public static void addContatto(Contatto contatto) {
 		File file = new File(PATH);
 		List<String> oldFile = FileUtils.extractRows(file);
@@ -145,7 +140,7 @@ public class RubricaCSV {
 		try {
 			String toAdd = contattoToRow(STANDARD_SEPARATOR, contatto).toString();
 			fw = new FileWriter(file);
-			for(String row : oldFile) {
+			for (String row : oldFile) {
 				fw.write(row);
 			}
 			fw.write(toAdd);
@@ -153,7 +148,7 @@ public class RubricaCSV {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if(fw!=null)
+			if (fw != null)
 				try {
 					fw.close();
 				} catch (IOException e) {
@@ -161,22 +156,21 @@ public class RubricaCSV {
 					e.printStackTrace();
 				}
 		}
-		
+
 	}
 
-	//for standard operations
+	// for standard operations
 	public static List<Contatto> loadRubricaFromCSV() throws IOException {
 		return loadRubricaFromCSV(PATH, STANDARD_SEPARATOR);
-		
+
 	}
 
 	public static void writeContatti(List<Contatto> rubrica) throws IOException {
 		writeContatti(rubrica, PATH, STANDARD_SEPARATOR);
-		
+
 	}
 
 	public static void removeContatto(Contatto contatto) {
-		
-		
+
 	}
-}	
+}

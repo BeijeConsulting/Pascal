@@ -125,10 +125,11 @@ public class RubricaXML {
 		Node campoNode;
 		try {
 			campoNode = ((Element) contatto).getElementsByTagName(name).item(0);
-			return campoNode.getFirstChild().getNodeValue();
+			String result = campoNode.getFirstChild().getNodeValue();
+			return result.isEmpty() ? null : result;
 		} catch (NullPointerException e) {
+			return null;
 		}
-		return null;
 	}
 
 	public static List<Element> getChildElements(Element element) {
