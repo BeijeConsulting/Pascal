@@ -1,4 +1,4 @@
-package it.beije.pascal.rubrica.jdbc.gestorerubrica;
+package it.beije.pascal.jdbc.rubrica;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,9 +29,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import it.beije.pascal.file.util.FileUtil;
+import it.beije.pascal.jdbc.util.DBUtil;
+import it.beije.pascal.jdbc.util.DataSource;
 import it.beije.pascal.rubrica.Contatto;
-import it.beije.pascal.rubrica.jdbc.util.DBUtil;
-import it.beije.pascal.rubrica.jdbc.util.DataSource;
 
 public class GestoreRubrica {
 
