@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import it.beije.pascal.Contatto;
+import it.beije.pascal.bean.Contatto;
 import it.beije.pascal.file.util.FileUtil;
 import it.beije.pascal.jdbc.util.DBUtil;
 import it.beije.pascal.jdbc.util.DataSource;
