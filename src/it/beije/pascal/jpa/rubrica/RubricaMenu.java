@@ -10,7 +10,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import it.beije.pascal.Contatto;
+import it.beije.pascal.bean.Contatto;
 import it.beije.pascal.jpa.util.EntityManagerProvider;
 
 public class RubricaMenu {
@@ -28,7 +28,7 @@ public class RubricaMenu {
 				continua = false;
 				break;
 			case 1:
-				//backup();
+				// backup();
 				break;
 			case 2:
 				printContacts();
@@ -40,10 +40,10 @@ public class RubricaMenu {
 				addContact();
 				break;
 			case 5:
-				updateContact(1);
+				updateContact(177);
 				break;
 			case 6:
-				deleteContact();
+				deleteContact(1111);
 				break;
 			case 7:
 				findDuplicates();
@@ -75,7 +75,6 @@ public class RubricaMenu {
 		return scelta;
 	}
 
-
 	public static void printContacts() {
 		EntityManager entityManger = EntityManagerProvider.getEntityManager();
 		String jpql = "SELECT c FROM Contatto AS c";
@@ -88,17 +87,17 @@ public class RubricaMenu {
 		entityManger.close();
 
 	}
-	
+
 	private static void findContact(int id) {
 		String jpql = "SELECT c FROM Contatto AS c WHERE id = :id";
 		EntityManager entityManager = EntityManagerProvider.getEntityManager();
 		Query query = entityManager.createQuery(jpql);
 		query.setParameter("id", id);
-		
+
 		try {
 			Contatto contatto = (Contatto) query.getSingleResult();
 			System.out.println(contatto);
-			
+
 		} catch (NoResultException e) {
 			System.out.println("Contatto non trovato");
 		}
@@ -110,48 +109,71 @@ public class RubricaMenu {
 		Contatto contatto = new Contatto("nuovo", "nuovo", "nuovo", "nuovo", "nuovo");
 		EntityManager entityManager = EntityManagerProvider.getEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
-		
+
 		transaction.begin();
 		entityManager.persist(contatto);
 		transaction.commit();
-		entityManager.close();		
+		entityManager.close();
 	}
-	
+
 	private static void updateContact(int id) {
 		String jpql = "SELECT c FROM Contatto AS c WHERE id = :id";
 		EntityManager entityManager = EntityManagerProvider.getEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
+		Contatto contatto = null;
 		Query query = entityManager.createQuery(jpql);
 		query.setParameter("id", id);
 		transaction.begin();
-		
-		Contatto contatto = (Contatto) query.getSingleResult();		
-		contatto.setCognome("Modificato");
-		contatto.setNome("Modificato");
-		contatto.setTelefono("Modificato");
-		contatto.setEmail("Modificato");
-		contatto.setNote("Modificato");
-		
-		entityManager.persist(contatto);
-		transaction.commit();	
+
+		try {
+			contatto = (Contatto) query.getSingleResult();
+			contatto.setCognome("Modificato");
+			contatto.setNome("Modificato");
+			contatto.setTelefono("Modificato");
+			contatto.setEmail("Modificato");
+			contatto.setNote("Modificato");
+
+			entityManager.persist(contatto);
+			transaction.commit();
+
+		} catch (NoResultException e) {
+			System.out.println("Contatto non trovato");
+		}
 		entityManager.close();
 	}
 
 	private static void findDuplicates() {
-		String jpql = "SELECT cognome,nome,telefono,email,note FROM contatti GROUP BY cognome,nome,telefono,email,note HAVING count(email) > 1";
+		String jpql = "SELECT c.cognome,c.nome,c.telefono,c.email,c.note FROM Contatto AS c GROUP BY c.cognome,c.nome,c.telefono,c.email,c.note HAVING count(c.email) > 1";
 		EntityManager entityManager = EntityManagerProvider.getEntityManager();
 		Query query = entityManager.createQuery(jpql);
-		
+		List<Contatto> contatti = query.getResultList();
+
+		for (Contatto contatto : contatti) {
+			System.out.println(contatto);
+		}
+		entityManager.close();
+
 	}
 
-	private static void deleteContact() {
-		
+	private static void deleteContact(int id) {
+		String jpql = "	SELECT c FROM Contatto AS c WHERE id = :id";
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityTransaction transaction = entityManager.getTransaction();
+		Contatto contatto = null;
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("id", id);
+		transaction.begin();
 
+		try {
+			contatto = (Contatto) query.getSingleResult();
+			entityManager.remove(contatto);
+			transaction.commit();
+
+		} catch (NoResultException e) {
+			System.out.println("Contatto non trovato");
+		}
+
+		entityManager.close();
 	}
-
-	
-
-
-	
 
 }
