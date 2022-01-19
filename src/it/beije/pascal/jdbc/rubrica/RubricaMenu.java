@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-import it.beije.pascal.Contatto;
+import it.beije.pascal.bean.Contatto;
 
 public class RubricaMenu {
 
