@@ -19,11 +19,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import it.beije.pascal.rubrica.Contatto;
+import it.beije.pascal.Contatto;
 
-public class RubricaXmlUtil {
+public class RubricaService {
 
-	private RubricaXmlUtil() {
+	private RubricaService() {
 
 	}
 
@@ -163,17 +163,17 @@ public class RubricaXmlUtil {
 
 	public static void updateContact(Contatto contatto) {	
 		Contatto newContatto = new Contatto("modificato", "modificato", "modificato", "modificato", "modificato");
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		List<Contatto> contatti = RubricaService.getContactList();
 		for (int i = 0; i < contatti.size(); i++) {
 			if (contatto.equals(contatti.get(i))) {
 				contatti.set(i, newContatto);
 			}
 		}
-		RubricaXmlUtil.insertContacts(contatti);
+		RubricaService.insertContacts(contatti);
 	}
 	
 	public static void deleteContact(Contatto contatto) {		
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		List<Contatto> contatti = RubricaService.getContactList();
 		int tmp = 0;
 		for (int i = 0; i < contatti.size(); i++) {
 			// Overload metodo equals della classe Contatto
@@ -182,7 +182,7 @@ public class RubricaXmlUtil {
 				tmp++;
 			}
 		}
-		RubricaXmlUtil.insertContacts(contatti);
+		RubricaService.insertContacts(contatti);
 	}
 
 	public static List<Contatto> findDuplicates(List<Contatto> contatti) {		
@@ -206,7 +206,7 @@ public class RubricaXmlUtil {
 	}
 	
 	public static void deleteDuplicates(List<Contatto> contatti) {
-		List<Contatto> contattiDuplicati = RubricaXmlUtil.findDuplicates(contatti);
+		List<Contatto> contattiDuplicati = RubricaService.findDuplicates(contatti);
 		int tmp = 0;
 		for (int i = 0; i < contattiDuplicati.size(); i++) {
 			for (int j = 0; j < contatti.size(); j++) {
@@ -217,6 +217,6 @@ public class RubricaXmlUtil {
 			}
 			tmp = 0;
 		}
-		RubricaXmlUtil.insertContacts(contattiDuplicati);		
+		RubricaService.insertContacts(contattiDuplicati);		
 	}
 }
