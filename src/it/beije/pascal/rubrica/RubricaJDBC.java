@@ -292,6 +292,12 @@ public class RubricaJDBC implements DatabaseConnection {
 			}
 		}
 	}
+
+	@Override
+	public void autoDeleteDuplicati() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 

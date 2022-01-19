@@ -17,5 +17,7 @@ public interface DatabaseConnection {
 	List<Contatto> listDuplicates();
 
 	List<Contatto> listAllOrderedBy(String column, boolean ascendent);
+	
+	void autoDeleteDuplicati();
 
 }

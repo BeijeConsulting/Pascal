@@ -9,7 +9,7 @@ public class RubricaMain {
 
 	static Scanner s = null;
 	static List<Contatto> workingRubrica = null;
-	static DatabaseConnection rubricaDB = RubricaHBM.getInstance();
+	static DatabaseConnection rubricaDB = new RubricaJPA();
 
 	public static void main(String[] args) {
 		System.out.println("Benvenuti in Rubrica");
@@ -163,22 +163,27 @@ public class RubricaMain {
 
 	private static List<Contatto> selezionaContattoCompleto() {
 		List<Contatto> risultati;
+		Contatto daCercare = new Contatto();
+		
 		System.out.println("Seleziona contatto \nnome: ");
 		String nome = s.nextLine();
+		daCercare.setNome(nome);
 		System.out.println("cognome: ");
 		String cognome = s.nextLine();
+		daCercare.setCognome(cognome);
 		System.out.println("telefono: ");
 		String tel = s.nextLine();
+		daCercare.setTelefono(tel);
 		System.out.println("email: ");
 		String email = s.nextLine();
+		daCercare.setEmail(email);
 		System.out.println("note: ");
 		String note = s.nextLine();
+		daCercare.setNote(note);
 
-		// TODO
-		// risultati = rubricaDB.cercaContatto(new Contatto(cognome, nome, tel, email,
-		// note));
-		// return risultati;
-		return null;
+		
+		risultati = rubricaDB.cercaContatto(daCercare);
+		return risultati;
 	}
 
 	private static List<Contatto> selezionaContattoNomeCognome() {
@@ -195,7 +200,7 @@ public class RubricaMain {
 	private static void eliminaContatto() {
 		Contatto daEliminare = selezionaContattoDaInput();
 		rubricaDB.eliminaContatto(daEliminare.getId());
-		s.nextLine();
+//		s.nextLine();
 	}
 
 	private static void trovaDuplicati() {
@@ -231,7 +236,7 @@ public class RubricaMain {
 		}
 
 		//select which of every field to load
-		Contatto nuovoC = cScelto;
+		Contatto nuovoC = new Contatto();
 		System.out.print("Da quale contatto prendo il Telefono? 	: ");
 		String telefono = duplicati.get(s.nextInt() - 1).getTelefono();
 		nuovoC.setTelefono(telefono);
@@ -274,7 +279,10 @@ public class RubricaMain {
 			contatti = rubricaDB.listAllOrderedBy("cognome", ascdisc);
 			break;
 		}
-		for (Contatto c : contatti) {
+		if(contatti == null || contatti.isEmpty()) {
+			System.out.println("Nessun risultato :(");
+		}
+		else for (Contatto c : contatti) {
 			System.out.println(c.toString());
 		}
 	}

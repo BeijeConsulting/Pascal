@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class EntityManagerProvider {
+public class EntityManagerProvider  {
 	
 	private EntityManagerProvider() {}
 	
@@ -17,5 +17,7 @@ public class EntityManagerProvider {
 		
 		return entityManagerFactory.createEntityManager();
 	}
+	
+	
 
 }

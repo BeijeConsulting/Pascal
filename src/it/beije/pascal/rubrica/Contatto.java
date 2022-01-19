@@ -55,6 +55,7 @@ public class Contatto {
 	}
 
 	public void setCognome(String cognome) {
+		if(cognome.isEmpty()) cognome = null;
 		this.cognome = cognome;
 	}
 
@@ -63,6 +64,7 @@ public class Contatto {
 	}
 
 	public void setNome(String nome) {
+		if(nome.isEmpty()) nome = null;
 		this.nome = nome;
 	}
 
@@ -71,6 +73,7 @@ public class Contatto {
 	}
 
 	public void setTelefono(String telefono) {
+		if(telefono.isEmpty()) telefono = null;
 		this.telefono = telefono;
 	}
 
@@ -79,6 +82,7 @@ public class Contatto {
 	}
 
 	public void setEmail(String email) {
+		if(email.isEmpty()) email = null;
 		this.email = email;
 	}
 
@@ -87,9 +91,26 @@ public class Contatto {
 	}
 
 	public void setNote(String note) {
+		if(note.isEmpty()) note = null;
 		this.note = note;
 	}
-
+	
+//	Constructors
+	
+	public Contatto() {
+		super();
+	}
+	public Contatto(String cognome, String nome, String telefono, String email, String note) {
+		super();
+		this.cognome = cognome;
+		this.nome = nome;
+		this.telefono = telefono;
+		this.email = email;
+		this.note = note;
+	}
+	
+//	Overriding Methods
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder()
 				.append("{ id : ").append(this.id)

@@ -175,5 +175,11 @@ public class RubricaHBM implements DatabaseConnection{
 		return risultato;
 	}
 
+	@Override
+	public void autoDeleteDuplicati() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
