@@ -6,7 +6,7 @@ CREATE TABLE `user` (
   `password` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 CREATE TABLE `product` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -15,7 +15,7 @@ CREATE TABLE `product` (
   `price` double DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 CREATE TABLE `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,7 +25,7 @@ CREATE TABLE `order` (
   PRIMARY KEY (`id`),
   KEY `fk_user_idx` (`user_id`),
   CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 CREATE TABLE `order_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
