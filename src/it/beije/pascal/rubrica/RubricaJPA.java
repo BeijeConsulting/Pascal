@@ -13,6 +13,7 @@ public class RubricaJPA {
 
 	public static void main(String[] args) {
 		
+		//Al posto del Configuration di Hibernate qui abbiamo EntityManagerFactory
 //		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("pascal-rubrica");
 //		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		EntityManager entityManager = EntityManagerProvider.getEntityManager();
@@ -22,11 +23,11 @@ public class RubricaJPA {
 		//Query query = entityManager.createNativeQuery("SELECT * FROM contatti", Contatto.class);
 		List<Contatto> contatti = query.getResultList();
 		
-		for (Contatto c : contatti) {
-			System.out.println(c);
-		}
+//		for (Contatto c : contatti) {
+//			System.out.println(c);
+//		}
 		
-//		Contatto contatto = entityManager.find(Contatto.class, Integer.valueOf(18));
+		Contatto contatto = entityManager.find(Contatto.class, Integer.valueOf(31));
 //		System.out.println(contatto);
 
 		
@@ -49,7 +50,7 @@ public class RubricaJPA {
 //		entityManager.persist(contatto);
 		
 //		//DELETE
-//		entityManager.remove(contatto);
+		entityManager.remove(contatto);
 		
 		transaction.commit();
 //		transaction.rollback();
