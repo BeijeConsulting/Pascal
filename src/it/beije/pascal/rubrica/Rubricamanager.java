@@ -8,6 +8,7 @@ import java.util.Set;
 
 import it.beije.pascal.file.HDBmanager;
 import it.beije.pascal.file.JDBCmanager;
+import it.beije.pascal.file.JPAmanager;
 import it.beije.pascal.file.XMLmanager;
 
 public class Rubricamanager {
@@ -154,7 +155,9 @@ public class Rubricamanager {
 		
 		//return XMLmanager.allContacts(categoria);
 		
-		return HDBmanager.sortCategoriaHDB(categoria);
+		// return HDBmanager.sortCategoriaHDB(categoria);
+		
+		return JPAmanager.sortCategoriaJPA(categoria);
 	}
 
 	public static List<Contatto> find(String s, String categoria) throws Exception {
@@ -165,7 +168,9 @@ public class Rubricamanager {
 		
 		//return XMLmanager.find(s, categoria);
 		
-		return HDBmanager.findHDB(s, categoria);
+		//return HDBmanager.findHDB(s, categoria);
+		
+		return JPAmanager.findJPA(s, categoria);
 	}
 
 	public static void insert(Contatto c) throws Exception {
@@ -176,7 +181,9 @@ public class Rubricamanager {
 		
 		//JDBCmanager.insertJDBC(c);
 		
-		HDBmanager.insertHDB(c);
+		//HDBmanager.insertHDB(c);
+		
+		JPAmanager.insertJPA(c);
 	}
 	
 	public static void updateContatto(int id, String categoria, String val) throws SQLException {
@@ -185,7 +192,9 @@ public class Rubricamanager {
 		
 		// JDBCmanager.updateContattoJDBCPrepareStamtement(id, categoria, val);
 		
-		HDBmanager.updateContattoHDB(id, categoria, val);
+		//HDBmanager.updateContattoHDB(id, categoria, val);
+		
+		JPAmanager.updateContattoJPA(id, categoria, val);
 		
 	}
 
@@ -197,7 +206,9 @@ public class Rubricamanager {
 		
 		//JDBCmanager.deleteContattoJDBCPrepareStamtement(c);
 		
-		HDBmanager.deleteHDB(c.getId());
+		//HDBmanager.deleteHDB(c.getId());
+		
+		JPAmanager.deleteJPA(c.getId());
 	}
 
 	public static Set<Contatto> trovaContattiDuplicati() throws Exception {
