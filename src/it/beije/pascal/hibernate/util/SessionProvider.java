@@ -4,8 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import it.beije.pascal.Contatto;
 import it.beije.pascal.jdbc.util.DataSource;
-import it.beije.pascal.rubrica.Contatto;
 
 public class SessionProvider {
 	private Configuration configuration = new Configuration().configure().addAnnotatedClass(Contatto.class);
