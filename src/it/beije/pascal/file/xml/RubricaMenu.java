@@ -15,7 +15,7 @@ import org.w3c.dom.NodeList;
 import it.beije.pascal.Contatto;
 import it.beije.pascal.file.util.RubricaXmlUtil;
 
-public class RubricaXML {
+public class RubricaMenu {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args){
