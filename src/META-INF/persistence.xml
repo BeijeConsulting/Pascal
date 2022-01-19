@@ -3,7 +3,9 @@
 	<persistence-unit name="pascal-rubrica">
 
 		<class>it.beije.pascal.rubrica.Contatto</class>
-		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<class>it.beije.pascal.JPA.User</class>
+		<class>it.beije.pascal.JPA.Product</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
