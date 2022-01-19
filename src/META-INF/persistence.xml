@@ -3,6 +3,12 @@
 	<persistence-unit name="pascal-rubrica">
 
 		<class>it.beije.pascal.rubrica.Contatto</class>
+
+		<class>it.beije.pascal.shop.Oreder_item</class>
+		<class>it.beije.pascal.shop.Oreder</class>
+		<class>it.beije.pascal.shop.Product</class>
+		<class>it.beije.pascal.shop.User</class>
+
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>
