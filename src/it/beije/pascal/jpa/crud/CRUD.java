@@ -6,8 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import it.beije.pascal.Contatto;
 import it.beije.pascal.jpa.util.EntityManagerProvider;
-import it.beije.pascal.rubrica.Contatto;
 
 public class CRUD {
 	public static void main(String[] args) {
