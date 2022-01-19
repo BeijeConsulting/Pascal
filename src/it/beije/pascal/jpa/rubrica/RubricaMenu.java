@@ -5,7 +5,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+
 import it.beije.pascal.Contatto;
+import it.beije.pascal.jpa.util.EntityManagerProvider;
 
 public class RubricaMenu {
 
@@ -22,19 +28,19 @@ public class RubricaMenu {
 				continua = false;
 				break;
 			case 1:
-				backup();
+				//backup();
 				break;
 			case 2:
 				printContacts();
 				break;
 			case 3:
-				findContact();
+				findContact(1);
 				break;
 			case 4:
 				addContact();
 				break;
 			case 5:
-				updateContact();
+				updateContact(1);
 				break;
 			case 6:
 				deleteContact();
@@ -45,8 +51,6 @@ public class RubricaMenu {
 			}
 		}
 	}
-
-	
 
 	private static void writeMenu() {
 		System.out.println("\n==== MENU ====");
@@ -71,54 +75,83 @@ public class RubricaMenu {
 		return scelta;
 	}
 
-	private static void backup() {
-		Contatto contatto1 = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
-				"breve descrizione");
-		Contatto contatto2 = new Contatto("Paolo", "Bianchi", "3423546547", "paolobianchi@gmail.com", "il vicino");
-		Contatto contatto3 = new Contatto("Mario", "Rossi", "333344455", "mariorossi@gmail.com", "il solito mario");
-		Contatto contatto4 = new Contatto("Carlo", "Pascolino", "213124324", "carloPascolino@gmail.com",
-				"il falegname");
-		Contatto contatto5 = new Contatto("Pino", "Gasto", "3243514354", "pinogasto@gmail.com", "il poliziotto");
 
-		List<Contatto> contatti = new ArrayList<Contatto>();
-		contatti.add(contatto1);
-		contatti.add(contatto2);
-		contatti.add(contatto3);
-		contatti.add(contatto4);
-		contatti.add(contatto5);
+	public static void printContacts() {
+		EntityManager entityManger = EntityManagerProvider.getEntityManager();
+		String jpql = "SELECT c FROM Contatto AS c";
+		Query query = entityManger.createQuery(jpql);
+		List<Contatto> contatti = query.getResultList();
 
-	
+		for (Contatto contatto : contatti) {
+			System.out.println(contatto);
+		}
+		entityManger.close();
+
 	}
 	
+	private static void findContact(int id) {
+		String jpql = "SELECT c FROM Contatto AS c WHERE id = :id";
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("id", id);
+		
+		try {
+			Contatto contatto = (Contatto) query.getSingleResult();
+			System.out.println(contatto);
+			
+		} catch (NoResultException e) {
+			System.out.println("Contatto non trovato");
+		}
+		entityManager.close();
+
+	}
+
+	private static void addContact() {
+		Contatto contatto = new Contatto("nuovo", "nuovo", "nuovo", "nuovo", "nuovo");
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityTransaction transaction = entityManager.getTransaction();
+		
+		transaction.begin();
+		entityManager.persist(contatto);
+		transaction.commit();
+		entityManager.close();		
+	}
+	
+	private static void updateContact(int id) {
+		String jpql = "SELECT c FROM Contatto AS c WHERE id = :id";
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityTransaction transaction = entityManager.getTransaction();
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("id", id);
+		transaction.begin();
+		
+		Contatto contatto = (Contatto) query.getSingleResult();		
+		contatto.setCognome("Modificato");
+		contatto.setNome("Modificato");
+		contatto.setTelefono("Modificato");
+		contatto.setEmail("Modificato");
+		contatto.setNote("Modificato");
+		
+		entityManager.persist(contatto);
+		transaction.commit();	
+		entityManager.close();
+	}
+
 	private static void findDuplicates() {
-		// TODO Auto-generated method stub
+		String jpql = "SELECT cognome,nome,telefono,email,note FROM contatti GROUP BY cognome,nome,telefono,email,note HAVING count(email) > 1";
+		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		Query query = entityManager.createQuery(jpql);
 		
 	}
 
 	private static void deleteContact() {
-		// TODO Auto-generated method stub
 		
-	}
 
-	private static void updateContact() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void addContact() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void findContact() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void printContacts() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	
+
+
+	
+
 }
