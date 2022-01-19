@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.beije.pascal.Contatto;
+import it.beije.pascal.bean.Contatto;
 import it.beije.pascal.file.util.FileUtil;
 
 public class EsercizioCSV {
