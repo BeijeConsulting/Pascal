@@ -90,7 +90,7 @@ public class RubricaMenu {
 	}
 
 	private static void printContacts() {
-		List<Contatto> contatti = RubricaService.getContactsList();		
+		List<Contatto> contatti = RubricaService.getContactsList();
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
@@ -120,18 +120,16 @@ public class RubricaMenu {
 	}
 
 	private static void updateContact() {
-		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
-				"breve descrizione");
+		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",	"breve descrizione");
 		RubricaService.updateContact(contatto);
 	}
-	
+
 	private static void findDuplicates() {
-		List<Contatto> contatti = RubricaService.getContactsList();		
-		//contatti = ContattoDAO.findDuplicates(contatti);
-		for(Contatto contatto:contatti) {
+		List<Contatto> contatti = RubricaService.getContactsList();
+		// contatti = ContattoDAO.findDuplicates(contatti);
+		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
 	}
-	
-	
+
 }
