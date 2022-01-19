@@ -10,8 +10,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import it.beije.pascal.Contatto;
 import it.beije.pascal.hibernate.util.SessionProvider;
-import it.beije.pascal.rubrica.Contatto;
 
 public class CRUD_1 {
 
