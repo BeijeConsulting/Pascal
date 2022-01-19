@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import it.beije.pascal.Contatto;
 import it.beije.pascal.jdbc.util.DBUtil;
 import it.beije.pascal.jdbc.util.DataSource;
-import it.beije.pascal.rubrica.Contatto;
 
 public class RubricaService {
 
