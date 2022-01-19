@@ -13,7 +13,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import it.beije.pascal.Contatto;
-import it.beije.pascal.file.util.RubricaXmlUtil;
+import it.beije.pascal.file.util.RubricaService;
 
 public class RubricaMenu {
 	private static Scanner scanner = new Scanner(System.in);
@@ -80,8 +80,8 @@ public class RubricaMenu {
 	}
 
 	private static void writeContacts() {
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		RubricaXmlUtil.contactOrder(contatti);
+		List<Contatto> contatti = RubricaService.getContactList();
+		RubricaService.contactOrder(contatti);
 		for (Contatto contatto : contatti) {
 			System.out.println(contatto);
 		}
@@ -90,8 +90,8 @@ public class RubricaMenu {
 	private static void findContact() {
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		Contatto c = RubricaXmlUtil.findContact(contatto, contatti);
+		List<Contatto> contatti = RubricaService.getContactList();
+		Contatto c = RubricaService.findContact(contatto, contatti);
 		if (c != null) {
 			System.out.println(c);
 		} else {
@@ -101,27 +101,27 @@ public class RubricaMenu {
 
 	private static void insertContact() {
 		Contatto contatto = new Contatto("Nuovo nome", "Nuovo cognome", "Nuovo telefono", "Nuova email", "Nuova nota");
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
+		List<Contatto> contatti = RubricaService.getContactList();
 		contatti.add(contatto);
-		RubricaXmlUtil.insertContacts(contatti);
+		RubricaService.insertContacts(contatti);
 
 	}
 
 	private static void updateContact() {
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
-		RubricaXmlUtil.updateContact(contatto);
+		RubricaService.updateContact(contatto);
 	}
 
 	private static void deleteContact() {
 		Contatto contatto = new Contatto("Emanuele", "Corona", "3335877155", "emacorona@gmail.com",
 				"breve descrizione");
-		RubricaXmlUtil.deleteContact(contatto);
+		RubricaService.deleteContact(contatto);
 	}
 
 	private static void findDuplicates() {
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		List<Contatto> contattiDuplicati = RubricaXmlUtil.findDuplicates(contatti);
+		List<Contatto> contatti = RubricaService.getContactList();
+		List<Contatto> contattiDuplicati = RubricaService.findDuplicates(contatti);
 		for (Contatto contatto : contattiDuplicati) {
 			System.out.println(contatto);
 		}
@@ -129,8 +129,8 @@ public class RubricaMenu {
 	}
 
 	private static void deleteDuplicates() {
-		List<Contatto> contatti = RubricaXmlUtil.getContactList();
-		RubricaXmlUtil.deleteDuplicates(contatti);
+		List<Contatto> contatti = RubricaService.getContactList();
+		RubricaService.deleteDuplicates(contatti);
 	}
 
 	private static void backup() {
@@ -157,7 +157,7 @@ public class RubricaMenu {
 		contatti.add(contatto7);
 		contatti.add(contatto8);
 		contatti.add(contatto9);
-		RubricaXmlUtil.insertContacts(contatti);
+		RubricaService.insertContacts(contatti);
 	}
 
 }
