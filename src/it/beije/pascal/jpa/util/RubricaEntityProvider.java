@@ -4,15 +4,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class EntityManagerProvider {
+public class RubricaEntityProvider {
 	
-	private EntityManagerProvider() {}
+	private RubricaEntityProvider() {}
 	
 	private static EntityManagerFactory entityManagerFactory = null;
 	
 	public static EntityManager getEntityManager() {
 		if (entityManagerFactory == null) {
-			entityManagerFactory = Persistence.createEntityManagerFactory("pascal-rubrica");
+			entityManagerFactory = Persistence.createEntityManagerFactory("rubrica");
 		}
 		
 		return entityManagerFactory.createEntityManager();
