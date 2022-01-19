@@ -59,36 +59,72 @@ public class ManagerDB {
 		
 	}
 	
-	public static User searchUser(User u){
+	public static User searchUser(String email, String password){
+		User result = null;
 		EntityManager entityManager = EntityManagerProvider.getEntityManager();
 		
-		Query query = entityManager.createQuery("SELECT u FROM User as u WHERE email = '" + u.getEmail()
-				                                                              + "' AND name = '" + u.getName()
-				                                                              + "' AND surname = '" + u.getSurname()
-				                                                              + "' AND password = '" + u.getPassword() + "'");
+		Query query = entityManager.createQuery("SELECT u FROM User as u WHERE email = '" + email
+				                                                     + "' AND password = '" + password + "'");
 		
 		List<User> temp = query.getResultList();
-		User result = temp.get(0);
+
+		try {
+            
+            result = temp.get(0);
+            
+        }catch(IndexOutOfBoundsException iOB) {
+        	
+        	result = null;
+            
+        }
 		
-		entityManager.close();
-		return result;
+        entityManager.close();
+        
+        return result;
 	}
 	
-	public static Product searchProduct(Product p){
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
-		
-		Query query = entityManager.createQuery("SELECT u FROM User as u WHERE name = '" + p.getName()
-				                                                              + "' AND description = '" + p.getDescription()
-				                                                              + "' AND price = '" + p.getPrice()
-				                                                              + "' AND quantity = '" + p.getQuantity() + "'");
-		
-		List<Product> temp = query.getResultList();
-		Product result = temp.get(0);
-		
-		entityManager.close();
-		return result;
-	}
-	
-	
+	public static Product searchProduct(String name) {
+        
+        Product result = null;
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
+        Query query = entityManager.createQuery(
+                "SELECT u FROM Product as u WHERE name = '" + name + "'");
+        List<Product> temp = query.getResultList();
+        
+        try {
+            
+            result = temp.get(0);
+            
+        }catch(IndexOutOfBoundsException iOB) {
+            
+            if(result == null) {
+                
+                System.out.println("Prodotto non presente");
+            }
+            
+        }
+        finally {
+            
+            entityManager.close();  
+        }
+        return result;
+    }
+    
+    public static void updateQuantity(int newValue, String name) {
+        
+        Product find = searchProduct(name);
+        
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
+        
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        
+        Product update = entityManager.find(Product.class, find.getId());
+        
+        update.setQuantity(newValue);
+        entityManager.persist(update);
+        transaction.commit();
+        entityManager.close();
+    }
 
 }

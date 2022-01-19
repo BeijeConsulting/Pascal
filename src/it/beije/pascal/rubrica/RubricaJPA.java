@@ -26,7 +26,7 @@ public class RubricaJPA {
 			System.out.println(c);
 		}
 		
-//		Contatto contatto = entityManager.find(Contatto.class, Integer.valueOf(18));
+		Contatto contatto = entityManager.find(Contatto.class, Integer.valueOf(18));
 //		System.out.println(contatto);
 
 		
@@ -34,7 +34,7 @@ public class RubricaJPA {
 		transaction.begin();
 		
 //		//INSERT
-//		Contatto newContatto = new Contatto();
+		Contatto newContatto = new Contatto();
 //		//newContatto.setId(30);
 //		newContatto.setCognome("Brambilla");
 //		newContatto.setNome("Mario");
@@ -44,9 +44,9 @@ public class RubricaJPA {
 //		System.out.println("contatto POST : " + newContatto);
 		
 //		//UPDATE
-//		contatto.setCognome("Fumagalli");
-//		contatto.setTelefono("43214342");
-//		entityManager.persist(contatto);
+		contatto.setCognome("Fumagalli");
+		contatto.setTelefono("43214342");
+		entityManager.persist(contatto);
 		
 //		//DELETE
 //		entityManager.remove(contatto);

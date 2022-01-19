@@ -1,90 +1,104 @@
 package it.beije.pascal.ecommerce;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ShopManager {
 	
 	public static User inputUser() {
-		User appoggio = new User();
+		User temp = new User();
 		System.out.print("Email: ");
-		appoggio.setEmail(readKeyboard()); 
+		temp.setEmail(readKeyboard()); 
 		System.out.print("Name: ");
-		appoggio.setName(readKeyboard());
+		temp.setName(readKeyboard());
 		System.out.print("Surname: ");
-		appoggio.setSurname(readKeyboard());
+		temp.setSurname(readKeyboard());
 		System.out.print("Password: ");
-		appoggio.setPassword(readKeyboard());
-		return appoggio;
+		temp.setPassword(readKeyboard());
+		return temp;
 	}
 	
-	public static Product inputProduct() {
-		Product appoggio = new Product();
-		System.out.print("Name: ");
-		appoggio.setName(readKeyboard());
-		System.out.print("Description: ");
-		appoggio.setDescription(readKeyboard());
-		System.out.print("Price: ");
-		appoggio.setPrice(Double.parseDouble(readKeyboard()));
-		System.out.print("Quantity: ");
-		appoggio.setQuantity(Integer.parseInt(readKeyboard()));
-		return appoggio;
-	}
+//	public static Product inputProduct() {
+//		Product appoggio = new Product();
+//		System.out.print("Name: ");
+//		appoggio.setName(readKeyboard());
+//		System.out.print("Description: ");
+//		appoggio.setDescription(readKeyboard());
+//		System.out.print("Price: ");
+//		appoggio.setPrice(Double.parseDouble(readKeyboard()));
+//		System.out.print("Quantity: ");
+//		appoggio.setQuantity(Integer.parseInt(readKeyboard()));
+//		return appoggio;
+//	}
 	
 	public static void main(String[] args) {
 		int choice = 1;
-		User tempUser = null;
+		User userLogin = null;
 		Product tempProduct = null;
+		String tC= null;
+		List <Product> tempPList = new ArrayList<Product>();
+		List<Product> tempPurchase = new ArrayList<Product>();
+		
+		System.out.println("-Benvenuto-");
 		while(choice != 0) {
-			System.out.println("\n-Shop Manager Menu-");
 			System.out.println("Menu:");
-			System.out.println("1- Insert User\n"  
-					           + "2- Insert Product\n"
-					           + "3- Visual Users\n"
-					           + "4- Visual Products\n"
-					           + "5- Search User\n"
-//			                   + "6 -Cancella \n"
-//			                   + "7 -Trova \n"
-//			                   + "8 -Unisci \n"
-//			                   + "9 -Importa da CSV a DB\n"
-//			                   + "10 -Importa da XML a DB\n"
-//			                   + "11 -Esporta da DB a CSV\n"
-//			                   + "12 -Esporta da DB a XML\n"
+			System.out.println("1- Login\n"  
+					           + "2- Registrati\n"
 			                   + "0 -Esci");
-			System.out.println("Inserisci il numero della funzione da eseguire");
+			System.out.print("Inserisci il numero della funzione da eseguire: ");
 			choice = Integer.parseInt(readKeyboard());
 			
-			switch(choice) {
-			case 1:
-				tempUser = inputUser();
-				ManagerDB.addUser(tempUser);
-				break;
-			case 2:
-				tempProduct = inputProduct();
-				ManagerDB.addProduct(tempProduct);
-				break;
-			case 3:
-				printUsers(ManagerDB.getUsers());
-				break;
-			case 4:
-				printProducts(ManagerDB.getProducts());
-				break;
-			case 5:
-				tempUser = inputUser();
-				User searchedUser = ManagerDB.searchUser(tempUser);
-				System.out.println("-Searched User-");
-				printUser(searchedUser);
-				break;
-			case 6:
-				tempProduct = inputProduct();
-				Product searchedProduct = ManagerDB.searchProduct(tempProduct);
-				System.out.println("-Searched Product-");
-				printProduct(searchedProduct);
-				break;
-			default:
-			case 0:
-				break;
+			if (choice == 1) {
+			    System.out.println("Inserisci i Dati");
+			    System.out.print("Email: ");
+			    String tempEmail = readKeyboard();
+			    System.out.print("Password: ");
+			    String tempPass = readKeyboard();
+			    
+			    userLogin = ManagerDB.searchUser(tempEmail, tempPass);
+			    choice = 0;
 			}
+			
+			if(choice == 2) {
+				System.out.println("Inserisci dati utente da registrare");
+				userLogin = inputUser();
+				ManagerDB.addUser(userLogin);
+				System.out.println("Registrazione Effettuata");
+			}
+			
+		}
+		
+		System.out.println("\n");
+        System.out.println("Lista dei Prodotti");
+        System.out.println("\n");
+        
+        tempPList=ManagerDB.getProducts();
+        visualProducts(tempPList);
+        
+        while(true){
+			
+			System.out.println("\n");
+			System.out.println("Seleziona i prodotti da acquistare, quando hai finito, scrivi 'esci' per procedere con l'ordine");
+			
+			tC = readKeyboard();
+			if (tC.equalsIgnoreCase("esci"))
+					break;
+			tempProduct = ManagerDB.searchProduct(tC);
+			System.out.println("Dati del prodotto selezionato, selezionare la quantità richiesta");
+			visualSelectedProduct(tempProduct);
+			
+			int q = Integer.parseInt(readKeyboard());
+			
+			while(q>tempProduct.getQuantity())
+			{
+				System.out.println("Quantità disponibile non sufficiente, reinserire un quantitativo");
+				q = Integer.parseInt(readKeyboard());
+			}
+			tempProduct.setQuantity(q);
+			
+			tempPurchase.add(tempProduct);
+			
 		}
 		
 	}
@@ -96,28 +110,25 @@ public class ShopManager {
 		return st;
 	}
 
-	private static void printUsers(List<User> users)
+	public static void visualProducts(List<Product> products)
 	{
-		System.out.println("-List of Users-");
-		for(User c : users) {		
-			System.out.println(c.toString());
+		for(Product p : products) {
+			
+			System.out.print(p.getName()+ " ");
+			System.out.print(p.getPrice()+ " euro  ");
+			System.out.println("\n");
 		}
 	}
 	
-	private static void printUser(User u) {
-		System.out.println(u.toString());	
+	public static void visualSelectedProduct(Product p) {
+		System.out.println("Nome = " + p.getName() + ", Descrizione = " + p.getDescription() 
+		                + ", Prezzo = " + p.getPrice() + ", Quantità = " + p.getQuantity());
 	}
 	
-	private static void printProducts(List<Product> products)
+	public static void visualUsers(List<User> users)
 	{
-		System.out.println("-List of Products-");
-		for(Product c : products) {		
-			System.out.println(c.toString());
+		for(User u : users) {
+			System.out.println(u.toString());
 		}
 	}
-	
-	private static void printProduct(Product p) {
-		System.out.println(p.toString());	
-	}
-
 }
