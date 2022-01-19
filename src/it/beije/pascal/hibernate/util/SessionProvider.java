@@ -4,7 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import it.beije.pascal.Contatto;
+import it.beije.pascal.bean.Contatto;
 import it.beije.pascal.jdbc.util.DataSource;
 
 public class SessionProvider {
