@@ -1,4 +1,4 @@
-package it.beije.pascal;
+package it.beije.pascal.bean;
 
 import java.util.List;
 
