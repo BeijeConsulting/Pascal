@@ -59,12 +59,12 @@ public class Ricerca {
 	@Column(name = "locali_max")
 	private int localiMax;
 
-	// da enum a int
-	private int bagni_min;
+	// da enum a int o String
+	private String bagni_min;
 	private int piano;
 	
 	private boolean ascensore;
-	private PostiAuto posti_auto;
+	private int postiAuto;
 	private boolean balcone;
 	private boolean terrazzo;
 	private Giardino giardino;
@@ -218,11 +218,11 @@ public class Ricerca {
 		this.localiMax = localiMax;
 	}
 
-	public int getBagni_min() {
+	public String getBagni_min() {
 		return bagni_min;
 	}
 
-	public void setBagni_min(int bagni_min) {
+	public void setBagni_min(String bagni_min) {
 		this.bagni_min = bagni_min;
 	}
 
@@ -242,12 +242,12 @@ public class Ricerca {
 		this.ascensore = ascensore;
 	}
 
-	public PostiAuto getPosti_auto() {
-		return posti_auto;
+	public int getPostiAuto() {
+		return postiAuto;
 	}
 
-	public void setPosti_auto(PostiAuto posti_auto) {
-		this.posti_auto = posti_auto;
+	public void setPostiAuto(int postiAuto) {
+		this.postiAuto = postiAuto;
 	}
 
 	public boolean isBalcone() {
@@ -369,6 +369,8 @@ public class Ricerca {
 	public void setUltimoTimestamp(Timestamp ultimoTimestamp) {
 		this.ultimoTimestamp = ultimoTimestamp;
 	}
+
+	
 	
 	
 	
