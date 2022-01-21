@@ -1,5 +1,5 @@
 package it.beije.domus.enums;
 
-public enum Stato_rogito {
+public enum StatoRogito {
 	OCCUPATO,LIBERO,NUDA_PROPRIETA,AFFITTATO
 }

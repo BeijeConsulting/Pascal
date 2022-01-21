@@ -1,20 +1,23 @@
 package it.beije.domus;
 
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import it.beije.domus.enums.Aria_condizionata;
+import it.beije.domus.enums.AriaCondizionata;
 import it.beije.domus.enums.Arredamento;
-import it.beije.domus.enums.Classe_energetica;
+import it.beije.domus.enums.ClasseEnergetica;
 import it.beije.domus.enums.Condizione;
 import it.beije.domus.enums.Giardino;
 import it.beije.domus.enums.Riscaldamento;
-import it.beije.domus.enums.Stato_rogito;
-import it.beije.domus.enums.Tipo_annuncio;
-import it.beije.domus.enums.Tipo_immobile;
+import it.beije.domus.enums.StatoRogito;
+import it.beije.domus.enums.TipoAnnuncio;
+import it.beije.domus.enums.TipoImmobile;
 
 @Entity
 @Table(name = "annuncio")
@@ -23,48 +26,66 @@ public class Annuncio {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	private int venditori_id;
-	private int annuncio_multiplo_id;
-	private int piantina_id;
-	private int indirizzo_id;
-	private int edificio_ID;
 	
-	private Tipo_immobile tipo_immobile;
-	private Tipo_annuncio tipo_annuncio;
+	@Column(name = "venditori_id")
+	private int venditoriId;
+	@Column(name = "annuncio_multiplo_id")
+	private int annuncio_multiplo_id;
+	@Column(name = "piantina_id")
+	private int piantinaId;
+	@Column(name = "indirizzo_id")
+	private int indirizzoId;
+	@Column(name = "edificio_id")
+	private int edificioId;
+	
+	@Column(name = "tipo_immobile")
+	private TipoImmobile tipoImmobile;
+	@Column(name = "tipo_annuncio")
+	private TipoAnnuncio tipoAnnuncio;
 	private int prezzo;
 	private int mq;
 	private int locali;
 	private int bagni;
-	private int tot_piani;
+	@Column(name = "tot_piani")
+	private int totPiani;
 	private int piano;
 	private boolean ascensore;
-	private int posti_auto;
+	@Column(name = "posti_auto")
+	private int postiAuto;
 	private boolean balcone;
 	private boolean terrazzo;
 	private Giardino giardino;
 	private Condizione condizione;
-	private Classe_energetica classe_energetica;
+	@Column(name = "classe_energetica")
+	private ClasseEnergetica classeEnergetica;
 	private Riscaldamento riscaldamento;
-	private Aria_condizionata aria_condizionata;
+	@Column(name = "aria_condizionata")
+	private AriaCondizionata ariaCondizionata;
 	private Arredamento arredamento;
 	private boolean piscina;
 	private boolean portineria;
 	private int anno_costruzione;
-	private Stato_rogito stato_rogito;
-	private boolean visita_guidata;
-	private String descrizione_lunga;
-	private boolean virtual_tour;
+	@Column(name = "stato_rogito")
+	private StatoRogito statoRogito;
+	@Column(name = "visita_guidata")
+	private boolean visitaGuidata;
+	@Column(name = "descrizione_lunga")
+	private String descrizioneLunga;
+	@Column(name = "virtual_tour")
+	private boolean virtualTour;
+	@Column(name = "create_timestamp")
+	private Timestamp createTimestamp;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getVenditori_id() {
-		return venditori_id;
+	public int getVenditoriId() {
+		return venditoriId;
 	}
-	public void setVenditori_id(int venditori_id) {
-		this.venditori_id = venditori_id;
+	public void setVenditoriId(int venditoriId) {
+		this.venditoriId = venditoriId;
 	}
 	public int getAnnuncio_multiplo_id() {
 		return annuncio_multiplo_id;
@@ -72,35 +93,35 @@ public class Annuncio {
 	public void setAnnuncio_multiplo_id(int annuncio_multiplo_id) {
 		this.annuncio_multiplo_id = annuncio_multiplo_id;
 	}
-	public int getPiantina_id() {
-		return piantina_id;
+	public int getPiantinaId() {
+		return piantinaId;
 	}
-	public void setPiantina_id(int piantina_id) {
-		this.piantina_id = piantina_id;
+	public void setPiantinaId(int piantinaId) {
+		this.piantinaId = piantinaId;
 	}
-	public int getIndirizzo_id() {
-		return indirizzo_id;
+	public int getIndirizzoId() {
+		return indirizzoId;
 	}
-	public void setIndirizzo_id(int indirizzo_id) {
-		this.indirizzo_id = indirizzo_id;
+	public void setIndirizzoId(int indirizzoId) {
+		this.indirizzoId = indirizzoId;
 	}
-	public int getEdificio_ID() {
-		return edificio_ID;
+	public int getEdificioId() {
+		return edificioId;
 	}
-	public void setEdificio_ID(int edificio_ID) {
-		this.edificio_ID = edificio_ID;
+	public void setEdificioId(int edificioId) {
+		this.edificioId = edificioId;
 	}
-	public Tipo_immobile getTipo_immobile() {
-		return tipo_immobile;
+	public TipoImmobile getTipoImmobile() {
+		return tipoImmobile;
 	}
-	public void setTipo_immobile(Tipo_immobile tipo_immobile) {
-		this.tipo_immobile = tipo_immobile;
+	public void setTipoImmobile(TipoImmobile tipoImmobile) {
+		this.tipoImmobile = tipoImmobile;
 	}
-	public Tipo_annuncio getTipo_annuncio() {
-		return tipo_annuncio;
+	public TipoAnnuncio getTipoAnnuncio() {
+		return tipoAnnuncio;
 	}
-	public void setTipo_annuncio(Tipo_annuncio tipo_annuncio) {
-		this.tipo_annuncio = tipo_annuncio;
+	public void setTipoAnnuncio(TipoAnnuncio tipoAnnuncio) {
+		this.tipoAnnuncio = tipoAnnuncio;
 	}
 	public int getPrezzo() {
 		return prezzo;
@@ -126,11 +147,11 @@ public class Annuncio {
 	public void setBagni(int bagni) {
 		this.bagni = bagni;
 	}
-	public int getTot_piani() {
-		return tot_piani;
+	public int getTotPiani() {
+		return totPiani;
 	}
-	public void setTot_piani(int tot_piani) {
-		this.tot_piani = tot_piani;
+	public void setTotPiani(int totPiani) {
+		this.totPiani = totPiani;
 	}
 	public int getPiano() {
 		return piano;
@@ -144,11 +165,11 @@ public class Annuncio {
 	public void setAscensore(boolean ascensore) {
 		this.ascensore = ascensore;
 	}
-	public int getPosti_auto() {
-		return posti_auto;
+	public int getPostiAuto() {
+		return postiAuto;
 	}
-	public void setPosti_auto(int posti_auto) {
-		this.posti_auto = posti_auto;
+	public void setPostiAuto(int postiAuto) {
+		this.postiAuto = postiAuto;
 	}
 	public boolean isBalcone() {
 		return balcone;
@@ -174,11 +195,11 @@ public class Annuncio {
 	public void setCondizione(Condizione condizione) {
 		this.condizione = condizione;
 	}
-	public Classe_energetica getClasse_energetica() {
-		return classe_energetica;
+	public ClasseEnergetica getClasseEnergetica() {
+		return classeEnergetica;
 	}
-	public void setClasse_energetica(Classe_energetica classe_energetica) {
-		this.classe_energetica = classe_energetica;
+	public void setClasseEnergetica(ClasseEnergetica classeEnergetica) {
+		this.classeEnergetica = classeEnergetica;
 	}
 	public Riscaldamento getRiscaldamento() {
 		return riscaldamento;
@@ -186,11 +207,11 @@ public class Annuncio {
 	public void setRiscaldamento(Riscaldamento riscaldamento) {
 		this.riscaldamento = riscaldamento;
 	}
-	public Aria_condizionata getAria_condizionata() {
-		return aria_condizionata;
+	public AriaCondizionata getAriaCondizionata() {
+		return ariaCondizionata;
 	}
-	public void setAria_condizionata(Aria_condizionata aria_condizionata) {
-		this.aria_condizionata = aria_condizionata;
+	public void setAriaCondizionata(AriaCondizionata ariaCondizionata) {
+		this.ariaCondizionata = ariaCondizionata;
 	}
 	public Arredamento getArredamento() {
 		return arredamento;
@@ -216,35 +237,38 @@ public class Annuncio {
 	public void setAnno_costruzione(int anno_costruzione) {
 		this.anno_costruzione = anno_costruzione;
 	}
-	public Stato_rogito getStato_rogito() {
-		return stato_rogito;
+	public StatoRogito getStatoRogito() {
+		return statoRogito;
 	}
-	public void setStato_rogito(Stato_rogito stato_rogito) {
-		this.stato_rogito = stato_rogito;
+	public void setStatoRogito(StatoRogito statoRogito) {
+		this.statoRogito = statoRogito;
 	}
-	public boolean isVisita_guidata() {
-		return visita_guidata;
+	public boolean isVisitaGuidata() {
+		return visitaGuidata;
 	}
-	public void setVisita_guidata(boolean visita_guidata) {
-		this.visita_guidata = visita_guidata;
+	public void setVisitaGuidata(boolean visitaGuidata) {
+		this.visitaGuidata = visitaGuidata;
 	}
-	public String getDescrizione_lunga() {
-		return descrizione_lunga;
+	public String getDescrizioneLunga() {
+		return descrizioneLunga;
 	}
-	public void setDescrizione_lunga(String descrizione_lunga) {
-		this.descrizione_lunga = descrizione_lunga;
+	public void setDescrizioneLunga(String descrizioneLunga) {
+		this.descrizioneLunga = descrizioneLunga;
 	}
-	public boolean isVirtual_tour() {
-		return virtual_tour;
+	public boolean isVirtualTour() {
+		return virtualTour;
 	}
-	public void setVirtual_tour(boolean virtual_tour) {
-		this.virtual_tour = virtual_tour;
+	public void setVirtualTour(boolean virtualTour) {
+		this.virtualTour = virtualTour;
+	}
+	public Timestamp getCreateTimestamp() {
+		return createTimestamp;
+	}
+	public void setCreateTimestamp(Timestamp createTimestamp) {
+		this.createTimestamp = createTimestamp;
 	}
 	
 
-	
-	
-	
 	
 	
 	

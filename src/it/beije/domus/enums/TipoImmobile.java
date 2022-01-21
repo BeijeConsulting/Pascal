@@ -1,6 +1,6 @@
 package it.beije.domus.enums;
 
-public enum Tipo_immobile {
+public enum TipoImmobile {
 
 	CASA, 
 	NUOVA_COSTRUZIONE, 

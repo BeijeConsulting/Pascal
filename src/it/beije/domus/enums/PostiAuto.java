@@ -1,5 +1,5 @@
 package it.beije.domus.enums;
 
-public enum Tipo_ricerca {
+public enum PostiAuto {
 
 }

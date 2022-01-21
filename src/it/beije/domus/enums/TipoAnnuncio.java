@@ -1,6 +1,6 @@
 package it.beije.domus.enums;
 
-public enum Tipo_annuncio {
+public enum TipoAnnuncio {
 	VENDITA,
 	AFFITTO,
 	AFFITTO_BREVE
