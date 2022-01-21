@@ -1,4 +1,4 @@
-package it.beije.pascal.bean;
+package it.beije.pascal.jpa.rubrica.bean;
 
 import java.util.List;
 
