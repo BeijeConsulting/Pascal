@@ -27,6 +27,7 @@ public class Annuncio {
 	private int annuncio_multiplo_id;
 	private int piantina_id;
 	private int indirizzo_id;
+	private int edificio_ID;
 	
 	private Tipo_immobile tipo_immobile;
 	private Tipo_annuncio tipo_annuncio;
@@ -53,7 +54,6 @@ public class Annuncio {
 	private boolean visita_guidata;
 	private String descrizione_lunga;
 	private boolean virtual_tour;
-	
 	public int getId() {
 		return id;
 	}
@@ -78,6 +78,18 @@ public class Annuncio {
 	public void setPiantina_id(int piantina_id) {
 		this.piantina_id = piantina_id;
 	}
+	public int getIndirizzo_id() {
+		return indirizzo_id;
+	}
+	public void setIndirizzo_id(int indirizzo_id) {
+		this.indirizzo_id = indirizzo_id;
+	}
+	public int getEdificio_ID() {
+		return edificio_ID;
+	}
+	public void setEdificio_ID(int edificio_ID) {
+		this.edificio_ID = edificio_ID;
+	}
 	public Tipo_immobile getTipo_immobile() {
 		return tipo_immobile;
 	}
@@ -89,12 +101,6 @@ public class Annuncio {
 	}
 	public void setTipo_annuncio(Tipo_annuncio tipo_annuncio) {
 		this.tipo_annuncio = tipo_annuncio;
-	}
-	public int getIndirizzo_id() {
-		return indirizzo_id;
-	}
-	public void setIndirizzo_id(int indirizzo_id) {
-		this.indirizzo_id = indirizzo_id;
 	}
 	public int getPrezzo() {
 		return prezzo;
@@ -234,6 +240,8 @@ public class Annuncio {
 	public void setVirtual_tour(boolean virtual_tour) {
 		this.virtual_tour = virtual_tour;
 	}
+	
+
 	
 	
 	
