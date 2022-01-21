@@ -10,13 +10,13 @@ import javax.persistence.Query;
 public class GestioneUtente {
 	
 	//CREARE
-	public static Utente createUser(int id, String email, String avatarUrl, String password, boolean spamCheck, boolean admin) {
+	public static Utente createUser(String email, String avatarUrl, String password, boolean spamCheck, boolean admin) {
+		
 		Utente ut = new Utente();
-		ut.setId(id);
 		ut.setEmail(email);
-		ut.setAvatar_url(avatarUrl);
+		ut.setAvatarUrl(avatarUrl);
 		ut.setPassword(password);
-		ut.setSpam_check(spamCheck);
+		ut.setSpamCheck(spamCheck);
 		ut.setAmministratore(admin);
 		
 		return ut;
@@ -71,7 +71,7 @@ public class GestioneUtente {
 		entityManager.close();
 	}
 	
-	public static void main(String...strings) {
-		GestioneUtente.delete(1);
-	}	
+	public static void main(String... strings) {
+		
+	}
 }
