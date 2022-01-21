@@ -8,7 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-import it.beije.pascal.bean.Contatto;
+import it.beije.pascal.jpa.rubrica.bean.Contatto;
 
 
 public class RubricaHBM {

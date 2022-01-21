@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.beije.pascal.bean.Contatto;
 import it.beije.pascal.file.util.FileUtil;
+import it.beije.pascal.jpa.rubrica.bean.Contatto;
 
 public class EsercizioCSV {
 	public static void main(String[] args) {

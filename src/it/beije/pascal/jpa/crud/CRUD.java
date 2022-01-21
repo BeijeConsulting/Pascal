@@ -6,8 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import it.beije.pascal.bean.Contatto;
-import it.beije.pascal.jpa.util.EntityManagerProvider;
+import it.beije.pascal.jpa.rubrica.bean.Contatto;
+import it.beije.pascal.jpa.util.RubricaEntityProvider;
 
 public class CRUD {
 	public static void main(String[] args) {
@@ -19,7 +19,7 @@ public class CRUD {
 	}
 
 	private static void read() {
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityManager entityManager = RubricaEntityProvider.getEntityManager();
 		// JPQL
 		String jpql = "SELECT c FROM Contatto AS c";
 		Query query = entityManager.createQuery(jpql);
@@ -34,7 +34,7 @@ public class CRUD {
 	}
 	
 	private static void delete(int id) {
-		EntityManager entityManger = EntityManagerProvider.getEntityManager();
+		EntityManager entityManger = RubricaEntityProvider.getEntityManager();
 		EntityTransaction transaction = entityManger.getTransaction();
 		transaction.begin();
 		
@@ -52,7 +52,7 @@ public class CRUD {
 	}
 	
 	private static void update(int id) {
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityManager entityManager = RubricaEntityProvider.getEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
 		transaction.begin();
 		
@@ -74,7 +74,7 @@ public class CRUD {
 	
 	private static void save() {
 		Contatto contatto = new Contatto("nuovo", "nuovo", "nuovo", "nuovo", "nuovo");
-		EntityManager entityManger = EntityManagerProvider.getEntityManager();
+		EntityManager entityManger = RubricaEntityProvider.getEntityManager();
 		EntityTransaction transaction = entityManger.getTransaction();
 		transaction.begin();
 		

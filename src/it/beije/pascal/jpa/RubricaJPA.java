@@ -8,8 +8,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import it.beije.pascal.bean.Contatto;
-import it.beije.pascal.jpa.util.EntityManagerProvider;
+import it.beije.pascal.jpa.rubrica.bean.Contatto;
+import it.beije.pascal.jpa.util.RubricaEntityProvider;
 
 
 
@@ -19,7 +19,7 @@ public class RubricaJPA {
 		
 //		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("pascal-rubrica");
 //		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityManager entityManager = RubricaEntityProvider.getEntityManager();
 		
 		//JPQL
 		Query query = entityManager.createQuery("SELECT c FROM Contatto as c");
