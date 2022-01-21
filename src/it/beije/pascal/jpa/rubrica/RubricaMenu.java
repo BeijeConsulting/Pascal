@@ -10,8 +10,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import it.beije.pascal.bean.Contatto;
-import it.beije.pascal.jpa.util.EntityManagerProvider;
+import it.beije.pascal.jpa.rubrica.bean.Contatto;
+import it.beije.pascal.jpa.util.RubricaEntityProvider;
 
 public class RubricaMenu {
 
@@ -76,7 +76,7 @@ public class RubricaMenu {
 	}
 
 	public static void printContacts() {
-		EntityManager entityManger = EntityManagerProvider.getEntityManager();
+		EntityManager entityManger = RubricaEntityProvider.getEntityManager();
 		String jpql = "SELECT c FROM Contatto AS c";
 		Query query = entityManger.createQuery(jpql);
 		List<Contatto> contatti = query.getResultList();
@@ -90,7 +90,7 @@ public class RubricaMenu {
 
 	private static void findContact(int id) {
 		String jpql = "SELECT c FROM Contatto AS c WHERE id = :id";
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityManager entityManager = RubricaEntityProvider.getEntityManager();
 		Query query = entityManager.createQuery(jpql);
 		query.setParameter("id", id);
 
@@ -107,7 +107,7 @@ public class RubricaMenu {
 
 	private static void addContact() {
 		Contatto contatto = new Contatto("nuovo", "nuovo", "nuovo", "nuovo", "nuovo");
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityManager entityManager = RubricaEntityProvider.getEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
 
 		transaction.begin();
@@ -118,7 +118,7 @@ public class RubricaMenu {
 
 	private static void updateContact(int id) {
 		String jpql = "SELECT c FROM Contatto AS c WHERE id = :id";
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityManager entityManager = RubricaEntityProvider.getEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
 		Contatto contatto = null;
 		Query query = entityManager.createQuery(jpql);
@@ -144,7 +144,7 @@ public class RubricaMenu {
 
 	private static void findDuplicates() {
 		String jpql = "SELECT c.cognome,c.nome,c.telefono,c.email,c.note FROM Contatto AS c GROUP BY c.cognome,c.nome,c.telefono,c.email,c.note HAVING count(c.email) > 1";
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityManager entityManager = RubricaEntityProvider.getEntityManager();
 		Query query = entityManager.createQuery(jpql);
 		List<Contatto> contatti = query.getResultList();
 
@@ -157,7 +157,7 @@ public class RubricaMenu {
 
 	private static void deleteContact(int id) {
 		String jpql = "	SELECT c FROM Contatto AS c WHERE id = :id";
-		EntityManager entityManager = EntityManagerProvider.getEntityManager();
+		EntityManager entityManager = RubricaEntityProvider.getEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
 		Contatto contatto = null;
 		Query query = entityManager.createQuery(jpql);
