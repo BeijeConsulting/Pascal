@@ -4,7 +4,7 @@ public enum Tipo_immobile {
 
 	CASA, 
 	NUOVA_COSTRUZIONE, 
-	COMMERCIALIE, 
+	COMMERCIALE, 
 	TERRENO, 
 	GARAGE, 
 	STANZA, 
