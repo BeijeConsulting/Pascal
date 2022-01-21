@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.beije.pascal.bean.Contatto;
 import it.beije.pascal.jdbc.util.DBUtil;
 import it.beije.pascal.jdbc.util.DataSource;
+import it.beije.pascal.jpa.rubrica.bean.Contatto;
 
 public class LimiteConnessioni {
 	private static final String URL = "jdbc:mysql://localhost:3306/rubrica?serverTimezone=CET";
