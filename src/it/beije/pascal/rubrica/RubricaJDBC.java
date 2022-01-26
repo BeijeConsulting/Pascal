@@ -26,6 +26,7 @@ public class RubricaJDBC {
 
 			System.out.println(!connection.isClosed());
 			//creo uno statement dalla connection su cui ci sono molti metodi per fare le query
+			//l'interfaccia Statement racchiude il codice SQL
 			statement = connection.createStatement();
 
 			//SELECT
@@ -40,7 +41,7 @@ public class RubricaJDBC {
 //			preparedStatement.setString(2, "Paolo");
 //			rs = preparedStatement.executeQuery();
 
-			
+			//faccio un ciclo che mi da ogni volta il dato successivo e mi prendo il dato chiamandolo per nome della colonna sul db
 //			while (rs.next()) {
 //				System.out.println("id : " + rs.getInt("idcontatti"));
 //				System.out.println("cognome : " + rs.getString("cognome"));

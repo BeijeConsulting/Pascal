@@ -17,7 +17,7 @@ public class RubricaHBM {
 				.addAnnotatedClass(Contatto.class);			
 				//.addAnnotatedClass(AltraClasse.class)				
 				
-		
+		//Apriamo una sessione 
 		SessionFactory sessionFactory = configuration.buildSessionFactory();
 		
 		Session session = sessionFactory.openSession();

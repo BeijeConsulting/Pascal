@@ -48,7 +48,7 @@ public class XMLmanager {
 		}
 //		NodeList nomi = root.getElementsByTagName("nome");
 //		System.out.println(nomi.getLength());
-	
+		
 		NodeList childNodes = root.getChildNodes();	//A NodeList that contains all children of this node.
 		System.out.println(childNodes.getLength());
 		for (int i = 0; i < childNodes.getLength(); i++) {

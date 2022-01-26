@@ -14,7 +14,7 @@ public class CSVmanager {
 
 	public static void main(String[] args) {
 		
-		File file = new File("rubrica.csv");	
+		File file = new File("C:\\\\Users\\\\Padawan01\\\\OneDrive\\\\Desktop");	
 		System.out.println("esiste ? " + file.exists());
 		System.out.println("isDirectory ? " + file.isDirectory());
 		FileReader reader = null;	
