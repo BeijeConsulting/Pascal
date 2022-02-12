@@ -11,6 +11,5 @@
 			<property name="javax.persistence.jdbc.user" value="root"/>
 			<property name="javax.persistence.jdbc.password" value="baba"/>
 		</properties>
-
 	</persistence-unit>
 </persistence>

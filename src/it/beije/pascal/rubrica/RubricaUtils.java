@@ -224,10 +224,10 @@ public class RubricaUtils {
 	}
 	
 	public static void main(String[] args) throws Exception {
-//		RubricaUtils ru = new RubricaUtils();
+		RubricaUtils ru = new RubricaUtils();
 
-//		List<Contatto> contatti = ru.loadRubricaFromCSV("/javaFiles/rubrica.csv", "\t");
-//		System.out.println(contatti);
+		List<Contatto> contatti = ru.loadRubricaFromCSV("/javaFiles/rubrica_hibernate.csv", ";");
+		System.out.println(contatti);
 //		
 //		List<Contatto> contattiXML = ru.loadRubricaFromXML("/javaFiles/rubrica.xml");
 //		System.out.println(contattiXML);
