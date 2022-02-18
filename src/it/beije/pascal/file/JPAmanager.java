@@ -10,7 +10,6 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.omg.IOP.ENCODING_CDR_ENCAPS;
 
 import it.beije.pascal.rubrica.Contatto;
 import it.beije.pascal.rubrica.EntityManagerProvider;
