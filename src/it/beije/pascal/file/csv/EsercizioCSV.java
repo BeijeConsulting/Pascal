@@ -12,12 +12,7 @@ import it.beije.pascal.jpa.rubrica.bean.Contatto;
 
 public class EsercizioCSV {
 	public static void main(String[] args) {
-		String path = "/Users/ema29/JavaFile/lettura.txt";
-		String path2 = "/Users/ema29/JavaFile/scrittura.txt";
-		String separatore = ";";
-
-		printContacts();
-		scriviContatti(path2, getContactList(path, separatore, false));
+		
 
 	}
 
